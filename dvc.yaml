@@ -10,3 +10,18 @@ stages:
           persist: false
     desc: Automatically generated from the 'analyze-local-geometry-impact'
       stage in calkit.yaml. Changes made here will be overwritten.
+  benchmark-local-geometry-impact:
+    cmd: calkit slurm batch --name benchmark-local-geometry-impact --environment
+      slurm-hpc --out results/benchmark_local_geometry_impact.md -s --gpus=1
+      -s --time=30 -- scripts/run_benchmark_slurm.sh
+    deps:
+      - scripts/run_benchmark_slurm.sh
+    outs:
+      - results/benchmark_local_geometry_impact.md:
+          cache: false
+          persist: true
+      - .calkit/slurm/logs/benchmark-local-geometry-impact.out:
+          cache: false
+          persist: true
+    desc: Automatically generated from the 'benchmark-local-geometry-impact'
+      stage in calkit.yaml. Changes made here will be overwritten.

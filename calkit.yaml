@@ -14,6 +14,10 @@ environments:
     julia: "1.12"
     path: .calkit/envs/main/Project.toml
 
+  slurm-hpc:
+    kind: slurm
+    host: your-cluster-host.edu
+
 pipeline:
   stages:
     analyze-local-geometry-impact:
@@ -22,4 +26,15 @@ pipeline:
       environment: main
       outputs:
         - path: results/analysis_local_geometry_impact.md
+          storage: git
+
+    benchmark-local-geometry-impact:
+      kind: sbatch
+      environment: slurm-hpc
+      script_path: scripts/run_benchmark_slurm.sh
+      sbatch_options:
+        - --gpus=1
+        - --time=30
+      outputs:
+        - path: results/benchmark_local_geometry_impact.md
           storage: git

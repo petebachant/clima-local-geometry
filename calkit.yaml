@@ -7,3 +7,9 @@ git_repo_url: https://github.com/petebachant/clima-local-geometry
 questions:
   - What potential speedup could be gained by simplifying the LocalGeometry
     struct in ClimaCore?
+
+environments:
+  main:
+    kind: julia
+    julia: "1.12"
+    path: .calkit/envs/main/Project.toml

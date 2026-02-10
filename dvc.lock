@@ -1,0 +1,18 @@
+schema: '2.0'
+stages:
+  analyze-local-geometry-impact:
+    cmd: calkit xenv -n main --no-check -- "scripts/analysis_local_geometry_impact.jl"
+    deps:
+    - path: .calkit/envs/main/Manifest.toml
+      hash: md5
+      md5: f053a8db8375d9886430ab4024d9e9eb
+      size: 186
+    - path: scripts/analysis_local_geometry_impact.jl
+      hash: md5
+      md5: 8d0e7a6ca5cdece8a8edb38f1bba9c64
+      size: 16383
+    outs:
+    - path: results/analysis_local_geometry_impact.md
+      hash: md5
+      md5: ccc982384837e89e866fefd11def6c3a
+      size: 4351

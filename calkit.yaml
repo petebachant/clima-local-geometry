@@ -13,3 +13,13 @@ environments:
     kind: julia
     julia: "1.12"
     path: .calkit/envs/main/Project.toml
+
+pipeline:
+  stages:
+    analyze-local-geometry-impact:
+      kind: julia-script
+      script_path: scripts/analysis_local_geometry_impact.jl
+      environment: main
+      outputs:
+        - path: results/analysis_local_geometry_impact.md
+          storage: git

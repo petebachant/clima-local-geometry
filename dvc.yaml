@@ -1,0 +1,12 @@
+stages:
+  analyze-local-geometry-impact:
+    cmd: calkit xenv -n main --no-check -- "scripts/analysis_local_geometry_impact.jl"
+    deps:
+      - scripts/analysis_local_geometry_impact.jl
+      - .calkit/envs/main/Manifest.toml
+    outs:
+      - results/analysis_local_geometry_impact.md:
+          cache: false
+          persist: false
+    desc: Automatically generated from the 'analyze-local-geometry-impact'
+      stage in calkit.yaml. Changes made here will be overwritten.

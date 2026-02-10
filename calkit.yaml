@@ -4,3 +4,6 @@ title: CliMA LocalGeometry
 description: Assessing the impact of a simpler LocalGeometry struct on CUDA
   kernel performance.
 git_repo_url: https://github.com/petebachant/clima-local-geometry
+questions:
+  - What potential speedup could be gained by simplifying the LocalGeometry
+    struct in ClimaCore?

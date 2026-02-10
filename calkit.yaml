@@ -1,0 +1,6 @@
+owner: petebachant
+name: clima-local-geometry
+title: CliMA LocalGeometry
+description: Assessing the impact of a simpler LocalGeometry struct on CUDA
+  kernel performance.
+git_repo_url: https://github.com/petebachant/clima-local-geometry

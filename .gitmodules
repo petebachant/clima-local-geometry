@@ -1,0 +1,3 @@
+[submodule "ClimaCore.jl"]
+	path = ClimaCore.jl
+	url = git@github.com:CliMA/ClimaCore.jl.git

@@ -12,10 +12,13 @@ stages:
       stage in calkit.yaml. Changes made here will be overwritten.
   benchmark-local-geometry-impact:
     cmd: calkit slurm batch --name benchmark-local-geometry-impact --environment
-      slurm-hpc --out results/benchmark_local_geometry_impact.md -s --gpus=1
-      -s --time=30 -- scripts/run_benchmark_slurm.sh
+      slurm-hpc --dep scripts/benchmark_local_geometry_impact.jl --dep ClimaCore.jl/Project.toml
+      --out results/benchmark_local_geometry_impact.md -s --gpus=1 -s --time=30
+      -- scripts/run_benchmark_slurm.sh
     deps:
       - scripts/run_benchmark_slurm.sh
+      - scripts/benchmark_local_geometry_impact.jl
+      - ClimaCore.jl/Project.toml
     outs:
       - results/benchmark_local_geometry_impact.md:
           cache: false

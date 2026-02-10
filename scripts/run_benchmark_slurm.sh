@@ -45,6 +45,11 @@ echo "Julia project: ${JULIA_PROJECT}"
 cd "${SLURM_SUBMIT_DIR}"
 
 echo ""
+echo "Instantiating Julia environment..."
+echo "=========================================="
+julia --project=ClimaCore.jl -e 'using Pkg; Pkg.instantiate()'
+
+echo ""
 echo "Running benchmark..."
 echo "=========================================="
 

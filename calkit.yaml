@@ -32,6 +32,9 @@ pipeline:
       kind: sbatch
       environment: slurm-hpc
       script_path: scripts/run_benchmark_slurm.sh
+      inputs:
+        - scripts/benchmark_local_geometry_impact.jl
+        - ClimaCore.jl/Project.toml
       sbatch_options:
         - --gpus=1
         - --time=30

@@ -26,7 +26,7 @@ pipeline:
       outputs:
         - path: results/analysis_local_geometry_impact.md
           storage: git
-
+    # Local geometry impact benchmark
     benchmark-local-geometry-impact:
       kind: sbatch
       environment: clima
@@ -42,3 +42,35 @@ pipeline:
       outputs:
         - path: results/benchmark_local_geometry_impact.md
           storage: git
+    # Atmos AMIP baseline
+    amip-baseline:
+      kind: sbatch
+      environment: clima
+      script_path: scripts/run-julia-script.sh
+      args:
+        - --project=ClimaAtmos.jl/.buildkite
+        - scripts/run_progedmf_1m.jl
+      sbatch_options:
+        - --gpus=1
+        - --time=120
+      inputs:
+        - config/climaatmos_progedmf_1m.yml
+        - scripts/run_progedmf_1m.jl
+        - ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
+        - ClimaAtmos.jl/src
+    # Atmos AMIP modified
+    amip-mod:
+      kind: sbatch
+      environment: clima
+      script_path: scripts/run-julia-script.sh
+      args:
+        - --project=ClimaAtmos.jl-mod/.buildkite
+        - scripts/run_progedmf_1m.jl
+      sbatch_options:
+        - --gpus=1
+        - --time=120
+      inputs:
+        - config/climaatmos_progedmf_1m.yml
+        - scripts/run_progedmf_1m.jl
+        - ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+        - ClimaAtmos.jl-mod/src

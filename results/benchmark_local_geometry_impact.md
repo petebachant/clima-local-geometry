@@ -4,11 +4,11 @@
 
 | Operation | Time (μs) | Overhead vs Baseline |
 |-----------|-----------|----------------------|
-| extracted j | 17.02 | 6.2% |
-| full lg multiple | 18.87 | 17.8% |
-| baseline simple | 16.02 | 0.0% |
-| full lg jacobian | 17.15 | 7.1% |
-| simplified lg | 16.44 | 2.6% |
+| extracted j | 16.82 | 5.3% |
+| full lg multiple | 18.91 | 18.4% |
+| baseline simple | 15.97 | 0.0% |
+| full lg jacobian | 17.10 | 7.1% |
+| simplified lg | 16.70 | 4.6% |
 
 ## Memory Footprint
 

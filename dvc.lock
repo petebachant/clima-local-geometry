@@ -50,9 +50,9 @@ stages:
     outs:
     - path: .calkit/slurm/logs/benchmark-local-geometry-impact.out
       hash: md5
-      md5: c3770d3d24d044a79de94242af9e34cf
+      md5: a0a327eaf2bba704ade4c20d9115e636
       size: 4940
     - path: results/benchmark_local_geometry_impact.md
       hash: md5
-      md5: 08a0acf712477c9cd3cb84499ae30764
+      md5: ce000249b4d0261c4106d92f314c629e
       size: 599

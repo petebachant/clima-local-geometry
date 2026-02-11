@@ -1,9 +1,9 @@
 ==========================================
 LocalGeometry CUDA Benchmark - SLURM Job
 ==========================================
-Job ID: 188147
+Job ID: 188148
 Node: clima
-Start time: Wed Feb 11 09:25:29 PST 2026
+Start time: Wed Feb 11 09:28:57 PST 2026
 
 Julia version:
 julia version 1.11.5
@@ -39,15 +39,15 @@ LOCALGEOMETRY CUDA KERNEL PERFORMANCE BENCHMARK
 Running benchmarks (this takes ~1-2 minutes)...
 
 (1/5) benchmarking "extracted_j"...
-done (took 1.123355566 seconds)
+done (took 1.112363266 seconds)
 (2/5) benchmarking "full_lg_multiple"...
-done (took 1.134678703 seconds)
+done (took 1.119506681 seconds)
 (3/5) benchmarking "baseline_simple"...
-done (took 0.600461654 seconds)
+done (took 0.595609932 seconds)
 (4/5) benchmarking "full_lg_jacobian"...
-done (took 0.995358406 seconds)
+done (took 0.999311782 seconds)
 (5/5) benchmarking "simplified_lg"...
-done (took 0.583783446 seconds)
+done (took 0.575514859 seconds)
 
 ======================================================================
 BENCHMARK RESULTS
@@ -55,11 +55,11 @@ BENCHMARK RESULTS
 
 Execution Time (μs, lower is better):
 ----------------------------------------------------------------------
-  extracted_j                         17.02 μs  (   6.2% vs baseline)
-  full_lg_multiple                    18.87 μs  (  17.8% vs baseline)
-  baseline_simple                     16.02 μs  (   0.0% vs baseline)
-  full_lg_jacobian                    17.15 μs  (   7.1% vs baseline)
-  simplified_lg                       16.44 μs  (   2.6% vs baseline)
+  extracted_j                         16.82 μs  (   5.3% vs baseline)
+  full_lg_multiple                    18.91 μs  (  18.4% vs baseline)
+  baseline_simple                     15.97 μs  (   0.0% vs baseline)
+  full_lg_jacobian                    17.10 μs  (   7.1% vs baseline)
+  simplified_lg                       16.70 μs  (   4.6% vs baseline)
 
 ======================================================================
 MEMORY FOOTPRINT COMPARISON
@@ -83,8 +83,8 @@ ANALYSIS
 
 Key findings:
   Full LocalGeometry overhead:     7.1%
-  Extracted J overhead:            6.2%
-  Simplified geometry overhead:    2.6%
+  Extracted J overhead:            5.3%
+  Simplified geometry overhead:    4.6%
 
 ⚠️  MODERATE OVERHEAD: LocalGeometry has ~3-10% performance cost
    Consider targeted optimizations (extract components, caching)
@@ -118,5 +118,5 @@ Markdown results written to: /home/pbachant/calkit/clima-local-geometry/scripts/
 
 ==========================================
 Benchmark complete
-End time: Wed Feb 11 09:26:25 PST 2026
+End time: Wed Feb 11 09:29:54 PST 2026
 ==========================================

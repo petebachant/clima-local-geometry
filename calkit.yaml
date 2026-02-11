@@ -5,7 +5,7 @@ description: Assessing the impact of a simpler LocalGeometry struct on
   CUDA kernel performance.
 git_repo_url: https://github.com/petebachant/clima-local-geometry
 questions:
-  - What potential speedup could be gained by simplifying the 
+  - What potential speedup could be gained by simplifying the
     LocalGeometry struct in ClimaCore?
 
 environments:
@@ -16,10 +16,10 @@ environments:
   clima:
     kind: slurm
     host: clima.gps.caltech.edu
-
   py:
     kind: uv
     path: .calkit/envs/py/pyproject.toml
+
 pipeline:
   stages:
     analyze-local-geometry-impact:
@@ -77,3 +77,21 @@ pipeline:
         - scripts/run_progedmf_1m.jl
         - ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
         - ClimaAtmos.jl-mod/src
+    analyze-logs:
+      kind: jupyter-notebook
+      notebook_path: notebooks/analyze-logs.ipynb
+      environment: py
+      inputs:
+        - from_stage_outputs: amip-baseline
+        - from_stage_outputs: amip-mod
+      outputs:
+        - path: figures/sypd-time-series.png
+          storage: git
+      html_storage: git
+      executed_ipynb_storage: git
+
+notebooks:
+  - path: notebooks/analyze-logs.ipynb
+    description: Analyzes the logs from the AMIP baseline and modified runs to
+      compare performance metrics and visualize any differences.
+    stage: analyze-logs

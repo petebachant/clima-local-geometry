@@ -123,3 +123,36 @@ stages:
       hash: md5
       md5: 4538b0b315459201c73c1f72f697ef4b
       size: 18560
+  analyze-logs:
+    cmd: calkit nb execute --environment py --no-check --to html 
+      "notebooks/analyze-logs.ipynb"
+    deps:
+    - path: .calkit/envs/py/uv.lock
+      hash: md5
+      md5: 0882eaf66a48e31088a716a1d1bc8aa8
+      size: 98212
+    - path: .calkit/notebooks/cleaned/notebooks/analyze-logs.ipynb
+      hash: md5
+      md5: e49e3f3f48d1bac2c04868ad0dc9946c
+      size: 1631
+    - path: .calkit/slurm/logs/amip-baseline.out
+      hash: md5
+      md5: 4538b0b315459201c73c1f72f697ef4b
+      size: 18560
+    - path: .calkit/slurm/logs/amip-mod.out
+      hash: md5
+      md5: c21ce458d5de22a7f90dc3c654063f80
+      size: 18566
+    outs:
+    - path: .calkit/notebooks/executed/notebooks/analyze-logs.ipynb
+      hash: md5
+      md5: e6269ce548855b0c34d88452819ab6af
+      size: 51795
+    - path: .calkit/notebooks/html/notebooks/analyze-logs.html
+      hash: md5
+      md5: a411aab5fb29b75c9470ffa8cb8676aa
+      size: 323723
+    - path: figures/sypd-time-series.png
+      hash: md5
+      md5: cd425e6a4a7b1d79f94a7f370c508f02
+      size: 36721

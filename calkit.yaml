@@ -92,7 +92,7 @@ pipeline:
 
 notebooks:
   - path: notebooks/analyze-logs.ipynb
-    title: Analyze Logs
+    title: Analyze logs
     description: Analyzes the logs from the AMIP baseline and modified runs to
       compare performance metrics and visualize any differences.
     stage: analyze-logs

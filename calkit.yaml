@@ -1,12 +1,12 @@
 owner: petebachant
 name: clima-local-geometry
 title: CliMA LocalGeometry
-description: Assessing the impact of a simpler LocalGeometry struct on CUDA
-  kernel performance.
+description: Assessing the impact of a simpler LocalGeometry struct on
+  CUDA kernel performance.
 git_repo_url: https://github.com/petebachant/clima-local-geometry
 questions:
-  - What potential speedup could be gained by simplifying the LocalGeometry
-    struct in ClimaCore?
+  - What potential speedup could be gained by simplifying the 
+    LocalGeometry struct in ClimaCore?
 
 environments:
   main:
@@ -17,6 +17,9 @@ environments:
     kind: slurm
     host: clima.gps.caltech.edu
 
+  py:
+    kind: uv
+    path: .calkit/envs/py/pyproject.toml
 pipeline:
   stages:
     analyze-local-geometry-impact:

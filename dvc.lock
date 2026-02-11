@@ -56,3 +56,70 @@ stages:
       hash: md5
       md5: ce000249b4d0261c4106d92f314c629e
       size: 599
+  amip-mod:
+    cmd: calkit slurm batch --name amip-mod --environment clima --dep 
+      config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
+      ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
+      ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- 
+      scripts/run-julia-script.sh --project=ClimaAtmos.jl-mod/.buildkite 
+      scripts/run_progedmf_1m.jl
+    deps:
+    - path: ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+      hash: md5
+      md5: 457d2c72e7ca05380f6a1f0c9acf303f
+      size: 117646
+    - path: ClimaAtmos.jl-mod/src
+      hash: md5
+      md5: 70246f318e4198c5174d1c1e299ab523.dir
+      size: 1393178
+      nfiles: 102
+    - path: config/climaatmos_progedmf_1m.yml
+      hash: md5
+      md5: 8743b95b52b4a72ef72b1135ad094afd
+      size: 1150
+    - path: scripts/run-julia-script.sh
+      hash: md5
+      md5: c982c866ef1cd9cab26d7c5b78a4224b
+      size: 560
+    - path: scripts/run_progedmf_1m.jl
+      hash: md5
+      md5: d485e9f1f6346198a72c2245392b3ac9
+      size: 1913
+    outs:
+    - path: .calkit/slurm/logs/amip-mod.out
+      hash: md5
+      md5: c21ce458d5de22a7f90dc3c654063f80
+      size: 18566
+  amip-baseline:
+    cmd: calkit slurm batch --name amip-baseline --environment clima --dep 
+      config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
+      ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src -s 
+      --gpus=1 -s --time=120 -- scripts/run-julia-script.sh 
+      --project=ClimaAtmos.jl/.buildkite scripts/run_progedmf_1m.jl
+    deps:
+    - path: ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
+      hash: md5
+      md5: 457d2c72e7ca05380f6a1f0c9acf303f
+      size: 117646
+    - path: ClimaAtmos.jl/src
+      hash: md5
+      md5: b4bf39f76b97e19d65611004412538f8.dir
+      size: 1392672
+      nfiles: 102
+    - path: config/climaatmos_progedmf_1m.yml
+      hash: md5
+      md5: 8743b95b52b4a72ef72b1135ad094afd
+      size: 1150
+    - path: scripts/run-julia-script.sh
+      hash: md5
+      md5: c982c866ef1cd9cab26d7c5b78a4224b
+      size: 560
+    - path: scripts/run_progedmf_1m.jl
+      hash: md5
+      md5: d485e9f1f6346198a72c2245392b3ac9
+      size: 1913
+    outs:
+    - path: .calkit/slurm/logs/amip-baseline.out
+      hash: md5
+      md5: 4538b0b315459201c73c1f72f697ef4b
+      size: 18560

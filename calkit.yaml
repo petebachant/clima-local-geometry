@@ -96,3 +96,9 @@ notebooks:
     description: Analyzes the logs from the AMIP baseline and modified runs to
       compare performance metrics and visualize any differences.
     stage: analyze-logs
+
+figures:
+  - path: figures/sypd-time-series.png
+    title: SYPD time series
+    description:
+    stage: analyze-logs

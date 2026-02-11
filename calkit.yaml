@@ -13,10 +13,9 @@ environments:
     kind: julia
     julia: "1.12"
     path: .calkit/envs/main/Project.toml
-
-  slurm-hpc:
+  clima:
     kind: slurm
-    host: your-cluster-host.edu
+    host: clima.gps.caltech.edu
 
 pipeline:
   stages:
@@ -30,11 +29,13 @@ pipeline:
 
     benchmark-local-geometry-impact:
       kind: sbatch
-      environment: slurm-hpc
+      environment: clima
       script_path: scripts/run_benchmark_slurm.sh
       inputs:
         - scripts/benchmark_local_geometry_impact.jl
-        - ClimaCore.jl/Project.toml
+        - ClimaCore.jl/.buildkite/Manifest.toml
+        - ClimaCore.jl/src
+        - ClimaCore.jl/ext
       sbatch_options:
         - --gpus=1
         - --time=30

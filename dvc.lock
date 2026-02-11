@@ -1,7 +1,8 @@
 schema: '2.0'
 stages:
   analyze-local-geometry-impact:
-    cmd: calkit xenv -n main --no-check -- "scripts/analysis_local_geometry_impact.jl"
+    cmd: calkit xenv -n main --no-check -- 
+      "scripts/analysis_local_geometry_impact.jl"
     deps:
     - path: .calkit/envs/main/Manifest.toml
       hash: md5
@@ -16,3 +17,42 @@ stages:
       hash: md5
       md5: ccc982384837e89e866fefd11def6c3a
       size: 4351
+  benchmark-local-geometry-impact:
+    cmd: calkit slurm batch --name benchmark-local-geometry-impact --environment
+      clima --dep scripts/benchmark_local_geometry_impact.jl --dep 
+      ClimaCore.jl/.buildkite/Manifest.toml --dep ClimaCore.jl/src --dep 
+      ClimaCore.jl/ext --out results/benchmark_local_geometry_impact.md -s 
+      --gpus=1 -s --time=30 -- scripts/run_benchmark_slurm.sh
+    deps:
+    - path: ClimaCore.jl/.buildkite/Manifest.toml
+      hash: md5
+      md5: d2dce9a07ad814b227bd47cb017d7fea
+      size: 104332
+    - path: ClimaCore.jl/ext
+      hash: md5
+      md5: 3f056c53cd7ed1404dbe16ddc46eee71.dir
+      size: 188794
+      nfiles: 25
+    - path: ClimaCore.jl/src
+      hash: md5
+      md5: a0a3445b59926ec3cf96b53e08cf7aa7.dir
+      size: 1166227
+      nfiles: 97
+    - path: scripts/benchmark_local_geometry_impact.jl
+      hash: md5
+      md5: cddc292ae3418a052a83ca98654692f4
+      size: 8371
+    - path: scripts/run_benchmark_slurm.sh
+      hash: md5
+      md5: 88df3fd56272acc43dfc346a2c64bade
+      size: 1584
+      isexec: true
+    outs:
+    - path: .calkit/slurm/logs/benchmark-local-geometry-impact.out
+      hash: md5
+      md5: c3770d3d24d044a79de94242af9e34cf
+      size: 4940
+    - path: results/benchmark_local_geometry_impact.md
+      hash: md5
+      md5: 08a0acf712477c9cd3cb84499ae30764
+      size: 599

@@ -25,7 +25,7 @@ echo ""
 # module load gcc/11
 
 # Set Julia project to the ClimaCore.jl subdirectory
-export JULIA_PROJECT="${SLURM_SUBMIT_DIR}/ClimaCore.jl"
+export JULIA_PROJECT="${SLURM_SUBMIT_DIR}/ClimaCore.jl/.buildkite"
 
 # CUDA device setup
 export CLIMACOMMS_DEVICE="CUDA"
@@ -47,14 +47,14 @@ cd "${SLURM_SUBMIT_DIR}"
 echo ""
 echo "Instantiating Julia environment..."
 echo "=========================================="
-julia --project=ClimaCore.jl -e 'using Pkg; Pkg.instantiate()'
+julia --project=${JULIA_PROJECT} -e 'using Pkg; Pkg.instantiate()'
 
 echo ""
 echo "Running benchmark..."
 echo "=========================================="
 
 # Run the benchmark
-julia --project=ClimaCore.jl scripts/benchmark_local_geometry_impact.jl
+julia --project=${JULIA_PROJECT} scripts/benchmark_local_geometry_impact.jl
 
 echo ""
 echo "=========================================="

@@ -1,6 +1,7 @@
 stages:
   analyze-local-geometry-impact:
-    cmd: calkit xenv -n main --no-check -- "scripts/analysis_local_geometry_impact.jl"
+    cmd: calkit xenv -n main --no-check -- 
+      "scripts/analysis_local_geometry_impact.jl"
     deps:
       - scripts/analysis_local_geometry_impact.jl
       - .calkit/envs/main/Manifest.toml
@@ -8,17 +9,23 @@ stages:
       - results/analysis_local_geometry_impact.md:
           cache: false
           persist: false
-    desc: Automatically generated from the 'analyze-local-geometry-impact'
-      stage in calkit.yaml. Changes made here will be overwritten.
+    desc: Automatically generated from the 
+      'analyze-local-geometry-impact' stage in calkit.yaml. Changes 
+      made here will be overwritten.
   benchmark-local-geometry-impact:
-    cmd: calkit slurm batch --name benchmark-local-geometry-impact --environment
-      slurm-hpc --dep scripts/benchmark_local_geometry_impact.jl --dep ClimaCore.jl/Project.toml
-      --out results/benchmark_local_geometry_impact.md -s --gpus=1 -s --time=30
-      -- scripts/run_benchmark_slurm.sh
+    cmd: calkit slurm batch --name benchmark-local-geometry-impact 
+      --environment clima --dep 
+      scripts/benchmark_local_geometry_impact.jl --dep 
+      ClimaCore.jl/.buildkite/Manifest.toml --dep ClimaCore.jl/src 
+      --dep ClimaCore.jl/ext --out 
+      results/benchmark_local_geometry_impact.md -s --gpus=1 -s 
+      --time=30 -- scripts/run_benchmark_slurm.sh
     deps:
       - scripts/run_benchmark_slurm.sh
       - scripts/benchmark_local_geometry_impact.jl
-      - ClimaCore.jl/Project.toml
+      - ClimaCore.jl/.buildkite/Manifest.toml
+      - ClimaCore.jl/src
+      - ClimaCore.jl/ext
     outs:
       - results/benchmark_local_geometry_impact.md:
           cache: false
@@ -26,5 +33,6 @@ stages:
       - .calkit/slurm/logs/benchmark-local-geometry-impact.out:
           cache: false
           persist: true
-    desc: Automatically generated from the 'benchmark-local-geometry-impact'
-      stage in calkit.yaml. Changes made here will be overwritten.
+    desc: Automatically generated from the 
+      'benchmark-local-geometry-impact' stage in calkit.yaml. Changes 
+      made here will be overwritten.

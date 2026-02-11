@@ -14,13 +14,14 @@ using BenchmarkTools
 using CUDA
 using ClimaComms
 using ClimaComms: SingletonCommsContext
+using Printf
 import ClimaCore
 import ClimaCore: Domains, Topologies, Meshes, Spaces, Geometry, Fields, Grids
 import ClimaCore.Geometry: LocalGeometry
 
 @isdefined(TU) || include(
     joinpath(
-        dirname(dirname(@__DIR__)),
+        dirname(@__DIR__),
         "ClimaCore.jl",
         "test",
         "TestUtilities",
@@ -47,23 +48,15 @@ result_field = similar(scalar_field)
 local_geom_full = Fields.local_geometry_field(space)
 
 # Extract scalar components for comparison
-J_field = Fields.Field(
-    similar(parent(scalar_field), FT),
-    space,
-)
+J_field = similar(scalar_field)
 @. J_field = local_geom_full.J
 
-# Create a simplified geometry struct
-struct SimplifiedGeometry{FT}
-    J::FT
-    coordinates::Any  # XYPoint or similar
-end
+# Create simplified geometry field (just J values, no coordinates)
+simplified_geom_field = similar(scalar_field)
+@. simplified_geom_field = local_geom_full.J
 
-# Create simplified geometry field
-simplified_geom = Fields.Field(
-    SimplifiedGeometry{FT}.(local_geom_full.J, Spaces.coordinates_data(space)),
-    space,
-)
+# Create a simple wrapper using NamedTuple
+simplified_geom = (J = simplified_geom_field,)
 
 println("\n" * "="^70)
 println("LOCALGEOMETRY CUDA KERNEL PERFORMANCE BENCHMARK")
@@ -140,14 +133,14 @@ println("="^70)
 
 lg_size = sizeof(parent(local_geom_full))
 j_size = sizeof(parent(J_field))
-simp_size = sizeof(parent(simplified_geom))
+simp_size = sizeof(parent(simplified_geom.J))
 scalar_size = sizeof(parent(scalar_field))
 
 println("\nData structure size per point:")
 println("  Scalar field:                    $(scalar_size / length(scalar_field)) bytes")
 println("  Full LocalGeometry:              $(lg_size / length(local_geom_full)) bytes")
 println("  Extracted J:                     $(j_size / length(J_field)) bytes")
-println("  Simplified geometry:             $(simp_size / length(simplified_geom)) bytes")
+println("  Simplified geometry:             $(simp_size / length(simplified_geom.J)) bytes")
 
 println("\nTotal memory footprint:")
 println("  Scalar field:                    $(scalar_size / (1024^2)) MB")
@@ -210,8 +203,10 @@ Next steps:
 
 println("="^70)
 
-# Save results to file
-results_md = """
+begin
+    # Save results to file
+    local results_md
+    results_md = """
 # LocalGeometry Performance Benchmark Results
 
 ## Execution Time Results
@@ -220,15 +215,15 @@ results_md = """
 |-----------|-----------|----------------------|
 """
 
-baseline_time_μs = minimum(results["baseline_simple"].times) / 1000
+    baseline_time_μs = minimum(results["baseline_simple"].times) / 1000
 
-for (name, result) in results
-    time_μs = minimum(result.times) / 1000
-    overhead_pct = 100 * (time_μs - baseline_time_μs) / baseline_time_μs
-    results_md *= "| $(replace(name, "_" => " ")) | $(@sprintf("%.2f", time_μs)) | $(@sprintf("%.1f", overhead_pct))% |\n"
-end
+    for (name, result) in results
+        time_μs = minimum(result.times) / 1000
+        overhead_pct = 100 * (time_μs - baseline_time_μs) / baseline_time_μs
+        results_md = results_md * "| $(replace(name, "_" => " ")) | $(@sprintf("%.2f", time_μs)) | $(@sprintf("%.1f", overhead_pct))% |\n"
+    end
 
-results_md *= """
+    results_md = results_md * """
 
 ## Memory Footprint
 
@@ -241,20 +236,21 @@ Full LocalGeometry overhead: $(@sprintf("%.1f", lg_overhead_pct))%
 
 """
 
-if lg_overhead_pct > 10
-    results_md *= "⚠️ **SIGNIFICANT OVERHEAD** - Refactoring recommended\n"
-elseif lg_overhead_pct > 3
-    results_md *= "⚠️ **MODERATE OVERHEAD** - Consider optimization strategies\n"
-else
-    results_md *= "✓ **MINIMAL OVERHEAD** - Current structure is reasonable\n"
+    if lg_overhead_pct > 10
+        results_md = results_md * "⚠️ **SIGNIFICANT OVERHEAD** - Refactoring recommended\n"
+    elseif lg_overhead_pct > 3
+        results_md = results_md * "⚠️ **MODERATE OVERHEAD** - Consider optimization strategies\n"
+    else
+        results_md = results_md * "✓ **MINIMAL OVERHEAD** - Current structure is reasonable\n"
+    end
+
+    # Write markdown results
+    results_dir = joinpath(@__DIR__, "..", "results")
+    isdir(results_dir) || mkpath(results_dir)
+
+    open(joinpath(results_dir, "benchmark_local_geometry_impact.md"), "w") do io
+        write(io, results_md)
+    end
+
+    println("\nMarkdown results written to: $(joinpath(results_dir, "benchmark_local_geometry_impact.md"))")
 end
-
-# Write markdown results
-results_dir = joinpath(@__DIR__, "..", "results")
-isdir(results_dir) || mkpath(results_dir)
-
-open(joinpath(results_dir, "benchmark_local_geometry_impact.md"), "w") do io
-    write(io, results_md)
-end
-
-println("\nMarkdown results written to: $(joinpath(results_dir, "benchmark_local_geometry_impact.md"))")

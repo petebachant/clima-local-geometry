@@ -1,0 +1,122 @@
+==========================================
+LocalGeometry CUDA Benchmark - SLURM Job
+==========================================
+Job ID: 188147
+Node: clima
+Start time: Wed Feb 11 09:25:29 PST 2026
+
+Julia version:
+julia version 1.11.5
+
+CUDA devices available:
+name, memory.total [MiB]
+NVIDIA A100-SXM4-80GB, 81920 MiB
+NVIDIA A100-SXM4-80GB, 81920 MiB
+NVIDIA A100-SXM4-80GB, 81920 MiB
+NVIDIA A100-SXM4-80GB, 81920 MiB
+NVIDIA A100-SXM4-80GB, 81920 MiB
+NVIDIA A100-SXM4-80GB, 81920 MiB
+NVIDIA A100-SXM4-80GB, 81920 MiB
+NVIDIA A100-SXM4-80GB, 81920 MiB
+
+Julia project: /home/pbachant/calkit/clima-local-geometry/ClimaCore.jl/.buildkite
+
+Instantiating Julia environment...
+==========================================
+┌ Warning: The active manifest file has dependencies that were resolved with a different julia version (1.10.8). Unexpected behavior may occur.
+└ @ ~/calkit/clima-local-geometry/ClimaCore.jl/.buildkite/Manifest.toml:0
+┌ Warning: The project dependencies or compat requirements have changed since the manifest was last resolved.
+│ It is recommended to `Pkg.resolve()` or consider `Pkg.update()` if necessary.
+└ @ Pkg.API /clima/software/julia/julia-1.11.5/share/julia/stdlib/v1.11/Pkg/src/API.jl:1206
+
+Running benchmark...
+==========================================
+
+======================================================================
+LOCALGEOMETRY CUDA KERNEL PERFORMANCE BENCHMARK
+======================================================================
+
+Running benchmarks (this takes ~1-2 minutes)...
+
+(1/5) benchmarking "extracted_j"...
+done (took 1.123355566 seconds)
+(2/5) benchmarking "full_lg_multiple"...
+done (took 1.134678703 seconds)
+(3/5) benchmarking "baseline_simple"...
+done (took 0.600461654 seconds)
+(4/5) benchmarking "full_lg_jacobian"...
+done (took 0.995358406 seconds)
+(5/5) benchmarking "simplified_lg"...
+done (took 0.583783446 seconds)
+
+======================================================================
+BENCHMARK RESULTS
+======================================================================
+
+Execution Time (μs, lower is better):
+----------------------------------------------------------------------
+  extracted_j                         17.02 μs  (   6.2% vs baseline)
+  full_lg_multiple                    18.87 μs  (  17.8% vs baseline)
+  baseline_simple                     16.02 μs  (   0.0% vs baseline)
+  full_lg_jacobian                    17.15 μs  (   7.1% vs baseline)
+  simplified_lg                       16.44 μs  (   2.6% vs baseline)
+
+======================================================================
+MEMORY FOOTPRINT COMPARISON
+======================================================================
+
+Data structure size per point:
+  Scalar field:                    128.0 bytes
+  Full LocalGeometry:              2688.0 bytes
+  Extracted J:                     128.0 bytes
+  Simplified geometry:             128.0 bytes
+
+Total memory footprint:
+  Scalar field:                    0.0001220703125 MB
+  Full LocalGeometry:              0.0025634765625 MB (21.0x scalar)
+  Extracted J:                     0.0001220703125 MB (1.0x scalar)
+  Simplified geometry:             0.0001220703125 MB (1.0x scalar)
+
+======================================================================
+ANALYSIS
+======================================================================
+
+Key findings:
+  Full LocalGeometry overhead:     7.1%
+  Extracted J overhead:            6.2%
+  Simplified geometry overhead:    2.6%
+
+⚠️  MODERATE OVERHEAD: LocalGeometry has ~3-10% performance cost
+   Consider targeted optimizations (extract components, caching)
+
+======================================================================
+INTERPRETATION
+======================================================================
+The overhead depends on:
+  1. How often LocalGeometry is accessed per kernel call
+  2. What proportion of LocalGeometry components are actually used
+  3. Whether multiple threads compete for cache/bandwidth
+
+In real ClimaAtmos kernels:
+  • LocalGeometry is accessed at every grid point
+  • Most kernels use only J or (J, WJ) - not full tensors
+  • This can amplify overhead in bandwidth-bound operations
+
+Recommendations:
+  1. If overhead > 10%: Refactor to simplified geometry types
+  2. If overhead 3-10%: Extract J/WJ at kernel entry, pass separately
+  3. If overhead < 3%: Keep as-is; focus on other optimizations
+
+Next steps:
+  • Run this benchmark on real physics kernels (not just synthetic ops)
+  • Profile with NVIDIA Nsight Compute to measure bandwidth efficiency
+  • Test with actual ClimaAtmos configurations
+
+======================================================================
+
+Markdown results written to: /home/pbachant/calkit/clima-local-geometry/scripts/../results/benchmark_local_geometry_impact.md
+
+==========================================
+Benchmark complete
+End time: Wed Feb 11 09:26:25 PST 2026
+==========================================

@@ -1,3 +1,10 @@
 [submodule "ClimaCore.jl"]
 	path = ClimaCore.jl
 	url = git@github.com:CliMA/ClimaCore.jl.git
+[submodule "ClimaAtmos.jl"]
+	path = ClimaAtmos.jl
+	url = git@github.com:CliMA/ClimaAtmos.jl
+[submodule "ClimaAtmos.jl-mod"]
+	path = ClimaAtmos.jl-mod
+	url = git@github.com:CliMA/ClimaAtmos.jl
+	branch = pb/localgeom

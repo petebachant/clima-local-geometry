@@ -88,8 +88,8 @@ stages:
     outs:
     - path: .calkit/slurm/logs/amip-mod.out
       hash: md5
-      md5: 8be42435a83dcdcf6e1dc731ff4d69f5
-      size: 18745
+      md5: 0469a8cda58b7a506475593873b00713
+      size: 18570
   amip-baseline:
     cmd: calkit slurm batch --name amip-baseline --environment clima --dep 
       config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
@@ -121,8 +121,8 @@ stages:
     outs:
     - path: .calkit/slurm/logs/amip-baseline.out
       hash: md5
-      md5: fa7baf005408ec49cee84a4cabe1cf40
-      size: 18728
+      md5: 969cf22c42fe6c93fdf3b724748fadaf
+      size: 18577
   analyze-logs:
     cmd: calkit nb execute --environment py --no-check --to html 
       "notebooks/analyze-logs.ipynb"
@@ -137,22 +137,22 @@ stages:
       size: 1631
     - path: .calkit/slurm/logs/amip-baseline.out
       hash: md5
-      md5: fa7baf005408ec49cee84a4cabe1cf40
-      size: 18728
+      md5: 969cf22c42fe6c93fdf3b724748fadaf
+      size: 18577
     - path: .calkit/slurm/logs/amip-mod.out
       hash: md5
-      md5: 8be42435a83dcdcf6e1dc731ff4d69f5
-      size: 18745
+      md5: 0469a8cda58b7a506475593873b00713
+      size: 18570
     outs:
     - path: .calkit/notebooks/executed/notebooks/analyze-logs.ipynb
       hash: md5
-      md5: f6d12741cf198f0c4ccf4ea10f82c787
-      size: 44551
+      md5: 9f8e7f28def8a5b28438e4180036a846
+      size: 43427
     - path: .calkit/notebooks/html/notebooks/analyze-logs.html
       hash: md5
-      md5: a17ffdf11245ced067c562e0fb870193
-      size: 316479
+      md5: b00cfeceedb5f21e7bdf549093f60d0f
+      size: 315355
     - path: figures/sypd-time-series.png
       hash: md5
-      md5: 577bc82ca67cae0692e3e34d115f331f
-      size: 31250
+      md5: 5a13368159a4ebdb085f9ffc1b646e19
+      size: 30470

@@ -70,8 +70,8 @@ stages:
       size: 117646
     - path: ClimaAtmos.jl-mod/src
       hash: md5
-      md5: 70246f318e4198c5174d1c1e299ab523.dir
-      size: 1393178
+      md5: 8a7f0ee22f763f81731a8ad6ffbd79e3.dir
+      size: 1394665
       nfiles: 102
     - path: config/climaatmos_progedmf_1m.yml
       hash: md5
@@ -88,8 +88,8 @@ stages:
     outs:
     - path: .calkit/slurm/logs/amip-mod.out
       hash: md5
-      md5: c21ce458d5de22a7f90dc3c654063f80
-      size: 18566
+      md5: 8be42435a83dcdcf6e1dc731ff4d69f5
+      size: 18745
   amip-baseline:
     cmd: calkit slurm batch --name amip-baseline --environment clima --dep 
       config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
@@ -103,8 +103,8 @@ stages:
       size: 117646
     - path: ClimaAtmos.jl/src
       hash: md5
-      md5: b4bf39f76b97e19d65611004412538f8.dir
-      size: 1392672
+      md5: 1c00edcfa1fe576a669c8a3de4323d5d.dir
+      size: 1394159
       nfiles: 102
     - path: config/climaatmos_progedmf_1m.yml
       hash: md5
@@ -121,8 +121,8 @@ stages:
     outs:
     - path: .calkit/slurm/logs/amip-baseline.out
       hash: md5
-      md5: 4538b0b315459201c73c1f72f697ef4b
-      size: 18560
+      md5: fa7baf005408ec49cee84a4cabe1cf40
+      size: 18728
   analyze-logs:
     cmd: calkit nb execute --environment py --no-check --to html 
       "notebooks/analyze-logs.ipynb"
@@ -137,22 +137,22 @@ stages:
       size: 1631
     - path: .calkit/slurm/logs/amip-baseline.out
       hash: md5
-      md5: 4538b0b315459201c73c1f72f697ef4b
-      size: 18560
+      md5: fa7baf005408ec49cee84a4cabe1cf40
+      size: 18728
     - path: .calkit/slurm/logs/amip-mod.out
       hash: md5
-      md5: c21ce458d5de22a7f90dc3c654063f80
-      size: 18566
+      md5: 8be42435a83dcdcf6e1dc731ff4d69f5
+      size: 18745
     outs:
     - path: .calkit/notebooks/executed/notebooks/analyze-logs.ipynb
       hash: md5
-      md5: e6269ce548855b0c34d88452819ab6af
-      size: 51795
+      md5: f6d12741cf198f0c4ccf4ea10f82c787
+      size: 44551
     - path: .calkit/notebooks/html/notebooks/analyze-logs.html
       hash: md5
-      md5: a411aab5fb29b75c9470ffa8cb8676aa
-      size: 323723
+      md5: a17ffdf11245ced067c562e0fb870193
+      size: 316479
     - path: figures/sypd-time-series.png
       hash: md5
-      md5: cd425e6a4a7b1d79f94a7f370c508f02
-      size: 36721
+      md5: 577bc82ca67cae0692e3e34d115f331f
+      size: 31250

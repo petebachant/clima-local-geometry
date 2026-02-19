@@ -211,3 +211,4 @@ output
 !.calkit/notebooks/executed/notebooks/analyze-logs.ipynb
 !.calkit/notebooks/html/notebooks/analyze-logs.html
 !figures/sypd-time-series.png
+.calkit/notebooks/cleaned/notebooks/compare-kernels.ipynb

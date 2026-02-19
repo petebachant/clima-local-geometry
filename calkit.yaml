@@ -135,6 +135,15 @@ pipeline:
           storage: dvc
         - path: results/nsys/mod.sqlite
           storage: dvc
+    compare-kernels:
+      kind: jupyter-notebook
+      notebook_path: notebooks/compare-kernels.ipynb
+      environment: py
+      inputs:
+        - results/nsys/baseline.sqlite
+        - results/nsys/mod.sqlite
+      html_storage: git
+      executed_ipynb_storage: git
 
 notebooks:
   - path: notebooks/analyze-logs.ipynb

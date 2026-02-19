@@ -1,7 +1,6 @@
 stages:
   analyze-local-geometry-impact:
-    cmd: calkit xenv -n main --no-check -- 
-      "scripts/analysis_local_geometry_impact.jl"
+    cmd: calkit xenv -n main --no-check -- "scripts/analysis_local_geometry_impact.jl"
     deps:
       - scripts/analysis_local_geometry_impact.jl
       - .calkit/envs/main/Manifest.toml
@@ -9,17 +8,13 @@ stages:
       - results/analysis_local_geometry_impact.md:
           cache: false
           persist: false
-    desc: Automatically generated from the 
-      'analyze-local-geometry-impact' stage in calkit.yaml. Changes 
-      made here will be overwritten.
+    desc: Automatically generated from the 'analyze-local-geometry-impact'
+      stage in calkit.yaml. Changes made here will be overwritten.
   benchmark-local-geometry-impact:
-    cmd: calkit slurm batch --name benchmark-local-geometry-impact 
-      --environment clima --dep 
-      scripts/benchmark_local_geometry_impact.jl --dep 
-      ClimaCore.jl/.buildkite/Manifest.toml --dep ClimaCore.jl/src 
-      --dep ClimaCore.jl/ext --out 
-      results/benchmark_local_geometry_impact.md -s --gpus=1 -s 
-      --time=30 -- scripts/run_benchmark_slurm.sh
+    cmd: calkit slurm batch --name benchmark-local-geometry-impact --environment
+      clima --dep scripts/benchmark_local_geometry_impact.jl --dep ClimaCore.jl/.buildkite/Manifest.toml
+      --dep ClimaCore.jl/src --dep ClimaCore.jl/ext --out results/benchmark_local_geometry_impact.md
+      -s --gpus=1 -s --time=30 -- scripts/run_benchmark_slurm.sh
     deps:
       - scripts/run_benchmark_slurm.sh
       - scripts/benchmark_local_geometry_impact.jl
@@ -33,16 +28,13 @@ stages:
       - .calkit/slurm/logs/benchmark-local-geometry-impact.out:
           cache: false
           persist: true
-    desc: Automatically generated from the 
-      'benchmark-local-geometry-impact' stage in calkit.yaml. Changes 
-      made here will be overwritten.
+    desc: Automatically generated from the 'benchmark-local-geometry-impact'
+      stage in calkit.yaml. Changes made here will be overwritten.
   amip-baseline:
-    cmd: calkit slurm batch --name amip-baseline --environment clima 
-      --dep config/climaatmos_progedmf_1m.yml --dep 
-      scripts/run_progedmf_1m.jl --dep 
-      ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl/src -s --gpus=1 -s --time=120 -- 
-      scripts/run-julia-script.sh --project=ClimaAtmos.jl/.buildkite 
+    cmd: calkit slurm batch --name amip-baseline --environment clima --dep
+      config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl
+      --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src
+      -s --gpus=1 -s --time=120 -- scripts/run-julia-script.sh --project=ClimaAtmos.jl/.buildkite
       scripts/run_progedmf_1m.jl
     deps:
       - scripts/run-julia-script.sh
@@ -54,17 +46,13 @@ stages:
       - .calkit/slurm/logs/amip-baseline.out:
           cache: false
           persist: true
-    desc: Automatically generated from the 'amip-baseline' stage in 
-      calkit.yaml. Changes made here will be overwritten.
+    desc: Automatically generated from the 'amip-baseline' stage in calkit.yaml.
+      Changes made here will be overwritten.
   amip-mod:
-    cmd: calkit slurm batch --name amip-mod --environment clima --dep 
-      config/climaatmos_progedmf_1m.yml --dep 
-      scripts/run_progedmf_1m.jl --dep 
-      ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- 
-      scripts/run-julia-script.sh 
-      --project=ClimaAtmos.jl-mod/.buildkite 
-      scripts/run_progedmf_1m.jl
+    cmd: calkit slurm batch --name amip-mod --environment clima --dep config/climaatmos_progedmf_1m.yml
+      --dep scripts/run_progedmf_1m.jl --dep ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+      --dep ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- scripts/run-julia-script.sh
+      --project=ClimaAtmos.jl-mod/.buildkite scripts/run_progedmf_1m.jl
     deps:
       - scripts/run-julia-script.sh
       - config/climaatmos_progedmf_1m.yml
@@ -75,11 +63,10 @@ stages:
       - .calkit/slurm/logs/amip-mod.out:
           cache: false
           persist: true
-    desc: Automatically generated from the 'amip-mod' stage in 
-      calkit.yaml. Changes made here will be overwritten.
+    desc: Automatically generated from the 'amip-mod' stage in calkit.yaml.
+      Changes made here will be overwritten.
   analyze-logs:
-    cmd: calkit nb execute --environment py --no-check --to html 
-      "notebooks/analyze-logs.ipynb"
+    cmd: calkit nb execute --environment py --no-check --to html "notebooks/analyze-logs.ipynb"
     deps:
       - .calkit/notebooks/cleaned/notebooks/analyze-logs.ipynb
       - .calkit/envs/py/uv.lock
@@ -93,18 +80,15 @@ stages:
           cache: false
       - .calkit/notebooks/html/notebooks/analyze-logs.html:
           cache: false
-    desc: Automatically generated from the 'analyze-logs' stage in 
-      calkit.yaml. Changes made here will be overwritten.
+    desc: Automatically generated from the 'analyze-logs' stage in calkit.yaml.
+      Changes made here will be overwritten.
   nsys-baseline:
-    cmd: calkit slurm batch --name nsys-baseline --environment clima 
-      --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl/src --dep config/climaatmos_progedmf_1m.yml --dep 
-      ClimaAtmos.jl/perf/benchmark_step.jl --out 
-      results/nsys/baseline.nsys-rep --out 
-      results/nsys/baseline.sqlite -s --gpus=1 -s --time=120 -- 
-      scripts/run-nsys.sh --output=results/nsys/baseline julia 
-      --project=ClimaAtmos.jl/.buildkite 
-      ClimaAtmos.jl/perf/benchmark_step.jl 
+    cmd: calkit slurm batch --name nsys-baseline --environment clima --dep
+      ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src
+      --dep config/climaatmos_progedmf_1m.yml --dep ClimaAtmos.jl/perf/benchmark_step.jl
+      --out results/nsys/baseline.nsys-rep --out results/nsys/baseline.sqlite
+      -s --gpus=1 -s --time=120 -- scripts/run-nsys.sh --output=results/nsys/baseline
+      julia --project=ClimaAtmos.jl/.buildkite ClimaAtmos.jl/perf/benchmark_step.jl
       --config_file=config/climaatmos_progedmf_1m.yml
     deps:
       - scripts/run-nsys.sh
@@ -122,19 +106,15 @@ stages:
       - .calkit/slurm/logs/nsys-baseline.out:
           cache: false
           persist: true
-    desc: Automatically generated from the 'nsys-baseline' stage in 
-      calkit.yaml. Changes made here will be overwritten.
+    desc: Automatically generated from the 'nsys-baseline' stage in calkit.yaml.
+      Changes made here will be overwritten.
   nsys-mod:
-    cmd: calkit slurm batch --name nsys-mod --environment clima --dep 
-      ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl-mod/src --dep config/climaatmos_progedmf_1m.yml 
-      --dep ClimaAtmos.jl-mod/perf/benchmark_step.jl --out 
-      results/nsys/mod.nsys-rep --out results/nsys/mod.sqlite -s 
-      --gpus=1 -s --time=120 -- scripts/run-nsys.sh 
-      --output=results/nsys/mod julia 
-      --project=ClimaAtmos.jl-mod/.buildkite 
-      ClimaAtmos.jl-mod/perf/benchmark_step.jl 
-      --config_file=config/climaatmos_progedmf_1m.yml
+    cmd: calkit slurm batch --name nsys-mod --environment clima --dep ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+      --dep ClimaAtmos.jl-mod/src --dep config/climaatmos_progedmf_1m.yml
+      --dep ClimaAtmos.jl-mod/perf/benchmark_step.jl --out results/nsys/mod.nsys-rep
+      --out results/nsys/mod.sqlite -s --gpus=1 -s --time=120 -- scripts/run-nsys.sh
+      --output=results/nsys/mod julia --project=ClimaAtmos.jl-mod/.buildkite
+      ClimaAtmos.jl-mod/perf/benchmark_step.jl --config_file=config/climaatmos_progedmf_1m.yml
     deps:
       - scripts/run-nsys.sh
       - ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
@@ -151,5 +131,19 @@ stages:
       - .calkit/slurm/logs/nsys-mod.out:
           cache: false
           persist: true
-    desc: Automatically generated from the 'nsys-mod' stage in 
-      calkit.yaml. Changes made here will be overwritten.
+    desc: Automatically generated from the 'nsys-mod' stage in calkit.yaml.
+      Changes made here will be overwritten.
+  compare-kernels:
+    cmd: calkit nb execute --environment py --no-check --to html "notebooks/compare-kernels.ipynb"
+    deps:
+      - .calkit/notebooks/cleaned/notebooks/compare-kernels.ipynb
+      - results/nsys/baseline.sqlite
+      - results/nsys/mod.sqlite
+      - .calkit/envs/py/uv.lock
+    outs:
+      - .calkit/notebooks/executed/notebooks/compare-kernels.ipynb:
+          cache: false
+      - .calkit/notebooks/html/notebooks/compare-kernels.html:
+          cache: false
+    desc: Automatically generated from the 'compare-kernels' stage in calkit.yaml.
+      Changes made here will be overwritten.

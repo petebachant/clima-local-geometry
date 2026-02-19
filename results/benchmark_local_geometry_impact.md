@@ -2,21 +2,76 @@
 
 ## Execution Time Results
 
+### Section 1: Basic Geometry Access
+
 | Operation | Time (μs) | Overhead vs Baseline |
 |-----------|-----------|----------------------|
-| extracted j | 16.82 | 5.3% |
-| full lg multiple | 18.91 | 18.4% |
-| baseline simple | 15.97 | 0.0% |
-| full lg jacobian | 17.10 | 7.1% |
-| simplified lg | 16.70 | 4.6% |
+| baseline simple | 15.89 | 0.0% |
+| full lg jacobian | 16.98 | 6.9% |
+| full lg multiple | 18.98 | 19.4% |
+| extracted j | 16.82 | 5.9% |
+| simplified lg | 16.88 | 6.2% |
+
+### Section 2: Struct Size Impact on Inlining
+
+| Struct Type | Size (bytes) | Time (μs) | Overhead vs Baseline |
+|-------------|--------------|-----------|----------------------|
+| two field access | 16 | 16.32 | 2.7% |
+| four field access | 32 | 16.87 | 6.2% |
+| eight field access | 64 | 16.77 | 5.5% |
+| sixteen field access | 128 | 16.77 | 5.5% |
+
+### Section 3: Projection Operations
+
+| Operation | Time (μs) | Overhead vs Vector Baseline |
+|-----------|-----------|----------------------------|
+| vector baseline | 16.94 | 0.0% |
+| project full lg | 17.09 | 0.9% |
 
 ## Memory Footprint
 
-- Full LocalGeometry: 0.0025634765625 MB (21.0x scalar field)
-- Extracted J: 0.0001220703125 MB (1.0x scalar field)
+| Structure | Total Size (MB) | Size per Point (bytes) | Ratio vs Scalar |
+|-----------|-----------------|------------------------|-----------------|
+| Scalar field | 0.000 | 128.0 | 1.0x |
+| TwoFieldGeom | 0.000 | 256.0 | 2.0x |
+| FourFieldGeom | 0.000 | 512.0 | 4.0x |
+| EightFieldGeom | 0.001 | 1024.0 | 8.0x |
+| SixteenFieldGeom | 0.002 | 2048.0 | 16.0x |
+| Full LocalGeometry | 0.003 | 2688.0 | 21.0x |
 
-## Key Finding
+## Key Findings
 
-Full LocalGeometry overhead: 7.1%
+### Basic Geometry Access
+- Full LocalGeometry (J only) overhead: 6.9%
+- Extracted J overhead: 5.9%
+
+### Struct Size Impact
+- TwoFieldGeom (16 bytes): 2.7%
+- FourFieldGeom (32 bytes): 6.2%
+- EightFieldGeom (64 bytes): 5.5%
+- SixteenFieldGeom (128 bytes): 5.5%
+
+### Projection Operations
+- Covariant to Contravariant: 0.9%
+
+## Assessment
 
 ⚠️ **MODERATE OVERHEAD** - Consider optimization strategies
+
+- Extract J/WJ at kernel entry for hot paths
+- Use nsys profiling to identify bandwidth-bound kernels
+
+## Next Steps
+
+1. **Profile real physics kernels**: These synthetic benchmarks test individual operations. Real kernels may show different behavior.
+
+2. **Use nsys for detailed analysis**:
+   ```bash
+   ./scripts/run-nsys.sh --output=results/nsys/benchmark_lg \
+       julia --project scripts/benchmark_local_geometry_impact.jl
+   nsys stats results/nsys/benchmark_lg.nsys-rep
+   ```
+
+3. **Verify inlining**: Use `@code_llvm` and `@device_code_ptx` to inspect compiler output.
+
+4. **Test with realistic field operations**: Include projections in gradient/divergence operators.

@@ -1,9 +1,9 @@
 ==========================================
 LocalGeometry CUDA Benchmark - SLURM Job
 ==========================================
-Job ID: 188148
+Job ID: 188735
 Node: clima
-Start time: Wed Feb 11 09:28:57 PST 2026
+Start time: Thu Feb 19 07:29:13 PST 2026
 
 Julia version:
 julia version 1.11.5
@@ -36,30 +36,86 @@ Running benchmark...
 LOCALGEOMETRY CUDA KERNEL PERFORMANCE BENCHMARK
 ======================================================================
 
-Running benchmarks (this takes ~1-2 minutes)...
+======================================================================
+INLINING VERIFICATION
+======================================================================
 
-(1/5) benchmarking "extracted_j"...
-done (took 1.112363266 seconds)
-(2/5) benchmarking "full_lg_multiple"...
-done (took 1.119506681 seconds)
-(3/5) benchmarking "baseline_simple"...
-done (took 0.595609932 seconds)
-(4/5) benchmarking "full_lg_jacobian"...
-done (took 0.999311782 seconds)
-(5/5) benchmarking "simplified_lg"...
-done (took 0.575514859 seconds)
+Sizeof checks (should help predict inlining threshold):
+  LocalGeometry field element:  8 bytes
+  TwoFieldGeom:                 16 bytes
+  FourFieldGeom:                32 bytes
+  EightFieldGeom:               64 bytes
+  SixteenFieldGeom:             128 bytes
+
+Note: CUDA typically inlines structs < 128 bytes effectively
+
+======================================================================
+SECTION 1: Basic Geometry Access Patterns
+======================================================================
+
+SECTION 2: Testing impact of struct size on inlining
+
+SECTION 3: Testing projection operations (common in physics kernels)
+
+Running benchmarks (this takes ~2-3 minutes)...
+
+(1/12) benchmarking "6_two_field_access"...
+done (took 1.196194117 seconds)
+(2/12) benchmarking "1_baseline_simple"...
+done (took 0.603155329 seconds)
+(3/12) benchmarking "10_vector_baseline"...
+done (took 1.247114873 seconds)
+(4/12) benchmarking "8_eight_field_access"...
+done (took 0.633460985 seconds)
+(5/12) benchmarking "2_full_lg_jacobian"...
+done (took 0.632042202 seconds)
+(6/12) benchmarking "7_four_field_access"...
+done (took 0.686550529 seconds)
+(7/12) benchmarking "3_full_lg_multiple"...
+done (took 1.149382696 seconds)
+(8/12) benchmarking "5_simplified_lg"...
+done (took 1.002565251 seconds)
+(9/12) benchmarking "12_multiple_scalar_access"...
+done (took 1.188281672 seconds)
+(10/12) benchmarking "11_project_full_lg"...
+done (took 1.778432586 seconds)
+(11/12) benchmarking "9_sixteen_field_access"...
+done (took 0.655916065 seconds)
+(12/12) benchmarking "4_extracted_j"...
+done (took 0.63085704 seconds)
 
 ======================================================================
 BENCHMARK RESULTS
 ======================================================================
 
-Execution Time (μs, lower is better):
+SECTION 1: Basic Geometry Access
 ----------------------------------------------------------------------
-  extracted_j                         16.82 μs  (   5.3% vs baseline)
-  full_lg_multiple                    18.91 μs  (  18.4% vs baseline)
-  baseline_simple                     15.97 μs  (   0.0% vs baseline)
-  full_lg_jacobian                    17.10 μs  (   7.1% vs baseline)
-  simplified_lg                       16.70 μs  (   4.6% vs baseline)
+
+Execution Time (μs, lower is better):
+  baseline_simple                     15.89 μs  (  +0.0% vs baseline)
+  full_lg_jacobian                    16.98 μs  (  +6.9% vs baseline)
+  full_lg_multiple                    18.98 μs  ( +19.4% vs baseline)
+  extracted_j                         16.82 μs  (  +5.9% vs baseline)
+  simplified_lg                       16.88 μs  (  +6.2% vs baseline)
+
+----------------------------------------------------------------------
+SECTION 2: Struct Size Impact on Inlining
+----------------------------------------------------------------------
+
+Execution Time (μs, lower is better):
+  two_field_access                    16.32 μs  (  +2.7% vs baseline)
+  four_field_access                   16.87 μs  (  +6.2% vs baseline)
+  eight_field_access                  16.77 μs  (  +5.5% vs baseline)
+  sixteen_field_access                16.77 μs  (  +5.5% vs baseline)
+
+----------------------------------------------------------------------
+SECTION 3: Projection Operations
+----------------------------------------------------------------------
+
+Execution Time (μs, lower is better):
+  vector_baseline                     16.94 μs  (  +0.0% vs vec_baseline)
+  project_full_lg                     17.09 μs  (  +0.9% vs vec_baseline)
+  multiple_scalar_access              17.80 μs  (  +5.1% vs vec_baseline)
 
 ======================================================================
 MEMORY FOOTPRINT COMPARISON
@@ -67,50 +123,81 @@ MEMORY FOOTPRINT COMPARISON
 
 Data structure size per point:
   Scalar field:                    128.0 bytes
+  TwoFieldGeom:                    256.0 bytes
+  FourFieldGeom:                   512.0 bytes
+  EightFieldGeom:                  1024.0 bytes
+  SixteenFieldGeom:                2048.0 bytes
   Full LocalGeometry:              2688.0 bytes
   Extracted J:                     128.0 bytes
-  Simplified geometry:             128.0 bytes
 
 Total memory footprint:
   Scalar field:                    0.0001220703125 MB
+  TwoFieldGeom:                    0.000244140625 MB (2.0x scalar)
+  FourFieldGeom:                   0.00048828125 MB (4.0x scalar)
+  EightFieldGeom:                  0.0009765625 MB (8.0x scalar)
+  SixteenFieldGeom:                0.001953125 MB (16.0x scalar)
   Full LocalGeometry:              0.0025634765625 MB (21.0x scalar)
   Extracted J:                     0.0001220703125 MB (1.0x scalar)
-  Simplified geometry:             0.0001220703125 MB (1.0x scalar)
 
 ======================================================================
-ANALYSIS
+ANALYSIS & KEY FINDINGS
 ======================================================================
 
-Key findings:
-  Full LocalGeometry overhead:     7.1%
-  Extracted J overhead:            5.3%
-  Simplified geometry overhead:    4.6%
+1. BASIC GEOMETRY ACCESS OVERHEAD:
+   Full LocalGeometry (J only):      6.9%
+   Extracted J:                      5.9%
 
-⚠️  MODERATE OVERHEAD: LocalGeometry has ~3-10% performance cost
-   Consider targeted optimizations (extract components, caching)
+2. STRUCT SIZE IMPACT (accessing single field):
+   TwoFieldGeom (16 bytes):          2.7%
+   FourFieldGeom (32 bytes):         6.2%
+   EightFieldGeom (64 bytes):        5.5%
+   SixteenFieldGeom (128 bytes):     5.5%
+
+   ✓ All struct sizes show similar performance - good inlining
+
+3. PROJECTION OPERATIONS OVERHEAD:
+   Covariant->Contravariant:         0.9%
 
 ======================================================================
-INTERPRETATION
+RECOMMENDATIONS
 ======================================================================
-The overhead depends on:
-  1. How often LocalGeometry is accessed per kernel call
-  2. What proportion of LocalGeometry components are actually used
-  3. Whether multiple threads compete for cache/bandwidth
 
-In real ClimaAtmos kernels:
-  • LocalGeometry is accessed at every grid point
-  • Most kernels use only J or (J, WJ) - not full tensors
-  • This can amplify overhead in bandwidth-bound operations
+⚠️  MODERATE OVERHEAD DETECTED:
+   • LocalGeometry overhead: 6.9%
+   • Projection overhead: 0.9%
 
-Recommendations:
-  1. If overhead > 10%: Refactor to simplified geometry types
-  2. If overhead 3-10%: Extract J/WJ at kernel entry, pass separately
-  3. If overhead < 3%: Keep as-is; focus on other optimizations
+   CONSIDER:
+   1. Extract commonly-used components (J, WJ) at kernel entry
+   2. Profile with nsys to see actual bandwidth/occupancy impact:
+      ./scripts/run-nsys.sh --output=results/nsys/benchmark_lg \
+          julia --project scripts/benchmark_local_geometry_impact.jl
 
-Next steps:
-  • Run this benchmark on real physics kernels (not just synthetic ops)
-  • Profile with NVIDIA Nsight Compute to measure bandwidth efficiency
-  • Test with actual ClimaAtmos configurations
+======================================================================
+CODE INSPECTION NOTES
+======================================================================
+To verify compiler inlining behavior:
+
+1. Check LLVM IR for a simple kernel:
+   julia> f(x, lg) = x + lg.J
+   julia> @code_llvm f(1.0, first(local_geom_full))
+
+   Look for: Should see direct field access, not function calls
+
+2. Check PTX assembly for CUDA kernels:
+   julia> using CUDA
+   julia> kernel(x, lg) = (@inbounds x[1] += lg[1].J; nothing)
+   julia> @device_code_ptx kernel(CuArray([1.0]), parent(local_geom_full))
+
+   Look for: ld.param instructions (should be minimal for inlined structs)
+
+3. Use nsys to profile actual memory bandwidth:
+   ./scripts/run-nsys.sh --output=results/nsys/benchmark_lg \
+       julia --project scripts/benchmark_local_geometry_impact.jl
+
+   Then analyze with:
+   nsys stats results/nsys/benchmark_lg.nsys-rep
+
+   Look for: Memory bandwidth utilization, kernel occupancy
 
 ======================================================================
 
@@ -118,5 +205,5 @@ Markdown results written to: /home/pbachant/calkit/clima-local-geometry/scripts/
 
 ==========================================
 Benchmark complete
-End time: Wed Feb 11 09:29:54 PST 2026
+End time: Thu Feb 19 07:30:24 PST 2026
 ==========================================

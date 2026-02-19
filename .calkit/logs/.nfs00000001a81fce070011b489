@@ -1,0 +1,11 @@
+2026-02-19 19:30:31,458 - INFO - Stage 'analyze-local-geometry-impact' didn't change, skipping
+2026-02-19 19:30:31,502 - INFO - Stage 'benchmark-local-geometry-impact' didn't change, skipping
+2026-02-19 19:30:31,606 - INFO - Running stage 'amip-baseline':
+2026-02-19 19:30:31,606 - INFO - > calkit slurm batch --name amip-baseline --environment clima --dep config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src -s --gpus=1 -s --time=120 -- scripts/run-julia-script.sh --project=ClimaAtmos.jl/.buildkite scripts/run_progedmf_1m.jl
+2026-02-19 20:06:20,466 - INFO - Updating lock file 'dvc.lock'
+2026-02-19 20:06:20,530 - INFO - Stage 'amip-mod' didn't change, skipping
+2026-02-19 20:06:20,582 - INFO - Running stage 'analyze-logs':
+2026-02-19 20:06:20,582 - INFO - > calkit nb execute --environment py --no-check --to html "notebooks/analyze-logs.ipynb"
+2026-02-19 20:06:29,512 - INFO - Updating lock file 'dvc.lock'
+2026-02-19 20:06:29,564 - INFO - Stage 'nsys-baseline' didn't change, skipping
+2026-02-19 20:06:29,596 - INFO - Stage 'nsys-mod' didn't change, skipping

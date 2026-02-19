@@ -110,6 +110,27 @@ pipeline:
       outputs:
         - path: results/nsys/baseline.nsys-rep
           storage: dvc
+    nsys-mod:
+      kind: sbatch
+      environment: clima
+      script_path: scripts/run-nsys.sh
+      sbatch_options:
+        - --gpus=1
+        - --time=120
+      args:
+        - --output=results/nsys/mod
+        - julia
+        - --project=ClimaAtmos.jl-mod/.buildkite
+        - ClimaAtmos.jl-mod/perf/benchmark_step.jl
+        - --config_file=config/climaatmos_progedmf_1m.yml
+      inputs:
+        - ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+        - ClimaAtmos.jl-mod/src
+        - config/climaatmos_progedmf_1m.yml
+        - ClimaAtmos.jl-mod/perf/benchmark_step.jl
+      outputs:
+        - path: results/nsys/mod.nsys-rep
+          storage: dvc
 
 notebooks:
   - path: notebooks/analyze-logs.ipynb

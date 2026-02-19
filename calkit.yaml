@@ -110,6 +110,8 @@ pipeline:
       outputs:
         - path: results/nsys/baseline.nsys-rep
           storage: dvc
+        - path: results/nsys/baseline.sqlite
+          storage: dvc
     nsys-mod:
       kind: sbatch
       environment: clima
@@ -130,6 +132,8 @@ pipeline:
         - ClimaAtmos.jl-mod/perf/benchmark_step.jl
       outputs:
         - path: results/nsys/mod.nsys-rep
+          storage: dvc
+        - path: results/nsys/mod.sqlite
           storage: dvc
 
 notebooks:

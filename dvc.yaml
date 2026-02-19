@@ -100,7 +100,8 @@ stages:
       --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep 
       ClimaAtmos.jl/src --dep config/climaatmos_progedmf_1m.yml --dep 
       ClimaAtmos.jl/perf/benchmark_step.jl --out 
-      results/nsys/baseline.nsys-rep -s --gpus=1 -s --time=120 -- 
+      results/nsys/baseline.nsys-rep --out 
+      results/nsys/baseline.sqlite -s --gpus=1 -s --time=120 -- 
       scripts/run-nsys.sh --output=results/nsys/baseline julia 
       --project=ClimaAtmos.jl/.buildkite 
       ClimaAtmos.jl/perf/benchmark_step.jl 
@@ -115,6 +116,9 @@ stages:
       - results/nsys/baseline.nsys-rep:
           cache: true
           persist: true
+      - results/nsys/baseline.sqlite:
+          cache: true
+          persist: true
       - .calkit/slurm/logs/nsys-baseline.out:
           cache: false
           persist: true
@@ -125,8 +129,9 @@ stages:
       ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
       ClimaAtmos.jl-mod/src --dep config/climaatmos_progedmf_1m.yml 
       --dep ClimaAtmos.jl-mod/perf/benchmark_step.jl --out 
-      results/nsys/mod.nsys-rep -s --gpus=1 -s --time=120 -- 
-      scripts/run-nsys.sh --output=results/nsys/mod julia 
+      results/nsys/mod.nsys-rep --out results/nsys/mod.sqlite -s 
+      --gpus=1 -s --time=120 -- scripts/run-nsys.sh 
+      --output=results/nsys/mod julia 
       --project=ClimaAtmos.jl-mod/.buildkite 
       ClimaAtmos.jl-mod/perf/benchmark_step.jl 
       --config_file=config/climaatmos_progedmf_1m.yml
@@ -138,6 +143,9 @@ stages:
       - ClimaAtmos.jl-mod/perf/benchmark_step.jl
     outs:
       - results/nsys/mod.nsys-rep:
+          cache: true
+          persist: true
+      - results/nsys/mod.sqlite:
           cache: true
           persist: true
       - .calkit/slurm/logs/nsys-mod.out:

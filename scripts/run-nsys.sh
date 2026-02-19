@@ -56,3 +56,6 @@ nsys profile \
     --trace=nvtx,mpi,cuda,osrt \
     --output=$NSYS_OUTPUT_PREFIX \
     "$@"
+
+# Generate stats report
+nsys stats $NSYS_OUTPUT_PREFIX.nsys-rep

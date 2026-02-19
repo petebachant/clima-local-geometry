@@ -6,3 +6,5 @@ performance.
 ## Submodule branches
 
 - `ClimaCore.jl`: `pb/localgeo`
+- `ClimaAtmos.jl`: `pb/rm-nvtx`
+- `ClimaAtmos.jl-mod`: `pb/localgeo`

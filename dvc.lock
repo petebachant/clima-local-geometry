@@ -216,8 +216,8 @@ stages:
       size: 2082
     - path: ClimaAtmos.jl-mod/src
       hash: md5
-      md5: da850d58bb831f69c079d51748f9d3e3.dir
-      size: 1464026
+      md5: 78fc34c32c2ad93c2813981fe290e653.dir
+      size: 1464032
       nfiles: 105
     - path: config/climaatmos_progedmf_1m.yml
       hash: md5
@@ -230,9 +230,9 @@ stages:
     outs:
     - path: .calkit/slurm/logs/nsys-mod.out
       hash: md5
-      md5: 36082592498182ef9a03251f58bba4de
-      size: 19107
+      md5: 1147cf987ab3001ef725311738b1b69c
+      size: 19092
     - path: results/nsys/mod.nsys-rep
       hash: md5
-      md5: 952bddd1fe3dddaa97467c137dbee88b
-      size: 23827219
+      md5: 31d141d7261110470a81300cd473cdda
+      size: 23811831

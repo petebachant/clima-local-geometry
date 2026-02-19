@@ -2,9 +2,9 @@ Loading climacommon/2025_05_15
   Loading requirement: climaauth/2025_05_15 openmpi/4.1.5-mpitrampoline
     julia/1.11.5 cuda/julia-pref
 Precompiling project...
-  21337.1 ms  ✓ ClimaAtmos
-  45515.6 ms  ✓ PrecompileCI
-  2 dependencies successfully precompiled in 77 seconds. 614 already precompiled.
+  19411.2 ms  ✓ ClimaAtmos
+  43874.1 ms  ✓ PrecompileCI
+  2 dependencies successfully precompiled in 74 seconds. 614 already precompiled.
 ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
 │ This may cause errors.
 │ 
@@ -147,7 +147,7 @@ Info Packages marked with ⌃ and ⌅ have new versions available. Those with �
 └                          `numerics`::`ClimaAtmos.AtmosNumerics{Val{:vanleer_limiter}, Val{:vanleer_limiter}, Val{:first_order}, Val{:none}, Val{:first_order}, Nothing, Nothing, Nothing, ClimaAtmos.Implicit, ClimaAtmos.Hyperdiffusion{Float32}}`
 ┌ Info: Simulation info
 │   job_id = "default_config"
-└   output_dir = "output/default_config/output_0003"
+└   output_dir = "output/default_config/output_0004"
 ┌ Info: Simulation Grid: ExtrudedFiniteDifferenceGrid:
 │   horizontal:
 │     context: SingletonCommsContext using CUDADevice
@@ -155,21 +155,21 @@ Info Packages marked with ⌃ and ⌅ have new versions available. Those with �
 │     quadrature: 4-point Gauss-Legendre-Lobatto quadrature
 │   vertical:
 └     mesh: 63-element IntervalMesh of IntervalDomain: z ∈ [0.0,60000.0] (:bottom, :top)
-[ Info: Allocating Y: 3.933 s (11015577 allocations: 525.17 MiB)
-[ Info: Allocating cache (p): 204.788 s (502609293 allocations: 27.43 GiB)
+[ Info: Allocating Y: 4.487 s (11015566 allocations: 525.25 MiB)
+[ Info: Allocating cache (p): 201.969 s (504278850 allocations: 27.47 GiB)
 [ Info: Using ODE config: `ClimaTimeSteppers.ARS343`
-[ Info: ode_configuration: 787.459 ms (1421845 allocations: 70.67 MiB)
-[ Info: get_callbacks: 258.152 ms (427148 allocations: 21.82 MiB)
+[ Info: ode_configuration: 774.94 ms (1421843 allocations: 70.67 MiB)
+[ Info: get_callbacks: 249.371 ms (427148 allocations: 21.82 MiB)
 [ Info: Saving accumulated diagnostics to disk with frequency: 1 month
 [ Info: DictWriter: String[]
 [ Info: HDF5Writer: String[]
 [ Info: NetCDFWriter: ["ts_1M_average", "ta_1M_average", "tas_1M_average", "uas_1M_average", "vas_1M_average", "thetaa_1M_average", "ha_1M_average", "pfull_1M_average", "zg_1M_average", "rhoa_1M_average", "ua_1M_average", "va_1M_average", "wa_1M_average", "hfes_1M_average", "hfss_1M_average", "ts_1M_min", "ts_1M_max", "hur_1M_average", "hus_1M_average", "cl_1M_average", "clw_1M_average", "cli_1M_average", "hussfc_1M_average", "evspsbl_1M_average", "hfls_1M_average", "pr_1M_average", "prra_1M_average", "prsn_1M_average", "prw_1M_average", "lwp_1M_average", "clwvi_1M_average", "clivi_1M_average", "husra_1M_average", "hussn_1M_average", "rsd_1M_average", "rsdt_1M_average", "rsds_1M_average", "rsu_1M_average", "rsut_1M_average", "rsus_1M_average", "rld_1M_average", "rlds_1M_average", "rlu_1M_average", "rlut_1M_average", "rlus_1M_average", "rsdcs_1M_average", "rsdscs_1M_average", "rsucs_1M_average", "rsutcs_1M_average", "rsuscs_1M_average", "rldcs_1M_average", "rldscs_1M_average", "rlucs_1M_average", "rlutcs_1M_average", "arup_1M_average", "rhoaup_1M_average", "waup_1M_average", "taup_1M_average", "thetaaup_1M_average", "haup_1M_average", "husup_1M_average", "hurup_1M_average", "clwup_1M_average", "cliup_1M_average", "aren_1M_average", "rhoaen_1M_average", "waen_1M_average", "taen_1M_average", "thetaaen_1M_average", "haen_1M_average", "husen_1M_average", "huren_1M_average", "clwen_1M_average", "clien_1M_average", "tke_1M_average", "lmix_1M_average"]
-[ Info: initializing diagnostics: 17.518 s (38113517 allocations: 1.93 GiB)
+[ Info: initializing diagnostics: 17.699 s (38113563 allocations: 1.93 GiB)
 ┌ Warning: The combination Dates.Second and 1 month was not covered. Please add a method to handle this case.
 └ @ ClimaAtmos ~/calkit/clima-local-geometry/ClimaAtmos.jl-mod/src/utils/utilities.jl:518
 ┌ Warning: The checkpointing frequency (checkpoint_frequency = 30 days) should be an integer multiple of all diagnostics accumulation periods (1 month) so simulations can be safely restarted from any checkpoint
 └ @ ClimaAtmos ~/calkit/clima-local-geometry/ClimaAtmos.jl-mod/src/callbacks/get_callbacks.jl:301
-[ Info: Prepared SciMLBase.CallbackSet callbacks: 12.381 ms (561 allocations: 27.4 KiB)
+[ Info: Prepared SciMLBase.CallbackSet callbacks: 12.284 ms (561 allocations: 27.4 KiB)
 [ Info: n_steps_per_cycle_per_cb (non diagnostics): [1024, 1, 30, 1]
 [ Info: n_steps_per_cycle (non diagnostics): 15360
 ┌ Info: Jacobian algorithm: ManualSparseJacobian(
@@ -182,8 +182,8 @@ Info Packages marked with ⌃ and ⌅ have new versions available. Those with �
 │   sgs_vertdiff_flag = ClimaAtmos.UseDerivative(),
 │   approximate_solve_iters = 2,
 └ )
-[ Info: init integrator: 93.436 s (109842323 allocations: 6.77 GiB)
-[ Info: Added diagnostics: 38.079 s (71682535 allocations: 3.54 GiB)
+[ Info: init integrator: 91.449 s (109853147 allocations: 6.78 GiB)
+[ Info: Added diagnostics: 37.124 s (71682246 allocations: 3.54 GiB)
 [ Info: Compiling benchmark_step!...
 ┌ Info: Progress
 │   simulation_time = "2 minutes, 4 microseconds"
@@ -194,47 +194,47 @@ Info Packages marked with ⌃ and ⌅ have new versions available. Those with �
 │   wall_time_spent = "0 seconds"
 │   percent_complete = "0.0%"
 │   estimated_sypd = "Inf"
-│   date_now = 2026-02-19T06:28:36.574
-└   estimated_finish_date = 2026-02-19T06:28:36.571
+│   date_now = 2026-02-19T07:14:45.339
+└   estimated_finish_date = 2026-02-19T07:14:45.336
 ┌ Info: Progress
 │   simulation_time = "4 minutes, 8 microseconds"
 │   n_steps_completed = 2
-│   wall_time_per_step = "1 second, 274 milliseconds"
-│   wall_time_total = "1 day, 6 hours"
-│   wall_time_remaining = "1 day, 6 hours"
-│   wall_time_spent = "2 seconds, 548 milliseconds"
+│   wall_time_per_step = "1 second, 247 milliseconds"
+│   wall_time_total = "1 day, 5 hours"
+│   wall_time_remaining = "1 day, 5 hours"
+│   wall_time_spent = "2 seconds, 495 milliseconds"
 │   percent_complete = "0.0%"
-│   estimated_sypd = "0.258"
-│   date_now = 2026-02-19T06:28:37.844
-└   estimated_finish_date = 2026-02-20T13:03:44.844
+│   estimated_sypd = "0.263"
+│   date_now = 2026-02-19T07:14:46.590
+└   estimated_finish_date = 2026-02-20T13:11:18.590
 ┌ Info: Progress
 │   simulation_time = "8 minutes, 16 microseconds"
 │   n_steps_completed = 4
-│   wall_time_per_step = "999 milliseconds, 440 microseconds"
-│   wall_time_total = "23 hours, 59 minutes"
-│   wall_time_remaining = "23 hours, 59 minutes"
-│   wall_time_spent = "3 seconds, 997 milliseconds"
+│   wall_time_per_step = "986 milliseconds, 104 microseconds"
+│   wall_time_total = "23 hours, 39 minutes"
+│   wall_time_remaining = "23 hours, 39 minutes"
+│   wall_time_spent = "3 seconds, 944 milliseconds"
 │   percent_complete = "0.0%"
-│   estimated_sypd = "0.329"
-│   date_now = 2026-02-19T06:28:39.121
-└   estimated_finish_date = 2026-02-20T06:27:47.121
+│   estimated_sypd = "0.333"
+│   date_now = 2026-02-19T07:14:47.868
+└   estimated_finish_date = 2026-02-20T06:54:43.868
 ┌ Info: Progress
 │   simulation_time = "16 minutes, 32 microseconds"
 │   n_steps_completed = 8
-│   wall_time_per_step = "824 milliseconds, 80 microseconds"
-│   wall_time_total = "19 hours, 46 minutes"
-│   wall_time_remaining = "19 hours, 46 minutes"
-│   wall_time_spent = "6 seconds, 592 milliseconds"
+│   wall_time_per_step = "832 milliseconds, 923 microseconds"
+│   wall_time_total = "19 hours, 59 minutes"
+│   wall_time_remaining = "19 hours, 59 minutes"
+│   wall_time_spent = "6 seconds, 663 milliseconds"
 │   percent_complete = "0.0%"
-│   estimated_sypd = "0.399"
-│   date_now = 2026-02-19T06:28:41.716
-└   estimated_finish_date = 2026-02-20T02:15:15.716
+│   estimated_sypd = "0.394"
+│   date_now = 2026-02-19T07:14:50.587
+└   estimated_finish_date = 2026-02-20T03:14:08.587
 [ Info: Running benchmark_step!...
 [ Info: Using external CUDA profiler
 Capture range started in the application.
 Capture range ended in the application.
-Generating '/tmp/nsys-report-5e5f.qdstrm'
+Generating '/tmp/nsys-report-99d3.qdstrm'
 [1/1] [0%                          ] mod.nsys-repProcessing events...
-[1/1] [0%                          ] mod.nsys-rep[1/1] [===22%                      ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [5%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [9%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [5%                          ] mod.nsys-rep[1/1] [0%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [10%                         ] mod.nsys-rep[1/1] [11%                         ] mod.nsys-rep[1/1] [12%                         ] mod.nsys-rep[1/1] [14%                         ] mod.nsys-rep[1/1] [=15%                        ] mod.nsys-rep[1/1] [=17%                        ] mod.nsys-rep[1/1] [==18%                       ] mod.nsys-rep[1/1] [==19%                       ] mod.nsys-rep[1/1] [==21%                       ] mod.nsys-rep[1/1] [===22%                      ] mod.nsys-rep[1/1] [===23%                      ] mod.nsys-rep[1/1] [====25%                     ] mod.nsys-rep[1/1] [====26%                     ] mod.nsys-rep[1/1] [====27%                     ] mod.nsys-rep[1/1] [=====29%                    ] mod.nsys-rep[1/1] [=====30%                    ] mod.nsys-rep[1/1] [=====31%                    ] mod.nsys-rep[1/1] [======33%                   ] mod.nsys-rep[1/1] [======34%                   ] mod.nsys-rep[1/1] [======35%                   ] mod.nsys-rep[1/1] [=======37%                  ] mod.nsys-rep[1/1] [=======38%                  ] mod.nsys-rep[1/1] [=======39%                  ] mod.nsys-rep[1/1] [========41%                 ] mod.nsys-rep[1/1] [========42%                 ] mod.nsys-rep[1/1] [=========44%                ] mod.nsys-rep[1/1] [=========45%                ] mod.nsys-rep[1/1] [=========46%                ] mod.nsys-rep[1/1] [==========48%               ] mod.nsys-rep[1/1] [==========49%               ] mod.nsys-rep[1/1] [===========50%              ] mod.nsys-rep[1/1] [===========52%              ] mod.nsys-rep[1/1] [===========53%              ] mod.nsys-rep[1/1] [============54%             ] mod.nsys-rep[1/1] [============56%             ] mod.nsys-rep[1/1] [============57%             ] mod.nsys-rep[1/1] [=============58%            ] mod.nsys-rep[1/1] [=============60%            ] mod.nsys-rep[1/1] [==============61%           ] mod.nsys-rep[1/1] [==============62%           ] mod.nsys-rep[1/1] [==============64%           ] mod.nsys-rep[1/1] [===============65%          ] mod.nsys-rep[1/1] [===============66%          ] mod.nsys-rep[1/1] [================68%         ] mod.nsys-rep[1/1] [================69%         ] mod.nsys-rep[1/1] [================70%         ] mod.nsys-rep[1/1] [=================72%        ] mod.nsys-rep[1/1] [=================73%        ] mod.nsys-rep[1/1] [==================75%       ] mod.nsys-rep[1/1] [==================76%       ] mod.nsys-rep[1/1] [==================77%       ] mod.nsys-rep[1/1] [===================79%      ] mod.nsys-rep[1/1] [===================80%      ] mod.nsys-rep[1/1] [===================81%      ] mod.nsys-rep[1/1] [====================83%     ] mod.nsys-rep[1/1] [====================84%     ] mod.nsys-rep[1/1] [====================85%     ] mod.nsys-rep[1/1] [=====================87%    ] mod.nsys-rep[1/1] [=====================88%    ] mod.nsys-rep[1/1] [=====================89%    ] mod.nsys-rep[1/1] [======================91%   ] mod.nsys-rep[1/1] [======================92%   ] mod.nsys-rep[1/1] [=======================93%  ] mod.nsys-rep[1/1] [=======================95%  ] mod.nsys-rep[1/1] [=======================96%  ] mod.nsys-rep[1/1] [========================97% ] mod.nsys-rep[1/1] [========================100%] mod.nsys-rep[1/1] [========================100%] mod.nsys-rep
+[1/1] [0%                          ] mod.nsys-rep[1/1] [===23%                      ] mod.nsys-rep[1/1] [9%                          ] mod.nsys-rep[1/1] [10%                         ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [9%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [9%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [5%                          ] mod.nsys-rep[1/1] [0%                          ] mod.nsys-rep[1/1] [6%                          ] mod.nsys-rep[1/1] [7%                          ] mod.nsys-rep[1/1] [8%                          ] mod.nsys-rep[1/1] [10%                         ] mod.nsys-rep[1/1] [11%                         ] mod.nsys-rep[1/1] [12%                         ] mod.nsys-rep[1/1] [14%                         ] mod.nsys-rep[1/1] [=15%                        ] mod.nsys-rep[1/1] [=17%                        ] mod.nsys-rep[1/1] [==18%                       ] mod.nsys-rep[1/1] [==19%                       ] mod.nsys-rep[1/1] [==21%                       ] mod.nsys-rep[1/1] [===22%                      ] mod.nsys-rep[1/1] [===23%                      ] mod.nsys-rep[1/1] [====25%                     ] mod.nsys-rep[1/1] [====26%                     ] mod.nsys-rep[1/1] [====27%                     ] mod.nsys-rep[1/1] [=====29%                    ] mod.nsys-rep[1/1] [=====30%                    ] mod.nsys-rep[1/1] [=====31%                    ] mod.nsys-rep[1/1] [======33%                   ] mod.nsys-rep[1/1] [======34%                   ] mod.nsys-rep[1/1] [======35%                   ] mod.nsys-rep[1/1] [=======37%                  ] mod.nsys-rep[1/1] [=======38%                  ] mod.nsys-rep[1/1] [=======39%                  ] mod.nsys-rep[1/1] [========41%                 ] mod.nsys-rep[1/1] [========42%                 ] mod.nsys-rep[1/1] [=========44%                ] mod.nsys-rep[1/1] [=========45%                ] mod.nsys-rep[1/1] [=========46%                ] mod.nsys-rep[1/1] [==========48%               ] mod.nsys-rep[1/1] [==========49%               ] mod.nsys-rep[1/1] [===========50%              ] mod.nsys-rep[1/1] [===========52%              ] mod.nsys-rep[1/1] [===========53%              ] mod.nsys-rep[1/1] [============54%             ] mod.nsys-rep[1/1] [============56%             ] mod.nsys-rep[1/1] [============57%             ] mod.nsys-rep[1/1] [=============58%            ] mod.nsys-rep[1/1] [=============60%            ] mod.nsys-rep[1/1] [==============61%           ] mod.nsys-rep[1/1] [==============62%           ] mod.nsys-rep[1/1] [==============64%           ] mod.nsys-rep[1/1] [===============65%          ] mod.nsys-rep[1/1] [===============66%          ] mod.nsys-rep[1/1] [================68%         ] mod.nsys-rep[1/1] [================69%         ] mod.nsys-rep[1/1] [================70%         ] mod.nsys-rep[1/1] [=================72%        ] mod.nsys-rep[1/1] [=================73%        ] mod.nsys-rep[1/1] [==================75%       ] mod.nsys-rep[1/1] [==================76%       ] mod.nsys-rep[1/1] [==================77%       ] mod.nsys-rep[1/1] [===================79%      ] mod.nsys-rep[1/1] [===================80%      ] mod.nsys-rep[1/1] [===================81%      ] mod.nsys-rep[1/1] [====================83%     ] mod.nsys-rep[1/1] [====================84%     ] mod.nsys-rep[1/1] [====================85%     ] mod.nsys-rep[1/1] [=====================87%    ] mod.nsys-rep[1/1] [=====================88%    ] mod.nsys-rep[1/1] [=====================89%    ] mod.nsys-rep[1/1] [======================91%   ] mod.nsys-rep[1/1] [======================92%   ] mod.nsys-rep[1/1] [=======================93%  ] mod.nsys-rep[1/1] [=======================95%  ] mod.nsys-rep[1/1] [=======================96%  ] mod.nsys-rep[1/1] [========================97% ] mod.nsys-rep[1/1] [========================100%] mod.nsys-rep[1/1] [========================100%] mod.nsys-rep
 Generated:
 	/home/pbachant/calkit/clima-local-geometry/results/nsys/mod.nsys-rep

@@ -95,3 +95,28 @@ stages:
           cache: false
     desc: Automatically generated from the 'analyze-logs' stage in 
       calkit.yaml. Changes made here will be overwritten.
+  nsys-baseline:
+    cmd: calkit slurm batch --name nsys-baseline --environment clima 
+      --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep 
+      ClimaAtmos.jl/src --dep config/climaatmos_progedmf_1m.yml --dep 
+      ClimaAtmos.jl/perf/benchmark_step.jl --out 
+      results/nsys/baseline.nsys-rep -s --gpus=1 -s --time=120 -- 
+      scripts/run-nsys.sh --output=results/nsys/baseline julia 
+      --project=ClimaAtmos.jl/.buildkite 
+      ClimaAtmos.jl/perf/benchmark_step.jl 
+      --config_file=config/climaatmos_progedmf_1m.yml
+    deps:
+      - scripts/run-nsys.sh
+      - ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
+      - ClimaAtmos.jl/src
+      - config/climaatmos_progedmf_1m.yml
+      - ClimaAtmos.jl/perf/benchmark_step.jl
+    outs:
+      - results/nsys/baseline.nsys-rep:
+          cache: true
+          persist: true
+      - .calkit/slurm/logs/nsys-baseline.out:
+          cache: false
+          persist: true
+    desc: Automatically generated from the 'nsys-baseline' stage in 
+      calkit.yaml. Changes made here will be overwritten.

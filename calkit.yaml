@@ -89,6 +89,27 @@ pipeline:
           storage: git
       html_storage: git
       executed_ipynb_storage: git
+    nsys-baseline:
+      kind: sbatch
+      environment: clima
+      script_path: scripts/run-nsys.sh
+      sbatch_options:
+        - --gpus=1
+        - --time=120
+      args:
+        - --output=results/nsys/baseline
+        - julia
+        - --project=ClimaAtmos.jl/.buildkite
+        - ClimaAtmos.jl/perf/benchmark_step.jl
+        - --config_file=config/climaatmos_progedmf_1m.yml
+      inputs:
+        - ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
+        - ClimaAtmos.jl/src
+        - config/climaatmos_progedmf_1m.yml
+        - ClimaAtmos.jl/perf/benchmark_step.jl
+      outputs:
+        - path: results/nsys/baseline.nsys-rep
+          storage: dvc
 
 notebooks:
   - path: notebooks/analyze-logs.ipynb

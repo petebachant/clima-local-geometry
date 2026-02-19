@@ -7661,23 +7661,29 @@ a.anchor-link {
         <span class="s2">"global_pid"</span><span class="p">:</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">20</span><span class="p">],</span>
     <span class="p">}</span>
 
-    <span class="c1"># Calculate theoretical occupancy (simplified)</span>
-    <span class="c1"># Occupancy = (active warps per SM) / (max warps per SM)</span>
-    <span class="c1"># Max warps per SM is typically 48 for modern GPUs</span>
+    <span class="c1"># Calculate theoretical occupancy</span>
+    <span class="c1"># Occupancy = (active warps per SM) / (max warps per SM) * 100%</span>
     <span class="n">block_size</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">7</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">8</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">9</span><span class="p">]</span>
-    <span class="n">warps_per_block</span> <span class="o">=</span> <span class="p">(</span><span class="n">block_size</span> <span class="o">+</span> <span class="mi">31</span><span class="p">)</span> <span class="o">//</span> <span class="mi">32</span>  <span class="c1"># Round up to nearest 32</span>
+    <span class="n">warps_per_block</span> <span class="o">=</span> <span class="p">(</span><span class="n">block_size</span> <span class="o">+</span> <span class="mi">31</span><span class="p">)</span> <span class="o">//</span> <span class="mi">32</span>
     <span class="n">max_warps_per_sm</span> <span class="o">=</span> <span class="mi">48</span>
-    <span class="n">max_blocks_per_sm</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Simplified; depends on GPU</span>
 
-    <span class="c1"># Estimate blocks per SM (simplified)</span>
-    <span class="n">grid_size</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span>
-    <span class="n">blocks_per_sm</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
-        <span class="n">max_blocks_per_sm</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">grid_size</span> <span class="o">//</span> <span class="mi">80</span><span class="p">)</span>
-    <span class="p">)</span>  <span class="c1"># Assume 80 SMs</span>
+    <span class="c1"># Register file size: ~49KB per SM (determined by occupancy calculator matching nsys)</span>
+    <span class="n">max_registers_per_sm</span> <span class="o">=</span> <span class="mi">49152</span>  <span class="c1"># registers available per SM</span>
+    <span class="n">registers_per_block</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">10</span><span class="p">]</span> <span class="o">*</span> <span class="n">block_size</span>
+    <span class="n">blocks_limited_by_registers</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_registers_per_sm</span> <span class="o">//</span> <span class="n">registers_per_block</span><span class="p">)</span> <span class="k">if</span> <span class="n">registers_per_block</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">8</span>
+
+    <span class="c1"># Shared memory limit (if applicable, but usually not limiting for this kernel)</span>
+    <span class="n">max_shared_mem_per_sm</span> <span class="o">=</span> <span class="mi">96000</span>
+    <span class="n">shared_mem_per_block</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">11</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">12</span><span class="p">]</span>
+    <span class="n">blocks_limited_by_shared_mem</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_shared_mem_per_sm</span> <span class="o">//</span> <span class="n">shared_mem_per_block</span><span class="p">)</span> <span class="k">if</span> <span class="n">shared_mem_per_block</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">8</span>
+
+    <span class="c1"># Effective blocks per SM is the minimum of register and shared memory constraints</span>
+    <span class="n">blocks_per_sm</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">blocks_limited_by_registers</span><span class="p">,</span> <span class="n">blocks_limited_by_shared_mem</span><span class="p">)</span>
+
+    <span class="c1"># Calculate occupancy</span>
     <span class="n">active_warps</span> <span class="o">=</span> <span class="n">warps_per_block</span> <span class="o">*</span> <span class="n">blocks_per_sm</span>
     <span class="n">occupancy</span> <span class="o">=</span> <span class="p">(</span><span class="n">active_warps</span> <span class="o">/</span> <span class="n">max_warps_per_sm</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s2">"theoretical_occupancy"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">occupancy</span><span class="p">)</span>
-
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"theoretical_occupancy"</span><span class="p">]</span> <span class="o">=</span> <span class="n">occupancy</span>
     <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">stats</span><span class="p">,</span> <span class="n">rows</span>
 
@@ -8315,8 +8321,8 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <tr>
 <th>18</th>
 <td>Theoretical Occupancy (%)</td>
-<td>33.3%</td>
-<td>33.3%</td>
+<td>12.5%</td>
+<td>25.0%</td>
 <td>—</td>
 </tr>
 </tbody>

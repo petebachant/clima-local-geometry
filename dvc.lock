@@ -1,8 +1,7 @@
 schema: '2.0'
 stages:
   analyze-local-geometry-impact:
-    cmd: calkit xenv -n main --no-check -- 
-      "scripts/analysis_local_geometry_impact.jl"
+    cmd: calkit xenv -n main --no-check -- "scripts/analysis_local_geometry_impact.jl"
     deps:
     - path: .calkit/envs/main/Manifest.toml
       hash: md5
@@ -18,11 +17,10 @@ stages:
       md5: ccc982384837e89e866fefd11def6c3a
       size: 4351
   benchmark-local-geometry-impact:
-    cmd: calkit slurm batch --name benchmark-local-geometry-impact --environment
-      clima --dep scripts/benchmark_local_geometry_impact.jl --dep 
-      ClimaCore.jl/.buildkite/Manifest.toml --dep ClimaCore.jl/src --dep 
-      ClimaCore.jl/ext --out results/benchmark_local_geometry_impact.md -s 
-      --gpus=1 -s --time=30 -- scripts/run_benchmark_slurm.sh
+    cmd: calkit slurm batch --name benchmark-local-geometry-impact --environment clima
+      --dep scripts/benchmark_local_geometry_impact.jl --dep ClimaCore.jl/.buildkite/Manifest.toml
+      --dep ClimaCore.jl/src --dep ClimaCore.jl/ext --out results/benchmark_local_geometry_impact.md
+      -s --gpus=1 -s --time=30 -- scripts/run_benchmark_slurm.sh
     deps:
     - path: ClimaCore.jl/.buildkite/Manifest.toml
       hash: md5
@@ -57,12 +55,10 @@ stages:
       md5: c4004c5c55d8812e7a82df9323939e7b
       size: 2488
   amip-mod:
-    cmd: calkit slurm batch --name amip-mod --environment clima --dep 
-      config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
-      ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- 
-      scripts/run-julia-script.sh --project=ClimaAtmos.jl-mod/.buildkite 
-      scripts/run_progedmf_1m.jl
+    cmd: calkit slurm batch --name amip-mod --environment clima --dep config/climaatmos_progedmf_1m.yml
+      --dep scripts/run_progedmf_1m.jl --dep ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+      --dep ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- scripts/run-julia-script.sh
+      --project=ClimaAtmos.jl-mod/.buildkite scripts/run_progedmf_1m.jl
     deps:
     - path: ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
       hash: md5
@@ -91,10 +87,9 @@ stages:
       md5: 985e893167205ed1609fe1605824b838
       size: 18783
   amip-baseline:
-    cmd: calkit slurm batch --name amip-baseline --environment clima --dep 
-      config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
-      ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src -s 
-      --gpus=1 -s --time=120 -- scripts/run-julia-script.sh 
+    cmd: calkit slurm batch --name amip-baseline --environment clima --dep config/climaatmos_progedmf_1m.yml
+      --dep scripts/run_progedmf_1m.jl --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
+      --dep ClimaAtmos.jl/src -s --gpus=1 -s --time=120 -- scripts/run-julia-script.sh
       --project=ClimaAtmos.jl/.buildkite scripts/run_progedmf_1m.jl
     deps:
     - path: ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
@@ -124,8 +119,7 @@ stages:
       md5: 4a520fbd4cb37f25d8ef2bf93404b16c
       size: 18778
   analyze-logs:
-    cmd: calkit nb execute --environment py --no-check --to html 
-      "notebooks/analyze-logs.ipynb"
+    cmd: calkit nb execute --environment py --no-check --to html "notebooks/analyze-logs.ipynb"
     deps:
     - path: .calkit/envs/py/uv.lock
       hash: md5
@@ -157,14 +151,11 @@ stages:
       md5: 1c55ec8c85400065ce67c92a97a14009
       size: 39706
   nsys-baseline:
-    cmd: calkit slurm batch --name nsys-baseline --environment clima --dep 
-      ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src --dep
-      config/climaatmos_progedmf_1m.yml --dep 
-      ClimaAtmos.jl/perf/benchmark_step.jl --out results/nsys/baseline.nsys-rep 
-      --out results/nsys/baseline.sqlite -s --gpus=1 -s --time=120 -- 
-      scripts/run-nsys.sh --output=results/nsys/baseline julia 
-      --project=ClimaAtmos.jl/.buildkite ClimaAtmos.jl/perf/benchmark_step.jl 
-      --config_file=config/climaatmos_progedmf_1m.yml
+    cmd: calkit slurm batch --name nsys-baseline --environment clima --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
+      --dep ClimaAtmos.jl/src --dep config/climaatmos_progedmf_1m.yml --dep ClimaAtmos.jl/perf/benchmark_step.jl
+      --out results/nsys/baseline.nsys-rep --out results/nsys/baseline.sqlite -s --gpus=1
+      -s --time=120 -- scripts/run-nsys.sh --output=results/nsys/baseline julia --project=ClimaAtmos.jl/.buildkite
+      ClimaAtmos.jl/perf/benchmark_step.jl --config_file=config/climaatmos_progedmf_1m.yml
     deps:
     - path: ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
       hash: md5
@@ -201,15 +192,11 @@ stages:
       md5: ba68f1aab64546dc7e5d35a4e7d61e46
       size: 49586176
   nsys-mod:
-    cmd: calkit slurm batch --name nsys-mod --environment clima --dep 
-      ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl-mod/src --dep config/climaatmos_progedmf_1m.yml --dep 
-      ClimaAtmos.jl-mod/perf/benchmark_step.jl --out results/nsys/mod.nsys-rep 
-      --out results/nsys/mod.sqlite -s --gpus=1 -s --time=120 -- 
-      scripts/run-nsys.sh --output=results/nsys/mod julia 
-      --project=ClimaAtmos.jl-mod/.buildkite 
-      ClimaAtmos.jl-mod/perf/benchmark_step.jl 
-      --config_file=config/climaatmos_progedmf_1m.yml
+    cmd: calkit slurm batch --name nsys-mod --environment clima --dep ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+      --dep ClimaAtmos.jl-mod/src --dep config/climaatmos_progedmf_1m.yml --dep ClimaAtmos.jl-mod/perf/benchmark_step.jl
+      --out results/nsys/mod.nsys-rep --out results/nsys/mod.sqlite -s --gpus=1 -s
+      --time=120 -- scripts/run-nsys.sh --output=results/nsys/mod julia --project=ClimaAtmos.jl-mod/.buildkite
+      ClimaAtmos.jl-mod/perf/benchmark_step.jl --config_file=config/climaatmos_progedmf_1m.yml
     deps:
     - path: ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
       hash: md5
@@ -246,8 +233,7 @@ stages:
       md5: 5c3e8f54c9113712c5462651c852beaf
       size: 49274880
   compare-kernels:
-    cmd: calkit nb execute --environment py --no-check --to html 
-      "notebooks/compare-kernels.ipynb"
+    cmd: calkit nb execute --environment py --no-check --to html "notebooks/compare-kernels.ipynb"
     deps:
     - path: .calkit/envs/py/uv.lock
       hash: md5
@@ -255,8 +241,8 @@ stages:
       size: 98212
     - path: .calkit/notebooks/cleaned/notebooks/compare-kernels.ipynb
       hash: md5
-      md5: 878f7e778eb452eaf69d4e007490fd00
-      size: 22209
+      md5: a68d4283022cf870dd94b9e4e35a9b49
+      size: 22757
     - path: results/nsys/baseline.sqlite
       hash: md5
       md5: ba68f1aab64546dc7e5d35a4e7d61e46
@@ -268,9 +254,9 @@ stages:
     outs:
     - path: .calkit/notebooks/executed/notebooks/compare-kernels.ipynb
       hash: md5
-      md5: 33855cc181e0026260cfdb2108137693
-      size: 36915
+      md5: 548a9ac728a56d15cb8ff12b4f26f016
+      size: 37440
     - path: .calkit/notebooks/html/notebooks/compare-kernels.html
       hash: md5
-      md5: 5ca8b5869adc2d51bf965352df8d4d47
-      size: 345643
+      md5: 5bdcbe071bb035f7cedb9761856d4853
+      size: 346721

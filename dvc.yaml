@@ -36,65 +36,6 @@ stages:
     desc: Automatically generated from the 
       'benchmark-local-geometry-impact' stage in calkit.yaml. Changes 
       made here will be overwritten.
-  amip-baseline:
-    cmd: calkit slurm batch --name amip-baseline --environment clima 
-      --dep config/climaatmos_progedmf_1m.yml --dep 
-      scripts/run_progedmf_1m.jl --dep 
-      ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl/src -s --gpus=1 -s --time=120 -- 
-      scripts/run-julia-script.sh --project=ClimaAtmos.jl/.buildkite 
-      scripts/run_progedmf_1m.jl
-    deps:
-      - scripts/run-julia-script.sh
-      - config/climaatmos_progedmf_1m.yml
-      - scripts/run_progedmf_1m.jl
-      - ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
-      - ClimaAtmos.jl/src
-    outs:
-      - .calkit/slurm/logs/amip-baseline.out:
-          cache: false
-          persist: true
-    desc: Automatically generated from the 'amip-baseline' stage in 
-      calkit.yaml. Changes made here will be overwritten.
-  amip-mod:
-    cmd: calkit slurm batch --name amip-mod --environment clima --dep 
-      config/climaatmos_progedmf_1m.yml --dep 
-      scripts/run_progedmf_1m.jl --dep 
-      ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
-      ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- 
-      scripts/run-julia-script.sh 
-      --project=ClimaAtmos.jl-mod/.buildkite 
-      scripts/run_progedmf_1m.jl
-    deps:
-      - scripts/run-julia-script.sh
-      - config/climaatmos_progedmf_1m.yml
-      - scripts/run_progedmf_1m.jl
-      - ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
-      - ClimaAtmos.jl-mod/src
-    outs:
-      - .calkit/slurm/logs/amip-mod.out:
-          cache: false
-          persist: true
-    desc: Automatically generated from the 'amip-mod' stage in 
-      calkit.yaml. Changes made here will be overwritten.
-  analyze-logs:
-    cmd: calkit nb execute --environment py --no-check --to html 
-      "notebooks/analyze-logs.ipynb"
-    deps:
-      - .calkit/notebooks/cleaned/notebooks/analyze-logs.ipynb
-      - .calkit/envs/py/uv.lock
-      - .calkit/slurm/logs/amip-baseline.out
-      - .calkit/slurm/logs/amip-mod.out
-    outs:
-      - figures/sypd-time-series.png:
-          cache: false
-          persist: false
-      - .calkit/notebooks/executed/notebooks/analyze-logs.ipynb:
-          cache: false
-      - .calkit/notebooks/html/notebooks/analyze-logs.html:
-          cache: false
-    desc: Automatically generated from the 'analyze-logs' stage in 
-      calkit.yaml. Changes made here will be overwritten.
   nsys-baseline:
     cmd: calkit slurm batch --name nsys-baseline --environment clima 
       --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep 
@@ -167,4 +108,63 @@ stages:
       - .calkit/notebooks/html/notebooks/compare-kernels.html:
           cache: false
     desc: Automatically generated from the 'compare-kernels' stage in 
+      calkit.yaml. Changes made here will be overwritten.
+  amip-baseline:
+    cmd: calkit slurm batch --name amip-baseline --environment clima 
+      --dep config/climaatmos_progedmf_1m.yml --dep 
+      scripts/run_progedmf_1m.jl --dep 
+      ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep 
+      ClimaAtmos.jl/src -s --gpus=1 -s --time=120 -- 
+      scripts/run-julia-script.sh --project=ClimaAtmos.jl/.buildkite 
+      scripts/run_progedmf_1m.jl
+    deps:
+      - scripts/run-julia-script.sh
+      - config/climaatmos_progedmf_1m.yml
+      - scripts/run_progedmf_1m.jl
+      - ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
+      - ClimaAtmos.jl/src
+    outs:
+      - .calkit/slurm/logs/amip-baseline.out:
+          cache: false
+          persist: true
+    desc: Automatically generated from the 'amip-baseline' stage in 
+      calkit.yaml. Changes made here will be overwritten.
+  amip-mod:
+    cmd: calkit slurm batch --name amip-mod --environment clima --dep 
+      config/climaatmos_progedmf_1m.yml --dep 
+      scripts/run_progedmf_1m.jl --dep 
+      ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
+      ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- 
+      scripts/run-julia-script.sh 
+      --project=ClimaAtmos.jl-mod/.buildkite 
+      scripts/run_progedmf_1m.jl
+    deps:
+      - scripts/run-julia-script.sh
+      - config/climaatmos_progedmf_1m.yml
+      - scripts/run_progedmf_1m.jl
+      - ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
+      - ClimaAtmos.jl-mod/src
+    outs:
+      - .calkit/slurm/logs/amip-mod.out:
+          cache: false
+          persist: true
+    desc: Automatically generated from the 'amip-mod' stage in 
+      calkit.yaml. Changes made here will be overwritten.
+  analyze-logs:
+    cmd: calkit nb execute --environment py --no-check --to html 
+      "notebooks/analyze-logs.ipynb"
+    deps:
+      - .calkit/notebooks/cleaned/notebooks/analyze-logs.ipynb
+      - .calkit/envs/py/uv.lock
+      - .calkit/slurm/logs/amip-baseline.out
+      - .calkit/slurm/logs/amip-mod.out
+    outs:
+      - figures/sypd-time-series.png:
+          cache: false
+          persist: false
+      - .calkit/notebooks/executed/notebooks/analyze-logs.ipynb:
+          cache: false
+      - .calkit/notebooks/html/notebooks/analyze-logs.html:
+          cache: false
+    desc: Automatically generated from the 'analyze-logs' stage in 
       calkit.yaml. Changes made here will be overwritten.

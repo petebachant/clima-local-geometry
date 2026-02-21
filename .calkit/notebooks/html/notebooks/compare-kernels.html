@@ -7332,7 +7332,12 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.0/mermaid.esm.min.mjs")).default;
+    const elkUrl = "https://cdnjs.cloudflare.com/ajax/libs/mermaid-layout-elk/0.1.9/mermaid-layout-elk.esm.min.mjs";
+    if(elkUrl) {
+      const elkLayouts = (await import(elkUrl)).default;
+      mermaid.registerLayoutLoaders(elkLayouts);
+    }
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7429,7 +7434,8 @@ a.anchor-link {
      * Post-process to ensure mermaid diagrams contain only valid SVG and XHTML.
      */
     function cleanMermaidSvg(svg) {
-      return svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      svg = svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      return `${SVG_XML_HEADER}${svg}`;
     }
 
 
@@ -7455,6 +7461,285 @@ a.anchor-link {
       }
       return `<${tag} ${rest}>`;
     }
+
+
+  /**
+   * Named HTML entities with their decimal equivalent codes.
+   *
+   * @see https://www.w3.org/TR/WD-html40-970708/sgml/entities.html
+   * */
+  const HTML_ENTITIES = `<!ENTITY Aacute "&#193;">
+<!ENTITY aacute "&#225;">
+<!ENTITY Acirc "&#194;">
+<!ENTITY acirc "&#226;">
+<!ENTITY acute "&#180;">
+<!ENTITY AElig "&#198;">
+<!ENTITY aelig "&#230;">
+<!ENTITY Agrave "&#192;">
+<!ENTITY agrave "&#224;">
+<!ENTITY alefsym "&#8501;">
+<!ENTITY Alpha "&#913;">
+<!ENTITY alpha "&#945;">
+<!ENTITY amp "&#38;">
+<!ENTITY and "&#8869;">
+<!ENTITY ang "&#8736;">
+<!ENTITY Aring "&#197;">
+<!ENTITY aring "&#229;">
+<!ENTITY asymp "&#8776;">
+<!ENTITY Atilde "&#195;">
+<!ENTITY atilde "&#227;">
+<!ENTITY Auml "&#196;">
+<!ENTITY auml "&#228;">
+<!ENTITY bdquo "&#8222;">
+<!ENTITY Beta "&#914;">
+<!ENTITY beta "&#946;">
+<!ENTITY brvbar "&#166;">
+<!ENTITY bull "&#8226;">
+<!ENTITY cap "&#8745;">
+<!ENTITY Ccedil "&#199;">
+<!ENTITY ccedil "&#231;">
+<!ENTITY cedil "&#184;">
+<!ENTITY cent "&#162;">
+<!ENTITY Chi "&#935;">
+<!ENTITY chi "&#967;">
+<!ENTITY circ "&#710;">
+<!ENTITY clubs "&#9827;">
+<!ENTITY cong "&#8773;">
+<!ENTITY copy "&#169;">
+<!ENTITY crarr "&#8629;">
+<!ENTITY cup "&#8746;">
+<!ENTITY curren "&#164;">
+<!ENTITY dagger "&#8224;">
+<!ENTITY Dagger "&#8225;">
+<!ENTITY darr "&#8595;">
+<!ENTITY dArr "&#8659;">
+<!ENTITY deg "&#176;">
+<!ENTITY Delta "&#916;">
+<!ENTITY delta "&#948;">
+<!ENTITY diams "&#9830;">
+<!ENTITY divide "&#247;">
+<!ENTITY Eacute "&#201;">
+<!ENTITY eacute "&#233;">
+<!ENTITY Ecirc "&#202;">
+<!ENTITY ecirc "&#234;">
+<!ENTITY Egrave "&#200;">
+<!ENTITY egrave "&#232;">
+<!ENTITY empty "&#8709;">
+<!ENTITY emsp "&#8195;">
+<!ENTITY ensp "&#8194;">
+<!ENTITY epsilon "&#949;">
+<!ENTITY Epsilon "&#917;">
+<!ENTITY equiv "&#8801;">
+<!ENTITY Eta "&#919;">
+<!ENTITY eta "&#951;">
+<!ENTITY ETH "&#208;">
+<!ENTITY eth "&#240;">
+<!ENTITY Euml "&#203;">
+<!ENTITY euml "&#235;">
+<!ENTITY exist "&#8707;">
+<!ENTITY fnof "&#402;">
+<!ENTITY forall "&#8704;">
+<!ENTITY frac12 "&#189;">
+<!ENTITY frac14 "&#188;">
+<!ENTITY frac34 "&#190;">
+<!ENTITY frasl "&#8260;">
+<!ENTITY Gamma "&#915;">
+<!ENTITY gamma "&#947;">
+<!ENTITY ge "&#8805;">
+<!ENTITY gt "&#62;">
+<!ENTITY harr "&#8596;">
+<!ENTITY hArr "&#8660;">
+<!ENTITY hearts "&#9829;">
+<!ENTITY hellip "&#8230;">
+<!ENTITY Iacute "&#205;">
+<!ENTITY iacute "&#237;">
+<!ENTITY Icirc "&#206;">
+<!ENTITY icirc "&#238;">
+<!ENTITY iexcl "&#161;">
+<!ENTITY Igrave "&#204;">
+<!ENTITY igrave "&#236;">
+<!ENTITY image "&#8465;">
+<!ENTITY infin "&#8734;">
+<!ENTITY int "&#8747;">
+<!ENTITY Iota "&#921;">
+<!ENTITY iota "&#953;">
+<!ENTITY iquest "&#191;">
+<!ENTITY isin "&#8712;">
+<!ENTITY Iuml "&#207;">
+<!ENTITY iuml "&#239;">
+<!ENTITY Kappa "&#922;">
+<!ENTITY kappa "&#954;">
+<!ENTITY Lambda "&#923;">
+<!ENTITY lambda "&#955;">
+<!ENTITY lang "&#9001;">
+<!ENTITY laquo "&#171;">
+<!ENTITY larr "&#8592;">
+<!ENTITY lArr "&#8656;">
+<!ENTITY lceil "&#8968;">
+<!ENTITY ldquo "&#8220;">
+<!ENTITY le "&#8804;">
+<!ENTITY lfloor "&#8970;">
+<!ENTITY lowast "&#8727;">
+<!ENTITY loz "&#9674;">
+<!ENTITY lrm "&#8206;">
+<!ENTITY lsaquo "&#8249;">
+<!ENTITY lsquo "&#8216;">
+<!ENTITY lt "&#60;">
+<!ENTITY macr "&#175;">
+<!ENTITY mdash "&#8212;">
+<!ENTITY micro "&#181;">
+<!ENTITY middot "&#183;">
+<!ENTITY minus "&#8722;">
+<!ENTITY Mu "&#924;">
+<!ENTITY mu "&#956;">
+<!ENTITY nabla "&#8711;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY ndash "&#8211;">
+<!ENTITY ne "&#8800;">
+<!ENTITY ni "&#8715;">
+<!ENTITY not "&#172;">
+<!ENTITY notin "&#8713;">
+<!ENTITY nsub "&#8836;">
+<!ENTITY Ntilde "&#209;">
+<!ENTITY ntilde "&#241;">
+<!ENTITY Nu "&#925;">
+<!ENTITY nu "&#957;">
+<!ENTITY Oacute "&#211;">
+<!ENTITY oacute "&#243;">
+<!ENTITY Ocirc "&#212;">
+<!ENTITY ocirc "&#244;">
+<!ENTITY OElig "&#338;">
+<!ENTITY oelig "&#339;">
+<!ENTITY Ograve "&#210;">
+<!ENTITY ograve "&#242;">
+<!ENTITY oline "&#8254;">
+<!ENTITY Omega "&#937;">
+<!ENTITY omega "&#969;">
+<!ENTITY Omicron "&#927;">
+<!ENTITY omicron "&#959;">
+<!ENTITY oplus "&#8853;">
+<!ENTITY or "&#8870;">
+<!ENTITY ordf "&#170;">
+<!ENTITY ordm "&#186;">
+<!ENTITY Oslash "&#216;">
+<!ENTITY oslash "&#248;">
+<!ENTITY Otilde "&#213;">
+<!ENTITY otilde "&#245;">
+<!ENTITY otimes "&#8855;">
+<!ENTITY Ouml "&#214;">
+<!ENTITY ouml "&#246;">
+<!ENTITY para "&#182;">
+<!ENTITY part "&#8706;">
+<!ENTITY permil "&#8240;">
+<!ENTITY perp "&#8869;">
+<!ENTITY Phi "&#934;">
+<!ENTITY phi "&#966;">
+<!ENTITY Pi "&#928;">
+<!ENTITY pi "&#960;">
+<!ENTITY piv "&#982;">
+<!ENTITY plusmn "&#177;">
+<!ENTITY pound "&#163;">
+<!ENTITY prime "&#8242;">
+<!ENTITY Prime "&#8243;">
+<!ENTITY prod "&#8719;">
+<!ENTITY prop "&#8733;">
+<!ENTITY Psi "&#936;">
+<!ENTITY psi "&#968;">
+<!ENTITY quot "&#34;">
+<!ENTITY radic "&#8730;">
+<!ENTITY rang "&#9002;">
+<!ENTITY raquo "&#187;">
+<!ENTITY rarr "&#8594;">
+<!ENTITY rArr "&#8658;">
+<!ENTITY rceil "&#8969;">
+<!ENTITY rdquo "&#8221;">
+<!ENTITY real "&#8476;">
+<!ENTITY reg "&#174;">
+<!ENTITY rfloor "&#8971;">
+<!ENTITY Rho "&#929;">
+<!ENTITY rho "&#961;">
+<!ENTITY rlm "&#8207;">
+<!ENTITY rsaquo "&#8250;">
+<!ENTITY rsquo "&#8217;">
+<!ENTITY sbquo "&#8218;">
+<!ENTITY Scaron "&#352;">
+<!ENTITY scaron "&#353;">
+<!ENTITY sdot "&#8901;">
+<!ENTITY sect "&#167;">
+<!ENTITY shy "&#173;">
+<!ENTITY Sigma "&#931;">
+<!ENTITY sigma "&#963;">
+<!ENTITY sigmaf "&#962;">
+<!ENTITY sim "&#8764;">
+<!ENTITY spades "&#9824;">
+<!ENTITY sub "&#8834;">
+<!ENTITY sube "&#8838;">
+<!ENTITY sum "&#8721;">
+<!ENTITY sup "&#8835;">
+<!ENTITY sup1 "&#185;">
+<!ENTITY sup2 "&#178;">
+<!ENTITY sup3 "&#179;">
+<!ENTITY supe "&#8839;">
+<!ENTITY szlig "&#223;">
+<!ENTITY Tau "&#932;">
+<!ENTITY tau "&#964;">
+<!ENTITY there4 "&#8756;">
+<!ENTITY Theta "&#920;">
+<!ENTITY theta "&#952;">
+<!ENTITY thetasym "&#977;">
+<!ENTITY thinsp "&#8201;">
+<!ENTITY THORN "&#222;">
+<!ENTITY thorn "&#254;">
+<!ENTITY tilde "&#732;">
+<!ENTITY times "&#215;">
+<!ENTITY trade "&#8482;">
+<!ENTITY Uacute "&#218;">
+<!ENTITY uacute "&#250;">
+<!ENTITY uarr "&#8593;">
+<!ENTITY uArr "&#8657;">
+<!ENTITY Ucirc "&#219;">
+<!ENTITY ucirc "&#251;">
+<!ENTITY Ugrave "&#217;">
+<!ENTITY ugrave "&#249;">
+<!ENTITY uml "&#168;">
+<!ENTITY upsih "&#978;">
+<!ENTITY Upsilon "&#933;">
+<!ENTITY upsilon "&#965;">
+<!ENTITY Uuml "&#220;">
+<!ENTITY uuml "&#252;">
+<!ENTITY weierp "&#8472;">
+<!ENTITY Xi "&#926;">
+<!ENTITY xi "&#958;">
+<!ENTITY Yacute "&#221;">
+<!ENTITY yacute "&#253;">
+<!ENTITY yen "&#165;">
+<!ENTITY Yuml "&#376;">
+<!ENTITY yuml "&#255;">
+<!ENTITY Zeta "&#918;">
+<!ENTITY zeta "&#950;">
+<!ENTITY zwj "&#8205;">
+<!ENTITY zwnj "&#8204;">`.replace(/\n/g, ' ');
+
+  /**
+   * A reasonably strict xml declaration.
+   */
+  const XML_DECL = '<?xml version="1.0" standalone="no"?>';
+
+  /**
+   * The beginning of the XML doctype declaration.
+   */
+  const DOCTYPE_START = `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [`;
+
+  /**
+   * The end of the XML docype declaration.
+   */
+  const DOCTYPE_END = ']>';
+
+  /**
+   * A full header for an SVG XML document.
+   */
+  const SVG_XML_HEADER = `${XML_DECL}
+    ${DOCTYPE_START}${HTML_ENTITIES}${DOCTYPE_END}`;
 
     void Promise.all([...diagrams].map(renderOneMarmaid));
   });
@@ -7545,7 +7830,10 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">difflib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">unicodedata</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -7670,15 +7958,25 @@ a.anchor-link {
     <span class="c1"># Register file size: ~49KB per SM (determined by occupancy calculator matching nsys)</span>
     <span class="n">max_registers_per_sm</span> <span class="o">=</span> <span class="mi">49152</span>  <span class="c1"># registers available per SM</span>
     <span class="n">registers_per_block</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">10</span><span class="p">]</span> <span class="o">*</span> <span class="n">block_size</span>
-    <span class="n">blocks_limited_by_registers</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_registers_per_sm</span> <span class="o">//</span> <span class="n">registers_per_block</span><span class="p">)</span> <span class="k">if</span> <span class="n">registers_per_block</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">8</span>
+    <span class="n">blocks_limited_by_registers</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_registers_per_sm</span> <span class="o">//</span> <span class="n">registers_per_block</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">registers_per_block</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">else</span> <span class="mi">8</span>
+    <span class="p">)</span>
 
     <span class="c1"># Shared memory limit (if applicable, but usually not limiting for this kernel)</span>
     <span class="n">max_shared_mem_per_sm</span> <span class="o">=</span> <span class="mi">96000</span>
     <span class="n">shared_mem_per_block</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">11</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">12</span><span class="p">]</span>
-    <span class="n">blocks_limited_by_shared_mem</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_shared_mem_per_sm</span> <span class="o">//</span> <span class="n">shared_mem_per_block</span><span class="p">)</span> <span class="k">if</span> <span class="n">shared_mem_per_block</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">8</span>
+    <span class="n">blocks_limited_by_shared_mem</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_shared_mem_per_sm</span> <span class="o">//</span> <span class="n">shared_mem_per_block</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">shared_mem_per_block</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">else</span> <span class="mi">8</span>
+    <span class="p">)</span>
 
     <span class="c1"># Effective blocks per SM is the minimum of register and shared memory constraints</span>
-    <span class="n">blocks_per_sm</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">blocks_limited_by_registers</span><span class="p">,</span> <span class="n">blocks_limited_by_shared_mem</span><span class="p">)</span>
+    <span class="n">blocks_per_sm</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+        <span class="n">blocks_limited_by_registers</span><span class="p">,</span> <span class="n">blocks_limited_by_shared_mem</span>
+    <span class="p">)</span>
 
     <span class="c1"># Calculate occupancy</span>
     <span class="n">active_warps</span> <span class="o">=</span> <span class="n">warps_per_block</span> <span class="o">*</span> <span class="n">blocks_per_sm</span>
@@ -7995,10 +8293,8 @@ a.anchor-link {
 <span class="n">baseline_db</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"../results/nsys/baseline.sqlite"</span><span class="p">)</span>
 <span class="n">mod_db</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"../results/nsys/mod.sqlite"</span><span class="p">)</span>
 
-<span class="c1"># Kernel name pattern to match - use L649 for the specific kernel version</span>
-<span class="n">kernel_pattern</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">"%L649%"</span>  <span class="c1"># Changed from generic pattern to specific line number</span>
-<span class="p">)</span>
+<span class="c1"># Kernel name pattern to match (avoid fragile line numbers)</span>
+<span class="n">kernel_pattern</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf_precomputed_quantities_precipitation%"</span>
 
 <span class="c1"># Check if files exist</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">baseline_db</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -8048,7 +8344,20 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">list_available_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf%"</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">normalize_kernel_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Normalize kernel names for robust matching."""</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">"NFKC"</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ch</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">normalized</span> <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isprintable</span><span class="p">())</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\s+"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">normalized</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">normalized</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">strip_mod_suffix</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Remove a loose mod suffix for matching."""</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(?:_|\s)mod\b"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">list_available_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf%"</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    List all kernels matching a pattern in the database.</span>
 
@@ -8075,16 +8384,96 @@ a.anchor-link {
     <span class="k">return</span> <span class="n">results</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">list_top_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"%"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    List top kernels by total duration, filtered by a name pattern.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        db_path: Path to SQLite database</span>
+<span class="sd">        pattern: SQL LIKE pattern for kernel names</span>
+<span class="sd">        limit: Number of kernels to return</span>
+<span class="sd">    """</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">    SELECT s.value as kernelName, SUM(k.end - k.start) as total_ns, COUNT(*) as count</span>
+<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL k</span>
+<span class="s2">    JOIN StringIds s ON k.demangledName = s.id</span>
+<span class="s2">    WHERE s.value LIKE ?</span>
+<span class="s2">    GROUP BY s.value</span>
+<span class="s2">    ORDER BY total_ns DESC</span>
+<span class="s2">    LIMIT ?</span>
+<span class="s2">    """</span>
+
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">limit</span><span class="p">))</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">select_kernel_name</span><span class="p">(</span><span class="n">baseline_top</span><span class="p">,</span> <span class="n">mod_top</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Select the most expensive baseline kernel and the closest name match in modified.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">baseline_top</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"No kernels matched in baseline"</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">mod_top</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"No kernels matched in modified"</span><span class="p">)</span>
+
+    <span class="n">baseline_kernel</span><span class="p">,</span> <span class="n">baseline_total</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">baseline_top</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">baseline_norm</span> <span class="o">=</span> <span class="n">strip_mod_suffix</span><span class="p">(</span><span class="n">normalize_kernel_name</span><span class="p">(</span><span class="n">baseline_kernel</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Selected baseline kernel: </span><span class="si">{</span><span class="n">baseline_kernel</span><span class="si">}</span><span class="s2"> (total=</span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">baseline_total</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+    <span class="p">)</span>
+
+    <span class="n">best</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">mod_kernel</span><span class="p">,</span> <span class="n">mod_total</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">mod_top</span><span class="p">:</span>
+        <span class="n">mod_norm</span> <span class="o">=</span> <span class="n">strip_mod_suffix</span><span class="p">(</span><span class="n">normalize_kernel_name</span><span class="p">(</span><span class="n">mod_kernel</span><span class="p">))</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">SequenceMatcher</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseline_norm</span><span class="p">,</span> <span class="n">mod_norm</span><span class="p">)</span><span class="o">.</span><span class="n">ratio</span><span class="p">()</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">mod_total</span><span class="p">,</span> <span class="n">mod_kernel</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">candidate</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="n">candidate</span>
+
+    <span class="n">best_score</span><span class="p">,</span> <span class="n">best_total</span><span class="p">,</span> <span class="n">best_kernel</span> <span class="o">=</span> <span class="n">best</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Selected modified kernel: </span><span class="si">{</span><span class="n">best_kernel</span><span class="si">}</span><span class="s2"> (total=</span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">best_total</span><span class="p">)</span><span class="si">}</span><span class="s2">, score=</span><span class="si">{</span><span class="n">best_score</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)"</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">baseline_kernel</span><span class="p">,</span> <span class="n">best_kernel</span>
+
+
 <span class="c1"># List available kernels</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Available kernels in baseline database:"</span><span class="p">)</span>
-<span class="n">baseline_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf%"</span><span class="p">)</span>
+<span class="n">baseline_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">baseline_kernels</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Available kernels in modified database:"</span><span class="p">)</span>
-<span class="n">mod_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf%"</span><span class="p">)</span>
+<span class="n">mod_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">mod_kernels</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top kernels in baseline (by total time):"</span><span class="p">)</span>
+<span class="n">baseline_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">total_ns</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">baseline_top</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top kernels in modified (by total time):"</span><span class="p">)</span>
+<span class="n">mod_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">total_ns</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">mod_top</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+<span class="n">baseline_kernel_name</span><span class="p">,</span> <span class="n">mod_kernel_name</span> <span class="o">=</span> <span class="n">select_kernel_name</span><span class="p">(</span>
+    <span class="n">baseline_top</span><span class="p">,</span> <span class="n">mod_top</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8098,30 +8487,42 @@ a.anchor-link {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Available kernels in baseline database:
-  [ 490 invocations] set_prognostic_edmf_precomputed_quantities_draft__NVTX
-  [ 280 invocations] set_prognostic_edmf_precomputed_quantities_environment__NVTX
-  [ 450 invocations] set_prognostic_edmf_precomputed_quantities_explicit_closures__NVTX
-  [  70 invocations] set_prognostic_edmf_precomputed_quantities_implicit_closures__NVTX
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L583
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L589
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L596
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L602
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L649
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L668
-  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L678
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L535
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L541
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L548
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L554
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L601
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L620
+  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L630
 
 Available kernels in modified database:
-  [ 490 invocations] set_prognostic_edmf_precomputed_quantities_draft__NVTX
-  [ 280 invocations] set_prognostic_edmf_precomputed_quantities_environment__NVTX
-  [ 450 invocations] set_prognostic_edmf_precomputed_quantities_explicit_closures__NVTX
-  [  70 invocations] set_prognostic_edmf_precomputed_quantities_implicit_closures__NVTX
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L583
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L589
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L596
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L602
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L649
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L668
-  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L678
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L535
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L541
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L548
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L554
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L601
+  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L620
+  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L630
+
+Top kernels in baseline (by total time):
+   465.24 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L601
+     9.74 ms  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L630
+     8.90 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L620
+   535.61 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L535
+   530.02 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L541
+   530.01 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L554
+   523.52 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L548
+
+Top kernels in modified (by total time):
+   296.27 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L601
+     9.73 ms  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L630
+     8.91 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L620
+   536.93 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L535
+   530.30 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L541
+   529.76 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L554
+   524.51 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L548
+Selected baseline kernel: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L601 (total=465.24 ms)
+Selected modified kernel: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L601 (total=296.27 ms, score=0.985)
 </pre>
 </div>
 </div>
@@ -8136,12 +8537,16 @@ Available kernels in modified database:
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Get statistics from both databases</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Loading kernel statistics...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">baseline_stats</span><span class="p">,</span> <span class="n">baseline_rows</span> <span class="o">=</span> <span class="n">get_kernel_stats</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
-<span class="n">mod_stats</span><span class="p">,</span> <span class="n">mod_rows</span> <span class="o">=</span> <span class="n">get_kernel_stats</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">baseline_kernel_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">mod_kernel_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Error: Missing kernel name selection; check the listing above."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">baseline_stats</span><span class="p">,</span> <span class="n">baseline_rows</span> <span class="o">=</span> <span class="n">get_kernel_stats</span><span class="p">(</span>
+        <span class="n">baseline_db</span><span class="p">,</span> <span class="n">baseline_kernel_name</span>
+    <span class="p">)</span>
+    <span class="n">mod_stats</span><span class="p">,</span> <span class="n">mod_rows</span> <span class="o">=</span> <span class="n">get_kernel_stats</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">mod_kernel_name</span><span class="p">)</span>
 
-<span class="c1"># Compare and display results</span>
-<span class="n">compare_stats</span><span class="p">(</span><span class="n">baseline_stats</span><span class="p">,</span> <span class="n">mod_stats</span><span class="p">)</span>
+    <span class="c1"># Compare and display results</span>
+    <span class="n">compare_stats</span><span class="p">(</span><span class="n">baseline_stats</span><span class="p">,</span> <span class="n">mod_stats</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8154,11 +8559,9 @@ Available kernels in modified database:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Loading kernel statistics...
-
-
+<pre>
 ============================================================================================================================================
-KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L649
+KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L601
 ============================================================================================================================================
 
 </pre>
@@ -8202,37 +8605,37 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <tr>
 <th>1</th>
 <td>Total Duration</td>
-<td>463.84 ms</td>
-<td>296.03 ms</td>
-<td>-36.18%</td>
+<td>465.24 ms</td>
+<td>296.27 ms</td>
+<td>-36.32%</td>
 </tr>
 <tr>
 <th>2</th>
 <td>Mean Duration</td>
-<td>18.55 ms</td>
-<td>11.84 ms</td>
-<td>-36.18%</td>
+<td>18.61 ms</td>
+<td>11.85 ms</td>
+<td>-36.32%</td>
 </tr>
 <tr>
 <th>3</th>
 <td>Median Duration</td>
-<td>18.54 ms</td>
-<td>11.84 ms</td>
-<td>-36.13%</td>
+<td>18.62 ms</td>
+<td>11.85 ms</td>
+<td>-36.36%</td>
 </tr>
 <tr>
 <th>4</th>
 <td>Min Duration</td>
-<td>18.48 ms</td>
+<td>18.56 ms</td>
 <td>11.81 ms</td>
-<td>-36.11%</td>
+<td>-36.39%</td>
 </tr>
 <tr>
 <th>5</th>
 <td>Max Duration</td>
 <td>18.64 ms</td>
-<td>11.87 ms</td>
-<td>-36.34%</td>
+<td>11.92 ms</td>
+<td>-36.05%</td>
 </tr>
 <tr>
 <th>6</th>
@@ -8335,7 +8738,7 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ============================================================================================================================================
-✅ Modified version is 36.18% FASTER (mean duration)
+✅ Modified version is 36.32% FASTER (mean duration)
 ============================================================================================================================================
 </pre>
 </div>

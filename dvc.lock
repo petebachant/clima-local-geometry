@@ -274,3 +274,26 @@ stages:
       hash: md5
       md5: a85c4a3b848e83910965bf11c095793a
       size: 369231
+  sync-atmos-mod-core:
+    cmd: ' bash --noprofile --norc scripts/sync-atmos-mod-core.sh'
+    deps:
+    - path: ClimaCore.jl/ext
+      hash: md5
+      md5: 6ac8e4573960baeb9bcce5de9dde65e6.dir
+      size: 199576
+      nfiles: 25
+    - path: ClimaCore.jl/lib
+      hash: md5
+      md5: 5c8d819896714d4c699a816a70872cef.dir
+      size: 316792
+      nfiles: 58
+    - path: ClimaCore.jl/src
+      hash: md5
+      md5: 57343f9d3d479cfe68fd89a0f9fa62df.dir
+      size: 1181467
+      nfiles: 97
+    - path: scripts/sync-atmos-mod-core.sh
+      hash: md5
+      md5: 261698988e9ad35362013216a81944d0
+      size: 583
+      isexec: true

@@ -1,4 +1,14 @@
 stages:
+  sync-atmos-mod-core:
+    cmd: ' bash --noprofile --norc scripts/sync-atmos-mod-core.sh'
+    deps:
+      - scripts/sync-atmos-mod-core.sh
+      - ClimaCore.jl/src
+      - ClimaCore.jl/ext
+      - ClimaCore.jl/lib
+    outs: []
+    desc: Automatically generated from the 'sync-atmos-mod-core' stage
+      in calkit.yaml. Changes made here will be overwritten.
   analyze-local-geometry-impact:
     cmd: calkit xenv -n main --no-check -- 
       "scripts/analysis_local_geometry_impact.jl"

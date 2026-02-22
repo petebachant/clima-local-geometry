@@ -22,6 +22,14 @@ environments:
 
 pipeline:
   stages:
+    sync-atmos-mod-core:
+      kind: shell-script
+      script_path: scripts/sync-atmos-mod-core.sh
+      environment: _system
+      inputs:
+        - ClimaCore.jl/src
+        - ClimaCore.jl/ext
+        - ClimaCore.jl/lib
     analyze-local-geometry-impact:
       kind: julia-script
       script_path: scripts/analysis_local_geometry_impact.jl

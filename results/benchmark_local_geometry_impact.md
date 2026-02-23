@@ -6,27 +6,27 @@
 
 | Operation | Time (μs) | Overhead vs Baseline |
 |-----------|-----------|----------------------|
-| baseline simple | 16.05 | 0.0% |
-| full lg jacobian | 16.80 | 4.7% |
-| full lg multiple | 19.36 | 20.6% |
-| extracted j | 17.13 | 6.7% |
-| simplified lg | 17.16 | 6.9% |
+| baseline simple | 16.07 | 0.0% |
+| full lg jacobian | 17.27 | 7.5% |
+| full lg multiple | 19.53 | 21.5% |
+| extracted j | 17.13 | 6.6% |
+| simplified lg | 17.21 | 7.1% |
 
 ### Section 2: Struct Size Impact on Inlining
 
 | Struct Type | Size (bytes) | Time (μs) | Overhead vs Baseline |
 |-------------|--------------|-----------|----------------------|
-| two field access | 16 | 17.05 | 6.2% |
-| four field access | 32 | 17.14 | 6.8% |
-| eight field access | 64 | 16.92 | 5.4% |
-| sixteen field access | 128 | 17.07 | 6.4% |
+| two field access | 16 | 17.34 | 7.9% |
+| four field access | 32 | 17.43 | 8.5% |
+| eight field access | 64 | 16.91 | 5.2% |
+| sixteen field access | 128 | 17.05 | 6.1% |
 
 ### Section 3: Projection Operations
 
 | Operation | Time (μs) | Overhead vs Vector Baseline |
 |-----------|-----------|----------------------------|
-| vector baseline | 17.05 | 0.0% |
-| project full lg | 17.29 | 1.4% |
+| vector baseline | 17.30 | 0.0% |
+| project full lg | 17.61 | 1.8% |
 
 ## Memory Footprint
 
@@ -42,17 +42,17 @@
 ## Key Findings
 
 ### Basic Geometry Access
-- Full LocalGeometry (J only) overhead: 4.7%
-- Extracted J overhead: 6.7%
+- Full LocalGeometry (J only) overhead: 7.5%
+- Extracted J overhead: 6.6%
 
 ### Struct Size Impact
-- TwoFieldGeom (16 bytes): 6.2%
-- FourFieldGeom (32 bytes): 6.8%
-- EightFieldGeom (64 bytes): 5.4%
-- SixteenFieldGeom (128 bytes): 6.4%
+- TwoFieldGeom (16 bytes): 7.9%
+- FourFieldGeom (32 bytes): 8.5%
+- EightFieldGeom (64 bytes): 5.2%
+- SixteenFieldGeom (128 bytes): 6.1%
 
 ### Projection Operations
-- Covariant to Contravariant: 1.4%
+- Covariant to Contravariant: 1.8%
 
 ## Assessment
 

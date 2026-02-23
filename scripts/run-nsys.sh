@@ -40,6 +40,9 @@ module load climacommon/2025_05_15
 # Set environment variables for GPU usage
 export CLIMACOMMS_DEVICE=CUDA
 export CLIMA_NAME_CUDA_KERNELS_FROM_STACK_TRACE=true
+export CLIMA_LOG_MIN_GEOM=1
+export CLIMA_LOG_MIN_GEOM_LIMIT=1000
+export CLIMA_LOG_MIN_GEOM_FULL_LIMIT=1000
 
 # Set environmental variable for julia to not use global packages for
 # reproducibility
@@ -54,6 +57,8 @@ nsys profile \
     --capture-range=cudaProfilerApi \
     --kill=none \
     --trace=nvtx,mpi,cuda,osrt \
+    --gpu-metrics-device=all \
+    --cuda-memory-usage=true \
     --output=$NSYS_OUTPUT_PREFIX \
     "$@"
 

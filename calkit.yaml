@@ -30,13 +30,6 @@ pipeline:
         - ClimaCore.jl/src
         - ClimaCore.jl/ext
         - ClimaCore.jl/lib
-    analyze-local-geometry-impact:
-      kind: julia-script
-      script_path: scripts/analysis_local_geometry_impact.jl
-      environment: main
-      outputs:
-        - path: results/analysis_local_geometry_impact.md
-          storage: git
     # Local geometry impact benchmark
     benchmark-local-geometry-impact:
       kind: sbatch

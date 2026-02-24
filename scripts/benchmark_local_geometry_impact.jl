@@ -238,6 +238,11 @@ suite["2h_f_x_lg_noinline"] = @benchmarkable begin
     CUDA.synchronize()
 end
 
+suite["2i_lambda_f_x_lg_noinline"] = @benchmarkable begin
+    $result_field .= (x -> f_from_lg_noinline(x.lg)).($wrapper_lg_field)
+    CUDA.synchronize()
+end
+
 # Finite-difference: explicitly call LocalGeometry(space, idx, hidx)
 suite["2e_fd_localgeom_constructor"] = @benchmarkable begin
     CUDA.@sync @cuda threads = $fd_threads blocks = $fd_blocks fd_localgeom_kernel!(
@@ -336,7 +341,7 @@ println("\nSECTION 1: Basic Geometry Access")
 println(repeat("-", 70))
 println("\nExecution Time (μs, lower is better):")
 
-section1_keys = filter(k -> startswith(k, "1_") || startswith(k, "2_") || startswith(k, "2b_") || startswith(k, "2c_") || startswith(k, "2d_") || startswith(k, "2e_") || startswith(k, "2f_") || startswith(k, "2g_") || startswith(k, "2h_") || startswith(k, "3_") || startswith(k, "4_") || startswith(k, "5_"), collect(keys(results)))
+section1_keys = filter(k -> startswith(k, "1_") || startswith(k, "2_") || startswith(k, "2b_") || startswith(k, "2c_") || startswith(k, "2d_") || startswith(k, "2e_") || startswith(k, "2f_") || startswith(k, "2g_") || startswith(k, "2h_") || startswith(k, "2i_") || startswith(k, "3_") || startswith(k, "4_") || startswith(k, "5_"), collect(keys(results)))
 for key in sort(section1_keys)
     result = results[key]
     time_μs = minimum(result.times) / 1000
@@ -549,6 +554,7 @@ begin
         "2f_f_x_lg",
         "2g_lambda_f_x_lg",
         "2h_f_x_lg_noinline",
+        "2i_lambda_f_x_lg_noinline",
         "3_full_lg_multiple",
         "4_extracted_j",
         "5_simplified_lg",

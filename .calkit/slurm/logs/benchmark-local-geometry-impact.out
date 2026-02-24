@@ -1,383 +1,13 @@
 ==========================================
 LocalGeometry CUDA Benchmark - SLURM Job
 ==========================================
-Job ID: 189806
+Job ID: 189807
 Node: clima
-Start time: Tue Feb 24 06:08:40 PST 2026
+Start time: Tue Feb 24 06:33:34 PST 2026
 
 Loading climacommon/2025_05_15
   Loading requirement: climaauth/2025_05_15 openmpi/4.1.5-mpitrampoline
     julia/1.11.5 cuda/julia-pref
-Precompiling project...
-   5691.0 ms  ✓ DiffEqBase → DiffEqBaseMPIExt
-  13760.8 ms  ✓ ClimaCore
-   9977.4 ms  ✓ ClimaCore → KrylovExt
-  10505.9 ms  ✓ ClimaCoreVTK
-  11773.2 ms  ✓ ClimaCoreTempestRemap
-  13140.2 ms  ✓ ClimaCorePlots
-  58732.2 ms  ✓ CUDA
-  42286.8 ms  ✓ ClimaInterpolations → ClimaInterpolationsCUDAExt
-  42210.6 ms  ✓ ArrayInterface → ArrayInterfaceCUDAExt
-  44051.5 ms  ✓ CUDA → EnzymeCoreExt
-  45738.3 ms  ✓ Atomix → AtomixCUDAExt
-  45440.1 ms  ✓ MPI → CUDAExt
-  45973.4 ms  ✓ MultiBroadcastFusion → MultiBroadcastFusionCUDAExt
-  46213.5 ms  ✓ CUDA → SpecialFunctionsExt
-  45913.5 ms  ✓ LinearOperators → LinearOperatorsCUDAExt
-  46325.1 ms  ✓ ClimaComms → ClimaCommsCUDAExt
-  46170.0 ms  ✓ DiffEqBase → DiffEqBaseCUDAExt
-  47424.9 ms  ✓ ClimaTimeSteppers → ClimaTimeSteppersBenchmarkToolsExt
-  48950.5 ms  ✓ ClimaCore → ClimaCoreCUDAExt
-  19 dependencies successfully precompiled in 114 seconds. 474 already precompiled.
-  12 dependencies had output during precompilation:
-┌ ArrayInterface → ArrayInterfaceCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ LinearOperators → LinearOperatorsCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ ClimaCore → ClimaCoreCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ ClimaInterpolations → ClimaInterpolationsCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ ClimaTimeSteppers → ClimaTimeSteppersBenchmarkToolsExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ Atomix → AtomixCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ MultiBroadcastFusion → MultiBroadcastFusionCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ CUDA → SpecialFunctionsExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ CUDA → EnzymeCoreExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ DiffEqBase → DiffEqBaseCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ MPI → CUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
-┌ ClimaComms → ClimaCommsCUDAExt
-│  ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libnvJitLink.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libnvJitLink.so.13`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-│  ┌ Warning: CUDA runtime library `libcusparse.so.12` was loaded from a system path, `/usr/local/cuda/lib64/libcusparse.so.12`.
-│  │ This may cause errors.
-│  │ 
-│  │ If you're running under a profiler, this situation is expected. Otherwise,
-│  │ ensure that your library path environment variable (e.g., `PATH` on Windows
-│  │ or `LD_LIBRARY_PATH` on Linux) does not include CUDA library paths.
-│  │ 
-│  │ In any other case, please file an issue.
-│  └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
-└  
 ┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
 │ This may cause errors.
 │ 
@@ -541,44 +171,46 @@ SECTION 3: Testing projection operations (common in physics kernels)
 
 Running benchmarks (this takes ~2-3 minutes)...
 
-(1/19) benchmarking "2f_f_x_lg"...
-done (took 1.427596321 seconds)
-(2/19) benchmarking "2h_f_x_lg_noinline"...
-done (took 1.144134661 seconds)
-(3/19) benchmarking "6_two_field_access"...
-done (took 1.045400826 seconds)
-(4/19) benchmarking "1_baseline_simple"...
-done (took 0.604945493 seconds)
-(5/19) benchmarking "2b_pointwise_lg_j"...
-done (took 1.127806705 seconds)
-(6/19) benchmarking "10_vector_baseline"...
-done (took 1.166119256 seconds)
-(7/19) benchmarking "8_eight_field_access"...
-done (took 0.65971862 seconds)
-(8/19) benchmarking "2_full_lg_jacobian"...
-done (took 0.614342149 seconds)
-(9/19) benchmarking "7_four_field_access"...
-done (took 0.629045915 seconds)
-(10/19) benchmarking "2c_pointwise_lg_j_stack"...
-done (took 1.06392946 seconds)
-(11/19) benchmarking "3_full_lg_multiple"...
-done (took 1.134460947 seconds)
-(12/19) benchmarking "5_simplified_lg"...
-done (took 1.019525574 seconds)
-(13/19) benchmarking "2e_fd_localgeom_constructor"...
-done (took 1.468560513 seconds)
-(14/19) benchmarking "12_multiple_scalar_access"...
-done (took 1.128374261 seconds)
-(15/19) benchmarking "2d_pointwise_lg_j_noinline"...
-done (took 1.133573145 seconds)
-(16/19) benchmarking "2g_lambda_f_x_lg"...
-done (took 1.134153272 seconds)
-(17/19) benchmarking "11_project_full_lg"...
-done (took 1.30180861 seconds)
-(18/19) benchmarking "9_sixteen_field_access"...
-done (took 0.66711135 seconds)
-(19/19) benchmarking "4_extracted_j"...
-done (took 0.602740449 seconds)
+(1/20) benchmarking "2f_f_x_lg"...
+done (took 1.430501154 seconds)
+(2/20) benchmarking "2h_f_x_lg_noinline"...
+done (took 1.095665714 seconds)
+(3/20) benchmarking "6_two_field_access"...
+done (took 1.111212046 seconds)
+(4/20) benchmarking "1_baseline_simple"...
+done (took 0.601532513 seconds)
+(5/20) benchmarking "2b_pointwise_lg_j"...
+done (took 1.084807648 seconds)
+(6/20) benchmarking "10_vector_baseline"...
+done (took 1.190719877 seconds)
+(7/20) benchmarking "8_eight_field_access"...
+done (took 0.61786503 seconds)
+(8/20) benchmarking "2_full_lg_jacobian"...
+done (took 0.616301259 seconds)
+(9/20) benchmarking "7_four_field_access"...
+done (took 0.64602214 seconds)
+(10/20) benchmarking "2c_pointwise_lg_j_stack"...
+done (took 1.123427484 seconds)
+(11/20) benchmarking "3_full_lg_multiple"...
+done (took 1.122109521 seconds)
+(12/20) benchmarking "5_simplified_lg"...
+done (took 1.042106413 seconds)
+(13/20) benchmarking "2e_fd_localgeom_constructor"...
+done (took 1.52913486 seconds)
+(14/20) benchmarking "12_multiple_scalar_access"...
+done (took 1.198834816 seconds)
+(15/20) benchmarking "2d_pointwise_lg_j_noinline"...
+done (took 1.109716723 seconds)
+(16/20) benchmarking "2g_lambda_f_x_lg"...
+done (took 1.165432238 seconds)
+(17/20) benchmarking "11_project_full_lg"...
+done (took 1.38707595 seconds)
+(18/20) benchmarking "9_sixteen_field_access"...
+done (took 0.623314003 seconds)
+(19/20) benchmarking "4_extracted_j"...
+done (took 0.606998772 seconds)
+(20/20) benchmarking "2i_lambda_f_x_lg_noinline"...
+done (took 1.097817211 seconds)
 
 ======================================================================
 BENCHMARK RESULTS
@@ -588,37 +220,38 @@ SECTION 1: Basic Geometry Access
 ----------------------------------------------------------------------
 
 Execution Time (μs, lower is better):
-  baseline_simple                     15.17 μs  (  +0.0% vs baseline)
-  full_lg_jacobian                    16.38 μs  (  +8.0% vs baseline)
-  2b_pointwise_lg_j                   16.41 μs  (  +8.2% vs baseline)
-  2c_pointwise_lg_j_stack             17.44 μs  ( +15.0% vs baseline)
-  2d_pointwise_lg_j_noinline          17.62 μs  ( +16.2% vs baseline)
-  2e_fd_localgeom_constructor         13.91 μs  (  -8.3% vs baseline)
-  2f_f_x_lg                           15.70 μs  (  +3.5% vs baseline)
-  2g_lambda_f_x_lg                    15.53 μs  (  +2.4% vs baseline)
-  2h_f_x_lg_noinline                  17.50 μs  ( +15.4% vs baseline)
-  full_lg_multiple                    18.79 μs  ( +23.9% vs baseline)
-  extracted_j                         16.08 μs  (  +6.0% vs baseline)
-  simplified_lg                       16.26 μs  (  +7.2% vs baseline)
+  baseline_simple                     15.86 μs  (  +0.0% vs baseline)
+  full_lg_jacobian                    16.85 μs  (  +6.2% vs baseline)
+  2b_pointwise_lg_j                   17.39 μs  (  +9.6% vs baseline)
+  2c_pointwise_lg_j_stack             17.29 μs  (  +9.0% vs baseline)
+  2d_pointwise_lg_j_noinline          18.45 μs  ( +16.3% vs baseline)
+  2e_fd_localgeom_constructor         13.79 μs  ( -13.1% vs baseline)
+  2f_f_x_lg                           16.33 μs  (  +3.0% vs baseline)
+  2g_lambda_f_x_lg                    16.85 μs  (  +6.2% vs baseline)
+  2h_f_x_lg_noinline                  17.49 μs  ( +10.3% vs baseline)
+  2i_lambda_f_x_lg_noinline           16.90 μs  (  +6.6% vs baseline)
+  full_lg_multiple                    19.36 μs  ( +22.1% vs baseline)
+  extracted_j                         16.90 μs  (  +6.6% vs baseline)
+  simplified_lg                       17.12 μs  (  +7.9% vs baseline)
 
 ----------------------------------------------------------------------
 SECTION 2: Struct Size Impact on Inlining
 ----------------------------------------------------------------------
 
 Execution Time (μs, lower is better):
-  two_field_access                    16.29 μs  (  +7.4% vs baseline)
-  four_field_access                   16.46 μs  (  +8.5% vs baseline)
-  eight_field_access                  16.24 μs  (  +7.1% vs baseline)
-  sixteen_field_access                16.57 μs  (  +9.2% vs baseline)
+  two_field_access                    16.98 μs  (  +7.1% vs baseline)
+  four_field_access                   16.73 μs  (  +5.5% vs baseline)
+  eight_field_access                  17.21 μs  (  +8.5% vs baseline)
+  sixteen_field_access                17.17 μs  (  +8.3% vs baseline)
 
 ----------------------------------------------------------------------
 SECTION 3: Projection Operations
 ----------------------------------------------------------------------
 
 Execution Time (μs, lower is better):
-  vector_baseline                     16.39 μs  (  +0.0% vs vec_baseline)
-  project_full_lg                     16.08 μs  (  -1.9% vs vec_baseline)
-  multiple_scalar_access              17.35 μs  (  +5.9% vs vec_baseline)
+  vector_baseline                     17.16 μs  (  +0.0% vs vec_baseline)
+  project_full_lg                     17.24 μs  (  +0.5% vs vec_baseline)
+  multiple_scalar_access              18.23 μs  (  +6.2% vs vec_baseline)
 
 ======================================================================
 MEMORY FOOTPRINT COMPARISON
@@ -647,27 +280,27 @@ ANALYSIS & KEY FINDINGS
 ======================================================================
 
 1. BASIC GEOMETRY ACCESS OVERHEAD:
-   Full LocalGeometry (J only):      8.0%
-   Extracted J:                      6.0%
+   Full LocalGeometry (J only):      6.2%
+   Extracted J:                      6.6%
 
 2. STRUCT SIZE IMPACT (accessing single field):
-   TwoFieldGeom (16 bytes):          7.4%
-   FourFieldGeom (32 bytes):         8.5%
-   EightFieldGeom (64 bytes):        7.1%
-   SixteenFieldGeom (128 bytes):     9.2%
+   TwoFieldGeom (16 bytes):          7.1%
+   FourFieldGeom (32 bytes):         5.5%
+   EightFieldGeom (64 bytes):        8.5%
+   SixteenFieldGeom (128 bytes):     8.3%
 
    ✓ All struct sizes show similar performance - good inlining
 
 3. PROJECTION OPERATIONS OVERHEAD:
-   Covariant->Contravariant:         -1.9%
+   Covariant->Contravariant:         0.5%
 
 ======================================================================
 RECOMMENDATIONS
 ======================================================================
 
 ⚠️  MODERATE OVERHEAD DETECTED:
-   • LocalGeometry overhead: 8.0%
-   • Projection overhead: -1.9%
+   • LocalGeometry overhead: 6.2%
+   • Projection overhead: 0.5%
 
    CONSIDER:
    1. Extract commonly-used components (J, WJ) at kernel entry
@@ -708,5 +341,5 @@ Markdown results written to: /home/pbachant/calkit/clima-local-geometry/scripts/
 
 ==========================================
 Benchmark complete
-End time: Tue Feb 24 06:12:28 PST 2026
+End time: Tue Feb 24 06:35:34 PST 2026
 ==========================================

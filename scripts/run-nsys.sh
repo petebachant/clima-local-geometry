@@ -57,7 +57,6 @@ nsys profile \
     --capture-range=cudaProfilerApi \
     --kill=none \
     --trace=nvtx,mpi,cuda,osrt \
-    --gpu-metrics-device=all \
     --cuda-memory-usage=true \
     --output=$NSYS_OUTPUT_PREFIX \
     "$@"

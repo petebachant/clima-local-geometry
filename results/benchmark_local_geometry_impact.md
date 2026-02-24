@@ -6,36 +6,36 @@
 
 | Operation | Time (μs) | Overhead vs Baseline |
 |-----------|-----------|----------------------|
-| baseline simple | 15.35 | 0.0% |
-| full lg jacobian | 17.04 | 11.0% |
-| 2b pointwise lg j | 16.64 | 8.4% |
-| 2c pointwise lg j stack | 17.06 | 11.1% |
-| 2d pointwise lg j noinline | 18.18 | 18.4% |
-| 2e fd localgeom constructor | 13.64 | -11.1% |
-| 2f f x lg | 16.05 | 4.6% |
-| 2g lambda f x lg | 15.94 | 3.8% |
-| 2h f x lg noinline | 17.88 | 16.5% |
-| 2i lambda f x lg noinline | 17.21 | 12.1% |
-| full lg multiple | 18.81 | 22.5% |
-| extracted j | 16.68 | 8.7% |
-| simplified lg | 15.84 | 3.2% |
+| baseline simple | 15.07 | 0.0% |
+| full lg jacobian | 15.80 | 4.9% |
+| 2b pointwise lg j | 16.21 | 7.6% |
+| 2c pointwise lg j stack | 16.19 | 7.4% |
+| 2d pointwise lg j noinline | 18.09 | 20.0% |
+| 2e fd localgeom constructor | 13.68 | -9.2% |
+| 2f f x lg | 15.66 | 3.9% |
+| 2g lambda f x lg | 15.40 | 2.2% |
+| 2h f x lg noinline | 17.02 | 12.9% |
+| 2i lambda f x lg noinline | 16.65 | 10.5% |
+| full lg multiple | 18.58 | 23.3% |
+| extracted j | 15.99 | 6.1% |
+| simplified lg | 16.81 | 11.6% |
 
 ### Section 2: Struct Size Impact on Inlining
 
 | Struct Type | Size (bytes) | Time (μs) | Overhead vs Baseline |
 |-------------|--------------|-----------|----------------------|
-| two field access | 16 | 16.92 | 10.2% |
-| four field access | 32 | 16.85 | 9.8% |
-| eight field access | 64 | 17.10 | 11.4% |
-| sixteen field access | 128 | 16.94 | 10.4% |
+| two field access | 16 | 16.75 | 11.2% |
+| four field access | 32 | 15.90 | 5.5% |
+| eight field access | 64 | 16.49 | 9.4% |
+| sixteen field access | 128 | 16.97 | 12.6% |
 
 ### Section 3: Projection Operations
 
 | Operation | Time (μs) | Overhead vs Vector Baseline |
 |-----------|-----------|----------------------------|
-| vector baseline | 16.66 | 0.0% |
-| project full lg | 16.77 | 0.7% |
-| multiple scalar access | 17.17 | 3.1% |
+| vector baseline | 16.42 | 0.0% |
+| project full lg | 17.31 | 5.4% |
+| multiple scalar access | 18.04 | 9.9% |
 
 ## Memory Footprint
 
@@ -51,24 +51,24 @@
 ## Key Findings
 
 ### Basic Geometry Access
-- Full LocalGeometry (J only) overhead: 11.0%
-- Extracted J overhead: 8.7%
+- Full LocalGeometry (J only) overhead: 4.9%
+- Extracted J overhead: 6.1%
 
 ### Struct Size Impact
-- TwoFieldGeom (16 bytes): 10.2%
-- FourFieldGeom (32 bytes): 9.8%
-- EightFieldGeom (64 bytes): 11.4%
-- SixteenFieldGeom (128 bytes): 10.4%
+- TwoFieldGeom (16 bytes): 11.2%
+- FourFieldGeom (32 bytes): 5.5%
+- EightFieldGeom (64 bytes): 9.4%
+- SixteenFieldGeom (128 bytes): 12.6%
 
 ### Projection Operations
-- Covariant to Contravariant: 0.7%
+- Covariant to Contravariant: 5.4%
 
 ## Assessment
 
-⚠️ **SIGNIFICANT OVERHEAD** - Refactoring recommended
+⚠️ **MODERATE OVERHEAD** - Consider optimization strategies
 
-- Consider extracting commonly-used fields at kernel entry
-- Profile real physics kernels with nsys for detailed analysis
+- Extract J/WJ at kernel entry for hot paths
+- Use nsys profiling to identify bandwidth-bound kernels
 
 ## Next Steps
 

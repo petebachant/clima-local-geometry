@@ -1,9 +1,9 @@
 ==========================================
 LocalGeometry CUDA Benchmark - SLURM Job
 ==========================================
-Job ID: 189813
+Job ID: 189814
 Node: clima
-Start time: Tue Feb 24 09:18:55 PST 2026
+Start time: Tue Feb 24 09:25:10 PST 2026
 
 Loading climacommon/2025_05_15
   Loading requirement: climaauth/2025_05_15 openmpi/4.1.5-mpitrampoline
@@ -181,53 +181,53 @@ SECTION 3: Testing projection operations (common in physics kernels)
 Running benchmarks (this takes ~2-3 minutes)...
 
 (1/24) benchmarking "9d_full_geom_with_optionals"...
-done (took 1.158046241 seconds)
+done (took 1.220090742 seconds)
 (2/24) benchmarking "2f_f_x_lg"...
-done (took 1.370163454 seconds)
+done (took 1.347601276 seconds)
 (3/24) benchmarking "2h_f_x_lg_noinline"...
-done (took 1.106686587 seconds)
+done (took 1.12955251 seconds)
 (4/24) benchmarking "6_two_field_access"...
-done (took 0.670355775 seconds)
+done (took 0.669516604 seconds)
 (5/24) benchmarking "1_baseline_simple"...
-done (took 0.616760372 seconds)
+done (took 0.657681771 seconds)
 (6/24) benchmarking "2b_pointwise_lg_j"...
-done (took 1.085122547 seconds)
+done (took 1.107232267 seconds)
 (7/24) benchmarking "10_vector_baseline"...
-done (took 1.256133519 seconds)
+done (took 1.271861422 seconds)
 (8/24) benchmarking "8_eight_field_access"...
-done (took 0.638468552 seconds)
+done (took 0.634393463 seconds)
 (9/24) benchmarking "2_full_lg_jacobian"...
-done (took 0.629157334 seconds)
+done (took 0.652892294 seconds)
 (10/24) benchmarking "7_four_field_access"...
-done (took 0.644951742 seconds)
+done (took 0.659451492 seconds)
 (11/24) benchmarking "2c_pointwise_lg_j_stack"...
-done (took 1.14305384 seconds)
+done (took 1.099910233 seconds)
 (12/24) benchmarking "3_full_lg_multiple"...
-done (took 1.139252378 seconds)
+done (took 1.16677115 seconds)
 (13/24) benchmarking "5_simplified_lg"...
-done (took 1.045339459 seconds)
+done (took 0.998256924 seconds)
 (14/24) benchmarking "9e_minimal_with_padding"...
-done (took 0.725176953 seconds)
+done (took 0.64549353 seconds)
 (15/24) benchmarking "9b_two_field_with_nothing"...
-done (took 0.648019378 seconds)
+done (took 0.647080202 seconds)
 (16/24) benchmarking "2e_fd_localgeom_constructor"...
-done (took 1.621449418 seconds)
+done (took 1.457758573 seconds)
 (17/24) benchmarking "12_multiple_scalar_access"...
-done (took 1.259717963 seconds)
+done (took 1.166901339 seconds)
 (18/24) benchmarking "2d_pointwise_lg_j_noinline"...
-done (took 1.17557316 seconds)
+done (took 1.151078775 seconds)
 (19/24) benchmarking "2g_lambda_f_x_lg"...
-done (took 1.173863578 seconds)
+done (took 1.221928156 seconds)
 (20/24) benchmarking "11_project_full_lg"...
-done (took 1.365103197 seconds)
+done (took 1.351088139 seconds)
 (21/24) benchmarking "9_sixteen_field_access"...
-done (took 0.640775711 seconds)
+done (took 0.659327043 seconds)
 (22/24) benchmarking "9c_four_field_partial_nothing"...
-done (took 0.636973609 seconds)
+done (took 0.645786548 seconds)
 (23/24) benchmarking "4_extracted_j"...
-done (took 0.663899085 seconds)
+done (took 0.633308179 seconds)
 (24/24) benchmarking "2i_lambda_f_x_lg_noinline"...
-done (took 1.074359516 seconds)
+done (took 1.105397207 seconds)
 
 ======================================================================
 BENCHMARK RESULTS
@@ -237,48 +237,48 @@ SECTION 1: Basic Geometry Access
 ----------------------------------------------------------------------
 
 Execution Time (μs, lower is better):
-  baseline_simple                     15.35 μs  (  +0.0% vs baseline)
-  full_lg_jacobian                    17.04 μs  ( +11.0% vs baseline)
-  2b_pointwise_lg_j                   16.64 μs  (  +8.4% vs baseline)
-  2c_pointwise_lg_j_stack             17.06 μs  ( +11.1% vs baseline)
-  2d_pointwise_lg_j_noinline          18.18 μs  ( +18.4% vs baseline)
-  2e_fd_localgeom_constructor         13.64 μs  ( -11.1% vs baseline)
-  2f_f_x_lg                           16.05 μs  (  +4.6% vs baseline)
-  2g_lambda_f_x_lg                    15.94 μs  (  +3.8% vs baseline)
-  2h_f_x_lg_noinline                  17.88 μs  ( +16.5% vs baseline)
-  2i_lambda_f_x_lg_noinline           17.21 μs  ( +12.1% vs baseline)
-  full_lg_multiple                    18.81 μs  ( +22.5% vs baseline)
-  extracted_j                         16.68 μs  (  +8.7% vs baseline)
-  simplified_lg                       15.84 μs  (  +3.2% vs baseline)
+  baseline_simple                     15.07 μs  (  +0.0% vs baseline)
+  full_lg_jacobian                    15.80 μs  (  +4.9% vs baseline)
+  2b_pointwise_lg_j                   16.21 μs  (  +7.6% vs baseline)
+  2c_pointwise_lg_j_stack             16.19 μs  (  +7.4% vs baseline)
+  2d_pointwise_lg_j_noinline          18.09 μs  ( +20.0% vs baseline)
+  2e_fd_localgeom_constructor         13.68 μs  (  -9.2% vs baseline)
+  2f_f_x_lg                           15.66 μs  (  +3.9% vs baseline)
+  2g_lambda_f_x_lg                    15.40 μs  (  +2.2% vs baseline)
+  2h_f_x_lg_noinline                  17.02 μs  ( +12.9% vs baseline)
+  2i_lambda_f_x_lg_noinline           16.65 μs  ( +10.5% vs baseline)
+  full_lg_multiple                    18.58 μs  ( +23.3% vs baseline)
+  extracted_j                         15.99 μs  (  +6.1% vs baseline)
+  simplified_lg                       16.81 μs  ( +11.6% vs baseline)
 
 ----------------------------------------------------------------------
 SECTION 2: Struct Size Impact on Inlining
 ----------------------------------------------------------------------
 
 Execution Time (μs, lower is better):
-  two_field_access                    16.92 μs  ( +10.2% vs baseline)
-  four_field_access                   16.85 μs  (  +9.8% vs baseline)
-  eight_field_access                  17.10 μs  ( +11.4% vs baseline)
-  sixteen_field_access                16.94 μs  ( +10.4% vs baseline)
+  two_field_access                    16.75 μs  ( +11.2% vs baseline)
+  four_field_access                   15.90 μs  (  +5.5% vs baseline)
+  eight_field_access                  16.49 μs  (  +9.4% vs baseline)
+  sixteen_field_access                16.97 μs  ( +12.6% vs baseline)
 
 ----------------------------------------------------------------------
 SECTION 2B: Nothing Field Overhead Testing
 ----------------------------------------------------------------------
 
 Execution Time (μs, lower is better):
-  9b_two_field_with_nothing           16.42 μs  (  +7.0% vs baseline)
-  9c_four_field_partial_nothing       17.06 μs  ( +11.1% vs baseline)
-  9d_full_geom_with_optionals         17.47 μs  ( +13.8% vs baseline)
-  9e_minimal_with_padding             16.29 μs  (  +6.1% vs baseline)
+  9b_two_field_with_nothing           16.51 μs  (  +9.6% vs baseline)
+  9c_four_field_partial_nothing       16.18 μs  (  +7.4% vs baseline)
+  9d_full_geom_with_optionals         16.87 μs  ( +12.0% vs baseline)
+  9e_minimal_with_padding             16.94 μs  ( +12.4% vs baseline)
 
 ----------------------------------------------------------------------
 SECTION 3: Projection Operations
 ----------------------------------------------------------------------
 
 Execution Time (μs, lower is better):
-  vector_baseline                     16.66 μs  (  +0.0% vs vec_baseline)
-  project_full_lg                     16.77 μs  (  +0.7% vs vec_baseline)
-  multiple_scalar_access              17.17 μs  (  +3.1% vs vec_baseline)
+  vector_baseline                     16.42 μs  (  +0.0% vs vec_baseline)
+  project_full_lg                     17.31 μs  (  +5.4% vs vec_baseline)
+  multiple_scalar_access              18.04 μs  (  +9.9% vs vec_baseline)
 
 ======================================================================
 MEMORY FOOTPRINT COMPARISON
@@ -307,29 +307,33 @@ ANALYSIS & KEY FINDINGS
 ======================================================================
 
 1. BASIC GEOMETRY ACCESS OVERHEAD:
-   Full LocalGeometry (J only):      11.0%
-   Extracted J:                      8.7%
+   Full LocalGeometry (J only):      4.9%
+   Extracted J:                      6.1%
 
 2. STRUCT SIZE IMPACT (accessing single field):
-   TwoFieldGeom (16 bytes):          10.2%
-   FourFieldGeom (32 bytes):         9.8%
-   EightFieldGeom (64 bytes):        11.4%
-   SixteenFieldGeom (128 bytes):     10.4%
+   TwoFieldGeom (16 bytes):          11.2%
+   FourFieldGeom (32 bytes):         5.5%
+   EightFieldGeom (64 bytes):        9.4%
+   SixteenFieldGeom (128 bytes):     12.6%
 
    ✓ All struct sizes show similar performance - good inlining
 
 3. PROJECTION OPERATIONS OVERHEAD:
-   Covariant->Contravariant:         0.7%
+   Covariant->Contravariant:         5.4%
 
 ======================================================================
 RECOMMENDATIONS
 ======================================================================
 
-⚠️  SIGNIFICANT OVERHEAD DETECTED:
-   • Full LocalGeometry access has >10% overhead
-   • Consider: Extract J/WJ at kernel entry
+⚠️  MODERATE OVERHEAD DETECTED:
+   • LocalGeometry overhead: 4.9%
+   • Projection overhead: 5.4%
 
-   ACTION: Refactor hot paths to use simplified geometry types
+   CONSIDER:
+   1. Extract commonly-used components (J, WJ) at kernel entry
+   2. Profile with nsys to see actual bandwidth/occupancy impact:
+      ./scripts/run-nsys.sh --output=results/nsys/benchmark_lg \
+          julia --project scripts/benchmark_local_geometry_impact.jl
 
 ======================================================================
 CODE INSPECTION NOTES
@@ -364,5 +368,5 @@ Markdown results written to: /home/pbachant/calkit/clima-local-geometry/scripts/
 
 ==========================================
 Benchmark complete
-End time: Tue Feb 24 09:21:06 PST 2026
+End time: Tue Feb 24 09:27:20 PST 2026
 ==========================================

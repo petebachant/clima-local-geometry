@@ -1,0 +1,10 @@
+2026-02-24 17:25:08,012 - INFO - Stage 'sync-atmos-mod-core' didn't change, skipping
+2026-02-24 17:25:08,069 - INFO - Running stage 'benchmark-local-geometry-impact':
+2026-02-24 17:25:08,069 - INFO - > calkit slurm batch --name benchmark-local-geometry-impact --environment clima --dep scripts/benchmark_local_geometry_impact.jl --dep ClimaCore.jl/.buildkite/Manifest.toml --dep ClimaCore.jl/src --dep ClimaCore.jl/ext --out results/benchmark_local_geometry_impact.md -s --gpus=1 -s --time=30 -- scripts/run_benchmark_slurm.sh
+2026-02-24 17:27:22,742 - INFO - Updating lock file 'dvc.lock'
+2026-02-24 17:27:22,813 - INFO - Stage 'nsys-baseline' didn't change, skipping
+2026-02-24 17:27:22,861 - INFO - Stage 'nsys-mod' didn't change, skipping
+2026-02-24 17:27:22,896 - INFO - Stage 'compare-kernels' didn't change, skipping
+2026-02-24 17:27:22,938 - INFO - Stage 'amip-baseline' didn't change, skipping
+2026-02-24 17:27:22,981 - INFO - Stage 'amip-mod' didn't change, skipping
+2026-02-24 17:27:23,015 - INFO - Stage 'analyze-logs' didn't change, skipping

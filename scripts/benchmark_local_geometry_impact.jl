@@ -1,19 +1,5 @@
 #=
 Benchmark the actual performance impact of LocalGeometry on CUDA kernels.
-
-This compares:
-1. Kernel operations with full LocalGeometry
-2. Kernel operations with simplified/reduced variants
-3. Measures execution time, memory bandwidth, occupancy
-4. Tests struct size impact on inlining and performance
-5. Tests projection operations commonly used in physics kernels
-6. Verifies compiler inlining behavior
-
-Usage:
-    julia --project scripts/benchmark_local_geometry_impact.jl
-
-For nsys profiling:
-    ./scripts/run-nsys.sh --output=results/nsys/benchmark_lg julia --project scripts/benchmark_local_geometry_impact.jl
 =#
 
 using BenchmarkTools

@@ -40,8 +40,8 @@ stages:
       nfiles: 98
     - path: scripts/benchmark_local_geometry_impact.jl
       hash: md5
-      md5: ab5b44397f76fe6ee325b7bfd9e004dd
-      size: 31065
+      md5: c0e0310fc91ae5ae215984aac56b4530
+      size: 30523
     - path: scripts/run_benchmark_slurm.sh
       hash: md5
       md5: bae0f1e55c355f6d14b76c5a76d00f02
@@ -50,12 +50,12 @@ stages:
     outs:
     - path: .calkit/slurm/logs/benchmark-local-geometry-impact.out
       hash: md5
-      md5: 13fd15dc2c6b90041d677d7bb109fb54
-      size: 15393
+      md5: 77d51f8fb409b137d6e2652199681d41
+      size: 15572
     - path: results/benchmark_local_geometry_impact.md
       hash: md5
-      md5: b3ad4a17f77a4e05bcf4d2fc463562cb
-      size: 2879
+      md5: 4348641c4109e2c5ea16dfa06c7212b5
+      size: 2860
   amip-mod:
     cmd: calkit slurm batch --name amip-mod --environment clima --dep 
       config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 

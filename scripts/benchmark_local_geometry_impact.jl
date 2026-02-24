@@ -108,6 +108,37 @@ struct SixteenFieldGeom{FT}
     scalar13::FT
 end
 
+# Testing overhead of nothing fields versus simplified structs
+# These structs mimic LocalGeometry with optional fields, but stay isbits
+struct TwoFieldWithNothingGeom{FT}
+    J::FT
+    WJ::FT
+    metadata1::Nothing
+    metadata2::Nothing
+end
+
+struct FourFieldPartiallyNothingGeom{FT}
+    J::FT
+    WJ::FT
+    invJ::Nothing  # Set to nothing
+    extra1::Nothing  # Set to nothing
+end
+
+struct FullGeomWithOptionals{FT}
+    J::FT
+    WJ::FT
+    invJ::FT
+    scalar1::FT
+    scalar2::FT
+    scalar3::FT
+end
+
+struct MinimalGeomWithPadding{FT}
+    J::FT
+    WJ::FT
+    padding::NTuple{6, Nothing}  # Simulate overhead of nothing fields
+end
+
 # Create test space
 space = TU.SpectralElementSpace2D(FT; context=context)
 
@@ -158,6 +189,31 @@ sixteen_field_geom = similar(scalar_field, SixteenFieldGeom{FT})
     FT(11.0), FT(12.0), FT(13.0)
 )
 
+# Create fields with nothing-based geometry structs
+two_field_with_nothing = similar(scalar_field, TwoFieldWithNothingGeom{FT})
+@. two_field_with_nothing = TwoFieldWithNothingGeom(local_geom_full.J, local_geom_full.WJ, nothing, nothing)
+
+four_field_partially_nothing = similar(scalar_field, FourFieldPartiallyNothingGeom{FT})
+@. four_field_partially_nothing = FourFieldPartiallyNothingGeom(local_geom_full.J, local_geom_full.WJ, nothing, nothing)
+
+full_geom_with_optionals = similar(scalar_field, FullGeomWithOptionals{FT})
+@. full_geom_with_optionals = FullGeomWithOptionals(
+    local_geom_full.J,
+    local_geom_full.WJ,
+    local_geom_full.invJ,
+    FT(1.0),
+    FT(NaN),
+    FT(NaN),
+)
+
+minimal_geom_with_padding = similar(scalar_field, MinimalGeomWithPadding{FT})
+make_padding() = (nothing, nothing, nothing, nothing, nothing, nothing)
+@. minimal_geom_with_padding = MinimalGeomWithPadding(
+    local_geom_full.J,
+    local_geom_full.WJ,
+    make_padding(),
+)
+
 # Create a simple wrapper using NamedTuple
 simplified_geom = (J=J_field,)
 
@@ -180,7 +236,13 @@ println("  TwoFieldGeom:                 $(sizeof(TwoFieldGeom{FT})) bytes")
 println("  FourFieldGeom:                $(sizeof(FourFieldGeom{FT})) bytes")
 println("  EightFieldGeom:               $(sizeof(EightFieldGeom{FT})) bytes")
 println("  SixteenFieldGeom:             $(sizeof(SixteenFieldGeom{FT})) bytes")
+println("\nNone field overhead testing:")
+println("  TwoFieldWithNothingGeom:      $(sizeof(TwoFieldWithNothingGeom{FT})) bytes")
+println("  FourFieldPartiallyNothingGeom: $(sizeof(FourFieldPartiallyNothingGeom{FT})) bytes")
+println("  FullGeomWithOptionals:        $(sizeof(FullGeomWithOptionals{FT})) bytes (FT sentinel)")
+println("  MinimalGeomWithPadding:       $(sizeof(MinimalGeomWithPadding{FT})) bytes")
 println("\nNote: CUDA typically inlines structs < 128 bytes effectively")
+println("Note: sizeof(Nothing) = $(sizeof(Nothing)) bytes")
 
 # Benchmark Suite
 suite = BenchmarkGroup()
@@ -297,6 +359,35 @@ suite["9_sixteen_field_access"] = @benchmarkable begin
 end
 
 # ========================================
+# SECTION 2B: Nothing Field Overhead Testing
+# ========================================
+println("\nSECTION 2B: Testing overhead of nothing fields vs simplified structs")
+
+# Two fields with explicit nothing padding
+suite["9b_two_field_with_nothing"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $two_field_with_nothing.J
+    CUDA.synchronize()
+end
+
+# Four fields where some are nothing
+suite["9c_four_field_partial_nothing"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $four_field_partially_nothing.J
+    CUDA.synchronize()
+end
+
+# Full geometry with optional fields (using Union types)
+suite["9d_full_geom_with_optionals"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $full_geom_with_optionals.J
+    CUDA.synchronize()
+end
+
+# Minimal geometry with nothing padding tuple
+suite["9e_minimal_with_padding"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $minimal_geom_with_padding.J
+    CUDA.synchronize()
+end
+
+# ========================================
 # SECTION 3: Projection Operations
 # ========================================
 println("\nSECTION 3: Testing projection operations (common in physics kernels)")
@@ -357,8 +448,23 @@ println("SECTION 2: Struct Size Impact on Inlining")
 println(repeat("-", 70))
 println("\nExecution Time (μs, lower is better):")
 
-section2_keys = filter(k -> startswith(k, "6_") || startswith(k, "7_") || startswith(k, "8_") || startswith(k, "9_"), collect(keys(results)))
+section2_keys = filter(k -> (startswith(k, "6_") || startswith(k, "7_") || startswith(k, "8_") || startswith(k, "9_")) && !startswith(k, "9b_") && !startswith(k, "9c_") && !startswith(k, "9d_") && !startswith(k, "9e_"), collect(keys(results)))
 for key in sort(section2_keys)
+    result = results[key]
+    time_μs = minimum(result.times) / 1000
+    overhead = 100 * (time_μs - baseline_time / 1000) / (baseline_time / 1000)
+    overhead_str = overhead >= 0 ? @sprintf("+%.1f", overhead) : @sprintf("%.1f", overhead)
+    display_name = replace(key, r"^\d+_" => "")
+    @printf("  %-30s %10.2f μs  (%6s%% vs baseline)\n", display_name, time_μs, overhead_str)
+end
+
+println("\n" * repeat("-", 70))
+println("SECTION 2B: Nothing Field Overhead Testing")
+println(repeat("-", 70))
+println("\nExecution Time (μs, lower is better):")
+
+section2b_keys = filter(k -> startswith(k, "9b_") || startswith(k, "9c_") || startswith(k, "9d_") || startswith(k, "9e_"), collect(keys(results)))
+for key in sort(section2b_keys)
     result = results[key]
     time_μs = minimum(result.times) / 1000
     overhead = 100 * (time_μs - baseline_time / 1000) / (baseline_time / 1000)

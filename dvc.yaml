@@ -9,19 +9,6 @@ stages:
     outs: []
     desc: Automatically generated from the 'sync-atmos-mod-core' stage
       in calkit.yaml. Changes made here will be overwritten.
-  analyze-local-geometry-impact:
-    cmd: calkit xenv -n main --no-check -- 
-      "scripts/analysis_local_geometry_impact.jl"
-    deps:
-      - scripts/analysis_local_geometry_impact.jl
-      - .calkit/envs/main/Manifest.toml
-    outs:
-      - results/analysis_local_geometry_impact.md:
-          cache: false
-          persist: false
-    desc: Automatically generated from the 
-      'analyze-local-geometry-impact' stage in calkit.yaml. Changes 
-      made here will be overwritten.
   benchmark-local-geometry-impact:
     cmd: calkit slurm batch --name benchmark-local-geometry-impact 
       --environment clima --dep 

@@ -18,17 +18,21 @@ echo "Node: ${SLURM_NODELIST}"
 echo "Start time: $(date)"
 echo ""
 
-# Load required modules (adjust for your cluster)
-# Uncomment and modify as needed:
-# module load julia/1.12
-# module load cuda/12.0
-# module load gcc/11
+module purge
+module load climacommon/2025_05_15
 
-# Set Julia project to the ClimaCore.jl subdirectory
-export JULIA_PROJECT="${SLURM_SUBMIT_DIR}/ClimaCore.jl/.buildkite"
+# Set Julia project to the main environment subdirectory
+export JULIA_PROJECT=".calkit/envs/main"
 
 # CUDA device setup
 export CLIMACOMMS_DEVICE="CUDA"
+
+# Set environmental variable for julia to not use global packages for
+# reproducibility
+export JULIA_LOAD_PATH=@:@stdlib
+
+# Instantiate julia environment, precompile, and build CUDA
+julia --project=$JULIA_PROJECT -e 'using Pkg; Pkg.instantiate(;verbose=true); Pkg.precompile(;strict=true); using CUDA; CUDA.precompile_runtime(); Pkg.status()'
 
 # Display environment info
 echo "Julia version:"

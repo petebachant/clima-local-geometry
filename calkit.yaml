@@ -11,7 +11,7 @@ questions:
 environments:
   main:
     kind: julia
-    julia: "1.12"
+    julia: "1.11"
     path: .calkit/envs/main/Project.toml
   clima:
     kind: slurm

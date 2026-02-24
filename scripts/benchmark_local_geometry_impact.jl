@@ -43,6 +43,27 @@ context = SingletonCommsContext(device)
 
 FT = Float64
 
+@inline lg_j_direct(lg) = lg.J
+@inline lg_j_stack1(lg) = lg_j_direct(lg)
+@inline lg_j_stack2(lg) = lg_j_stack1(lg)
+@noinline lg_j_noinline(lg) = lg_j_stack2(lg)
+
+@inline f_from_lg(lg) = lg.J
+@noinline f_from_lg_noinline(lg) = lg.J
+
+struct WithLG{LG}
+    lg::LG
+end
+
+function fd_localgeom_kernel!(out, input, space, nv)
+    i = (blockIdx().x - 1) * blockDim().x + threadIdx().x
+    if i <= nv
+        lg = Geometry.LocalGeometry(space, i, (1, 1, 1))
+        @inbounds out[i, 1] = input[i, 1] + lg.J
+    end
+    return nothing
+end
+
 # Define simplified geometry structs with varying field counts
 # Test at what size the compiler stops inlining effectively
 struct TwoFieldGeom{FT}
@@ -88,15 +109,29 @@ struct SixteenFieldGeom{FT}
 end
 
 # Create test space
-space = TU.SpectralElementSpace2D(FT; context = context)
+space = TU.SpectralElementSpace2D(FT; context=context)
+
+# Finite-difference space for explicit LocalGeometry(space, idx, hidx)
+fd_space = TU.ColumnCenterFiniteDifferenceSpace(FT; context=context, zelem=128)
 
 # Create test fields
 scalar_field = Fields.Field(FT, space)
 result_field = similar(scalar_field)
 vector_field = Fields.Field(Geometry.Covariant12Vector{FT}, space)
 
+fd_scalar_field = Fields.Field(FT, fd_space)
+fd_result_field = similar(fd_scalar_field)
+fd_nv = Spaces.nlevels(fd_space)
+fd_in = parent(Fields.field_values(fd_scalar_field))
+fd_out = parent(Fields.field_values(fd_result_field))
+fd_threads = 256
+fd_blocks = cld(fd_nv, fd_threads)
+
 # Get full local geometry
 local_geom_full = Fields.local_geometry_field(space)
+
+wrapper_lg_field = similar(scalar_field, WithLG{eltype(local_geom_full)})
+@. wrapper_lg_field = WithLG(local_geom_full)
 
 # Extract scalar components for comparison
 J_field = similar(scalar_field)
@@ -124,7 +159,7 @@ sixteen_field_geom = similar(scalar_field, SixteenFieldGeom{FT})
 )
 
 # Create a simple wrapper using NamedTuple
-simplified_geom = (J = J_field,)
+simplified_geom = (J=J_field,)
 
 println("\n" * "="^70)
 println("LOCALGEOMETRY CUDA KERNEL PERFORMANCE BENCHMARK")
@@ -167,6 +202,50 @@ end
 suite["2_full_lg_jacobian"] = @benchmarkable begin
     @. $result_field = $scalar_field + $local_geom_full.J
     CUDA.synchronize()
+end
+
+# Pointwise function: access Jacobian via element LocalGeometry
+suite["2b_pointwise_lg_j"] = @benchmarkable begin
+    @. $result_field = $scalar_field + lg_j_direct($local_geom_full)
+    CUDA.synchronize()
+end
+
+# Pointwise function: add a couple of stack frames
+suite["2c_pointwise_lg_j_stack"] = @benchmarkable begin
+    @. $result_field = $scalar_field + lg_j_stack2($local_geom_full)
+    CUDA.synchronize()
+end
+
+# Pointwise function: force a non-inlined call boundary
+suite["2d_pointwise_lg_j_noinline"] = @benchmarkable begin
+    @. $result_field = $scalar_field + lg_j_noinline($local_geom_full)
+    CUDA.synchronize()
+end
+
+# Broadcast f(x.lg) vs anonymous function wrapping
+suite["2f_f_x_lg"] = @benchmarkable begin
+    @. $result_field = f_from_lg($wrapper_lg_field.lg)
+    CUDA.synchronize()
+end
+
+suite["2g_lambda_f_x_lg"] = @benchmarkable begin
+    $result_field .= (x -> f_from_lg(x.lg)).($wrapper_lg_field)
+    CUDA.synchronize()
+end
+
+suite["2h_f_x_lg_noinline"] = @benchmarkable begin
+    @. $result_field = f_from_lg_noinline($wrapper_lg_field.lg)
+    CUDA.synchronize()
+end
+
+# Finite-difference: explicitly call LocalGeometry(space, idx, hidx)
+suite["2e_fd_localgeom_constructor"] = @benchmarkable begin
+    CUDA.@sync @cuda threads = $fd_threads blocks = $fd_blocks fd_localgeom_kernel!(
+        $fd_out,
+        $fd_in,
+        $fd_space,
+        $fd_nv,
+    )
 end
 
 # Full LocalGeometry: access multiple scalar components
@@ -242,7 +321,7 @@ end
 
 # Run benchmarks with tuning
 println("\nRunning benchmarks (this takes ~2-3 minutes)...\n")
-results = run(suite, verbose = true, samples = 30)
+results = run(suite, verbose=true, samples=30)
 
 # Print results
 println("\n" * "="^70)
@@ -257,7 +336,7 @@ println("\nSECTION 1: Basic Geometry Access")
 println(repeat("-", 70))
 println("\nExecution Time (μs, lower is better):")
 
-section1_keys = filter(k -> startswith(k, "1_") || startswith(k, "2_") || startswith(k, "3_") || startswith(k, "4_") || startswith(k, "5_"), collect(keys(results)))
+section1_keys = filter(k -> startswith(k, "1_") || startswith(k, "2_") || startswith(k, "2b_") || startswith(k, "2c_") || startswith(k, "2d_") || startswith(k, "2e_") || startswith(k, "2f_") || startswith(k, "2g_") || startswith(k, "2h_") || startswith(k, "3_") || startswith(k, "4_") || startswith(k, "5_"), collect(keys(results)))
 for key in sort(section1_keys)
     result = results[key]
     time_μs = minimum(result.times) / 1000
@@ -460,7 +539,20 @@ begin
 
     baseline_time_μs = minimum(results["1_baseline_simple"].times) / 1000
 
-    section1_keys = ["1_baseline_simple", "2_full_lg_jacobian", "3_full_lg_multiple", "4_extracted_j", "5_simplified_lg"]
+    section1_keys = [
+        "1_baseline_simple",
+        "2_full_lg_jacobian",
+        "2b_pointwise_lg_j",
+        "2c_pointwise_lg_j_stack",
+        "2d_pointwise_lg_j_noinline",
+        "2e_fd_localgeom_constructor",
+        "2f_f_x_lg",
+        "2g_lambda_f_x_lg",
+        "2h_f_x_lg_noinline",
+        "3_full_lg_multiple",
+        "4_extracted_j",
+        "5_simplified_lg",
+    ]
     for key in section1_keys
         if haskey(results, key)
             result = results[key]
@@ -500,7 +592,7 @@ begin
 """
 
     vector_baseline_time = minimum(results["10_vector_baseline"].times) / 1000
-    section3_keys = ["10_vector_baseline", "11_project_full_lg", "12_metric_tensor_access"]
+    section3_keys = ["10_vector_baseline", "11_project_full_lg", "12_multiple_scalar_access"]
     for key in section3_keys
         if haskey(results, key)
             result = results[key]

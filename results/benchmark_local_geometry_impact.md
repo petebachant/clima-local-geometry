@@ -6,27 +6,35 @@
 
 | Operation | Time (μs) | Overhead vs Baseline |
 |-----------|-----------|----------------------|
-| baseline simple | 16.07 | 0.0% |
-| full lg jacobian | 17.27 | 7.5% |
-| full lg multiple | 19.53 | 21.5% |
-| extracted j | 17.13 | 6.6% |
-| simplified lg | 17.21 | 7.1% |
+| baseline simple | 15.17 | 0.0% |
+| full lg jacobian | 16.38 | 8.0% |
+| 2b pointwise lg j | 16.41 | 8.2% |
+| 2c pointwise lg j stack | 17.44 | 15.0% |
+| 2d pointwise lg j noinline | 17.62 | 16.2% |
+| 2e fd localgeom constructor | 13.91 | -8.3% |
+| 2f f x lg | 15.70 | 3.5% |
+| 2g lambda f x lg | 15.53 | 2.4% |
+| 2h f x lg noinline | 17.50 | 15.4% |
+| full lg multiple | 18.79 | 23.9% |
+| extracted j | 16.08 | 6.0% |
+| simplified lg | 16.26 | 7.2% |
 
 ### Section 2: Struct Size Impact on Inlining
 
 | Struct Type | Size (bytes) | Time (μs) | Overhead vs Baseline |
 |-------------|--------------|-----------|----------------------|
-| two field access | 16 | 17.34 | 7.9% |
-| four field access | 32 | 17.43 | 8.5% |
-| eight field access | 64 | 16.91 | 5.2% |
-| sixteen field access | 128 | 17.05 | 6.1% |
+| two field access | 16 | 16.29 | 7.4% |
+| four field access | 32 | 16.46 | 8.5% |
+| eight field access | 64 | 16.24 | 7.1% |
+| sixteen field access | 128 | 16.57 | 9.2% |
 
 ### Section 3: Projection Operations
 
 | Operation | Time (μs) | Overhead vs Vector Baseline |
 |-----------|-----------|----------------------------|
-| vector baseline | 17.30 | 0.0% |
-| project full lg | 17.61 | 1.8% |
+| vector baseline | 16.39 | 0.0% |
+| project full lg | 16.08 | -1.9% |
+| multiple scalar access | 17.35 | 5.9% |
 
 ## Memory Footprint
 
@@ -42,17 +50,17 @@
 ## Key Findings
 
 ### Basic Geometry Access
-- Full LocalGeometry (J only) overhead: 7.5%
-- Extracted J overhead: 6.6%
+- Full LocalGeometry (J only) overhead: 8.0%
+- Extracted J overhead: 6.0%
 
 ### Struct Size Impact
-- TwoFieldGeom (16 bytes): 7.9%
+- TwoFieldGeom (16 bytes): 7.4%
 - FourFieldGeom (32 bytes): 8.5%
-- EightFieldGeom (64 bytes): 5.2%
-- SixteenFieldGeom (128 bytes): 6.1%
+- EightFieldGeom (64 bytes): 7.1%
+- SixteenFieldGeom (128 bytes): 9.2%
 
 ### Projection Operations
-- Covariant to Contravariant: 1.8%
+- Covariant to Contravariant: -1.9%
 
 ## Assessment
 

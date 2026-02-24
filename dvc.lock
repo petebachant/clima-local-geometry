@@ -40,22 +40,22 @@ stages:
       nfiles: 98
     - path: scripts/benchmark_local_geometry_impact.jl
       hash: md5
-      md5: 0bd2929fb398e654da01b88e0139f71a
-      size: 24024
+      md5: 47e61caa4fec90b42de88b2a30a3ca18
+      size: 26919
     - path: scripts/run_benchmark_slurm.sh
       hash: md5
-      md5: 88df3fd56272acc43dfc346a2c64bade
-      size: 1584
+      md5: bae0f1e55c355f6d14b76c5a76d00f02
+      size: 1800
       isexec: true
     outs:
     - path: .calkit/slurm/logs/benchmark-local-geometry-impact.out
       hash: md5
-      md5: acc45902959d5e05d5c9b1c9d3fb379a
-      size: 8703
+      md5: 8255372bebc211c4777f7f675af8dd46
+      size: 35764
     - path: results/benchmark_local_geometry_impact.md
       hash: md5
-      md5: f458f0376f458b85565dffb062ff0c87
-      size: 2488
+      md5: 9bf8a797910bb410958acf7d11e8e311
+      size: 2812
   amip-mod:
     cmd: calkit slurm batch --name amip-mod --environment clima --dep 
       config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
@@ -185,21 +185,21 @@ stages:
       size: 1231
     - path: scripts/run-nsys.sh
       hash: md5
-      md5: 517efdedcc87c2c3ee5df188ec05713b
-      size: 1723
+      md5: c83d8939e62284ff1cff8ea8253de4ac
+      size: 1692
     outs:
     - path: .calkit/slurm/logs/nsys-baseline.out
       hash: md5
-      md5: b0eff3399e5c3824ec924a7ac8b98d78
-      size: 94576
+      md5: 925cad1fcdfa7bd967b09b82e12e1b3f
+      size: 86861
     - path: results/nsys/baseline.nsys-rep
       hash: md5
-      md5: 156faf252afd68c7243c06035f8ad24e
-      size: 32954697
+      md5: e56a534dd7ab76fa50602dd1ef11a826
+      size: 23023216
     - path: results/nsys/baseline.sqlite
       hash: md5
-      md5: 230322246624a63a909b636c464d4f33
-      size: 599867392
+      md5: 68aaa6e305daf028dbda840329ce9977
+      size: 48070656
   nsys-mod:
     cmd: calkit slurm batch --name nsys-mod --environment clima --dep 
       ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 

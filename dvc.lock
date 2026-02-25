@@ -168,7 +168,7 @@ stages:
     deps:
     - path: ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
       hash: md5
-      md5: cdd22349113d8bf7193fbb2c8083bd71
+      md5: 8908c2f07fcab5cf96f692ec43375ffc
       size: 117661
     - path: ClimaAtmos.jl/perf/benchmark_step.jl
       hash: md5
@@ -176,9 +176,9 @@ stages:
       size: 2082
     - path: ClimaAtmos.jl/src
       hash: md5
-      md5: fd6ac25e8f1fd424c6d8ffbc15e76bd2.dir
-      size: 1440679
-      nfiles: 105
+      md5: d4a4602fa460aac75f5143a67d538766.dir
+      size: 1495929
+      nfiles: 106
     - path: config/climaatmos_progedmf_1m.yml
       hash: md5
       md5: 6b44ef8fd381d2127ee1b668b2e850a7
@@ -190,16 +190,16 @@ stages:
     outs:
     - path: .calkit/slurm/logs/nsys-baseline.out
       hash: md5
-      md5: 6fc709f567f00a0266bbcb7c985afb85
-      size: 87529
+      md5: c055aa21789c051663bc0cad977ed041
+      size: 89731
     - path: results/nsys/baseline.nsys-rep
       hash: md5
-      md5: 2056aa5a5b5072017cfa4c128214c7d4
-      size: 23070257
+      md5: 6f2ab054b6f0c39154d29333ad44a81f
+      size: 23083900
     - path: results/nsys/baseline.sqlite
       hash: md5
-      md5: 683f4bfc0f9ff6eef90f46c2bbfadeea
-      size: 47837184
+      md5: 8c236e4d33beac9a10f2a74b9b254397
+      size: 48095232
   nsys-mod:
     cmd: calkit slurm batch --name nsys-mod --environment clima --dep 
       ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 

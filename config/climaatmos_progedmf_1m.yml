@@ -23,9 +23,8 @@ implicit_sgs_nh_pressure: true
 implicit_sgs_vertdiff: true
 insolation: "timevarying"
 max_newton_iters_ode: 3
-moist: "nonequil"
+microphysics_model: "1M"
 netcdf_output_at_levels: true
-precip_model: "1M"
 prescribed_aerosols:
   [
     "CB1",

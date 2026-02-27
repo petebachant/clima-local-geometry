@@ -66,13 +66,13 @@ stages:
     deps:
     - path: ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml
       hash: md5
-      md5: a3a7eb4ada5e81cdb629b006f272825b
-      size: 117766
+      md5: 8908c2f07fcab5cf96f692ec43375ffc
+      size: 117661
     - path: ClimaAtmos.jl-mod/src
       hash: md5
-      md5: ac9fd1dd844b13a5d872bafb31b29894.dir
-      size: 1443084
-      nfiles: 105
+      md5: 0866cb12a0ed6247655008540a2b7afb.dir
+      size: 1500355
+      nfiles: 106
     - path: config/climaatmos_progedmf_1m.yml
       hash: md5
       md5: 6b44ef8fd381d2127ee1b668b2e850a7
@@ -88,8 +88,8 @@ stages:
     outs:
     - path: .calkit/slurm/logs/amip-mod.out
       hash: md5
-      md5: 54a52d782ad826cf246638f3feffece5
-      size: 19327
+      md5: 04984d9b0aa6711772e88d37dbbc34bc
+      size: 18758
   amip-baseline:
     cmd: calkit slurm batch --name amip-baseline --environment clima --dep 
       config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep 
@@ -99,13 +99,13 @@ stages:
     deps:
     - path: ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml
       hash: md5
-      md5: cdd22349113d8bf7193fbb2c8083bd71
+      md5: 8908c2f07fcab5cf96f692ec43375ffc
       size: 117661
     - path: ClimaAtmos.jl/src
       hash: md5
-      md5: fd6ac25e8f1fd424c6d8ffbc15e76bd2.dir
-      size: 1440679
-      nfiles: 105
+      md5: d4a4602fa460aac75f5143a67d538766.dir
+      size: 1495929
+      nfiles: 106
     - path: config/climaatmos_progedmf_1m.yml
       hash: md5
       md5: 6b44ef8fd381d2127ee1b668b2e850a7
@@ -121,8 +121,8 @@ stages:
     outs:
     - path: .calkit/slurm/logs/amip-baseline.out
       hash: md5
-      md5: 6adecd9b4d4727f3e432b254cb38ac72
-      size: 19241
+      md5: 97494c0ac2afb373930576cf8a04c738
+      size: 18718
   analyze-logs:
     cmd: calkit nb execute --environment py --no-check --to html 
       "notebooks/analyze-logs.ipynb"
@@ -137,25 +137,25 @@ stages:
       size: 1631
     - path: .calkit/slurm/logs/amip-baseline.out
       hash: md5
-      md5: 6adecd9b4d4727f3e432b254cb38ac72
-      size: 19241
+      md5: 97494c0ac2afb373930576cf8a04c738
+      size: 18718
     - path: .calkit/slurm/logs/amip-mod.out
       hash: md5
-      md5: 54a52d782ad826cf246638f3feffece5
-      size: 19327
+      md5: 04984d9b0aa6711772e88d37dbbc34bc
+      size: 18758
     outs:
     - path: .calkit/notebooks/executed/notebooks/analyze-logs.ipynb
       hash: md5
-      md5: 02b8f92b065a1a2b504cba5fadb76520
-      size: 46661
+      md5: a29f0f08854bc7c88891ccdfcaae9613
+      size: 46509
     - path: .calkit/notebooks/html/notebooks/analyze-logs.html
       hash: md5
-      md5: 3e76b62c3e85236be75548b51d209d44
-      size: 325841
+      md5: 2c37fe906dfa64141015a246ada41cbb
+      size: 325689
     - path: figures/sypd-time-series.png
       hash: md5
-      md5: dd796c0d2a67de2988b0f899aa83347d
-      size: 32767
+      md5: ba6ad84b668b85dbb52d4e720e9d1455
+      size: 32669
   nsys-baseline:
     cmd: calkit slurm batch --name nsys-baseline --environment clima --dep 
       ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src --dep
@@ -190,16 +190,16 @@ stages:
     outs:
     - path: .calkit/slurm/logs/nsys-baseline.out
       hash: md5
-      md5: c055aa21789c051663bc0cad977ed041
-      size: 89731
+      md5: 234a552de622c060bc07ce3a8406e1ba
+      size: 87605
     - path: results/nsys/baseline.nsys-rep
       hash: md5
-      md5: 6f2ab054b6f0c39154d29333ad44a81f
-      size: 23083900
+      md5: 0f4376856725eca4b18d1aedf1d89796
+      size: 23094817
     - path: results/nsys/baseline.sqlite
       hash: md5
-      md5: 8c236e4d33beac9a10f2a74b9b254397
-      size: 48095232
+      md5: 9167c452f918f1c133e22fe884505c7c
+      size: 48082944
   nsys-mod:
     cmd: calkit slurm batch --name nsys-mod --environment clima --dep 
       ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
@@ -221,8 +221,8 @@ stages:
       size: 2082
     - path: ClimaAtmos.jl-mod/src
       hash: md5
-      md5: 497b75e93eea36c177ddf5d0c677437b.dir
-      size: 1500288
+      md5: 0866cb12a0ed6247655008540a2b7afb.dir
+      size: 1500355
       nfiles: 106
     - path: config/climaatmos_progedmf_1m.yml
       hash: md5
@@ -235,16 +235,16 @@ stages:
     outs:
     - path: .calkit/slurm/logs/nsys-mod.out
       hash: md5
-      md5: 4534f2772669707c414ce2da319c4b94
-      size: 86769
+      md5: 650dc04b13fac50b6edb3f46dd2d0236
+      size: 87779
     - path: results/nsys/mod.nsys-rep
       hash: md5
-      md5: d57acc31ad34978f06fdf44ad79aad10
-      size: 23087944
+      md5: 77730f38e673f6dff4d83082b2dca83c
+      size: 23084929
     - path: results/nsys/mod.sqlite
       hash: md5
-      md5: b5ec49b7b61c5b6dcf1551217c6c5026
-      size: 48164864
+      md5: dce366ded3bc7cc159a318c7cfd1a91d
+      size: 48173056
   compare-kernels:
     cmd: calkit nb execute --environment py --no-check --to html 
       "notebooks/compare-kernels.ipynb"
@@ -255,25 +255,25 @@ stages:
       size: 98212
     - path: .calkit/notebooks/cleaned/notebooks/compare-kernels.ipynb
       hash: md5
-      md5: 1f70cbbee8e1ff73f97270a00bf6d229
-      size: 28523
+      md5: 34bf96eecca9c0ee2207c7786d05ef08
+      size: 28476
     - path: results/nsys/baseline.sqlite
       hash: md5
-      md5: 8c236e4d33beac9a10f2a74b9b254397
-      size: 48095232
+      md5: 9167c452f918f1c133e22fe884505c7c
+      size: 48082944
     - path: results/nsys/mod.sqlite
       hash: md5
-      md5: b5ec49b7b61c5b6dcf1551217c6c5026
-      size: 48164864
+      md5: dce366ded3bc7cc159a318c7cfd1a91d
+      size: 48173056
     outs:
     - path: .calkit/notebooks/executed/notebooks/compare-kernels.ipynb
       hash: md5
-      md5: edc6075286eb27772e9162ca5011c9f0
-      size: 47193
+      md5: 9015cc3fbe2880250d5ecfe3ed1fb3a2
+      size: 47014
     - path: .calkit/notebooks/html/notebooks/compare-kernels.html
       hash: md5
-      md5: f614e2af2d71bfa56d3318d791e94e5f
-      size: 374880
+      md5: 17cea642bf5cd2dce039837187931744
+      size: 374290
   sync-atmos-mod-core:
     cmd: ' bash --noprofile --norc scripts/sync-atmos-mod-core.sh'
     deps:

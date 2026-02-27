@@ -8336,7 +8336,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6665c790">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3b8fe8c9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8355,33 +8355,6 @@ a.anchor-link {
 <span class="k">def</span><span class="w"> </span><span class="nf">strip_mod_suffix</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Remove a loose mod suffix for matching."""</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(?:_|\s)mod\b"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">list_available_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf%"</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    List all kernels matching a pattern in the database.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        db_path: Path to SQLite database</span>
-<span class="sd">        pattern: SQL LIKE pattern for kernel names</span>
-<span class="sd">    """</span>
-    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-
-    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
-<span class="s2">    SELECT DISTINCT s.value as kernelName, COUNT(*) as count</span>
-<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL k</span>
-<span class="s2">    JOIN StringIds s ON k.demangledName = s.id</span>
-<span class="s2">    WHERE s.value LIKE ?</span>
-<span class="s2">    GROUP BY s.value</span>
-<span class="s2">    ORDER BY s.value</span>
-<span class="s2">    """</span>
-
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,))</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">results</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">list_top_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"%"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
@@ -8446,30 +8419,18 @@ a.anchor-link {
     <span class="k">return</span> <span class="n">baseline_kernel</span><span class="p">,</span> <span class="n">best_kernel</span>
 
 
-<span class="c1"># List available kernels</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Available kernels in baseline database:"</span><span class="p">)</span>
-<span class="n">baseline_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">baseline_kernels</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Automatically select the hottest kernel from baseline (no hardcoded patterns)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Selecting the hottest kernel from baseline...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Available kernels in modified database:"</span><span class="p">)</span>
-<span class="n">mod_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">mod_kernels</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top kernels in baseline (by total time):"</span><span class="p">)</span>
-<span class="n">baseline_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Top 5 kernels in baseline (by total time):"</span><span class="p">)</span>
+<span class="n">baseline_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"%"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">total_ns</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">baseline_top</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span>
-    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top kernels in modified (by total time):"</span><span class="p">)</span>
-<span class="n">mod_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top 5 kernels in modified (by total time):"</span><span class="p">)</span>
+<span class="n">mod_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"%"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">total_ns</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">mod_top</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span>
-    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="n">baseline_kernel_name</span><span class="p">,</span> <span class="n">mod_kernel_name</span> <span class="o">=</span> <span class="n">select_kernel_name</span><span class="p">(</span>
     <span class="n">baseline_top</span><span class="p">,</span> <span class="n">mod_top</span>
@@ -8486,43 +8447,23 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Available kernels in baseline database:
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L532
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L538
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L545
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L551
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L612
-  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L622
+<pre>Selecting the hottest kernel from baseline...
 
-Available kernels in modified database:
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L532
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L538
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L545
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L551
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L612
-  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L622
+Top 5 kernels in baseline (by total time):
+   469.02 ms  [  25 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1096
+   390.14 ms  [7515 invocations] foreach_FILE_ClimaCore_tlvj6_src_MatrixFields_field_name_set_jl_L81
+   283.51 ms  [ 450 invocations] run_field_matrix_solver__FILE_ClimaCore_tlvj6_src_MatrixFields_field_matrix_solver_jl_L352
+   249.36 ms  [ 990 invocations] run_field_matrix_solver__FILE_ClimaCore_tlvj6_src_MatrixFields_field_matrix_solver_jl_L354
+    87.80 ms  [4185 invocations] regridded_snapshot__FILE_ClimaUtilities_5ClV5_ext_DataHandlingExt_jl_L666
 
-Top kernels in baseline (by total time):
-   469.27 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
-     9.80 ms  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L622
-     8.99 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L612
-   542.05 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L532
-   536.22 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L538
-   534.78 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L551
-   529.18 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L545
-
-Top kernels in modified (by total time):
-   254.37 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
-     9.72 ms  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L622
-     8.91 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L612
-   536.77 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L532
-   531.20 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L538
-   528.96 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L551
-   524.06 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L545
-Selected baseline kernel: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593 (total=469.27 ms)
-Selected modified kernel: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L593 (total=254.37 ms, score=0.985)
+Top 5 kernels in modified (by total time):
+   388.85 ms  [7515 invocations] foreach_FILE_ClimaCore_tlvj6_src_MatrixFields_field_name_set_jl_L81
+   282.36 ms  [ 450 invocations] run_field_matrix_solver__FILE_ClimaCore_tlvj6_src_MatrixFields_field_matrix_solver_jl_L352
+   254.46 ms  [  25 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1096
+   249.84 ms  [ 990 invocations] run_field_matrix_solver__FILE_ClimaCore_tlvj6_src_MatrixFields_field_matrix_solver_jl_L354
+    87.39 ms  [4185 invocations] regridded_snapshot__FILE_ClimaUtilities_5ClV5_ext_DataHandlingExt_jl_L666
+Selected baseline kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1096 (total=469.02 ms)
+Selected modified kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1096 (total=254.46 ms, score=0.978)
 </pre>
 </div>
 </div>
@@ -8561,7 +8502,7 @@ Selected modified kernel: set_prognostic_edmf_precomputed_quantities_precipitati
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ============================================================================================================================================
-KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
+KERNEL: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1096
 ============================================================================================================================================
 
 </pre>
@@ -8605,37 +8546,37 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <tr>
 <th>1</th>
 <td>Total Duration</td>
-<td>469.27 ms</td>
-<td>254.37 ms</td>
-<td>-45.79%</td>
+<td>469.02 ms</td>
+<td>254.46 ms</td>
+<td>-45.75%</td>
 </tr>
 <tr>
 <th>2</th>
 <td>Mean Duration</td>
-<td>18.77 ms</td>
-<td>10.17 ms</td>
-<td>-45.79%</td>
+<td>18.76 ms</td>
+<td>10.18 ms</td>
+<td>-45.75%</td>
 </tr>
 <tr>
 <th>3</th>
 <td>Median Duration</td>
-<td>18.72 ms</td>
-<td>10.17 ms</td>
-<td>-45.65%</td>
+<td>18.71 ms</td>
+<td>10.18 ms</td>
+<td>-45.59%</td>
 </tr>
 <tr>
 <th>4</th>
 <td>Min Duration</td>
-<td>18.62 ms</td>
-<td>10.13 ms</td>
-<td>-45.58%</td>
+<td>18.64 ms</td>
+<td>10.14 ms</td>
+<td>-45.62%</td>
 </tr>
 <tr>
 <th>5</th>
 <td>Max Duration</td>
 <td>20.22 ms</td>
 <td>10.23 ms</td>
-<td>-49.38%</td>
+<td>-49.44%</td>
 </tr>
 <tr>
 <th>6</th>
@@ -8738,7 +8679,7 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ============================================================================================================================================
-✅ Modified version is 45.79% FASTER (mean duration)
+✅ Modified version is 45.75% FASTER (mean duration)
 ============================================================================================================================================
 </pre>
 </div>
@@ -8814,21 +8755,21 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <tbody>
 <tr>
 <th>0</th>
-<td>0.264</td>
-<td>0.291</td>
-<td>10.227273</td>
+<td>0.286</td>
+<td>0.24</td>
+<td>-16.083916</td>
 </tr>
 <tr>
 <th>1</th>
-<td>0.336</td>
-<td>0.358</td>
-<td>6.547619</td>
+<td>0.341</td>
+<td>0.32</td>
+<td>-6.158358</td>
 </tr>
 <tr>
 <th>2</th>
-<td>0.397</td>
-<td>0.436</td>
-<td>9.823678</td>
+<td>0.412</td>
+<td>0.40</td>
+<td>-2.912621</td>
 </tr>
 </tbody>
 </table>
@@ -9111,48 +9052,66 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 Total Profiling Duration:
-  Baseline: 3.35 s
-  Modified: 3.04 s
-  ✅ Modified run is 9.42% SHORTER overall
+  Baseline: 3.25 s
+  Modified: 3.13 s
+  ✅ Modified run is 3.62% SHORTER overall
 
 Total GPU Kernel Time:
   Baseline: 3.19 s
-  Modified: 2.96 s
-  Change: -7.24%
+  Modified: 2.97 s
+  Change: -7.12%
 
 CPU/Sync Overhead (Total Duration - GPU Time):
-  Baseline: 158.76 ms
-  Modified: 74.29 ms
-  ✅ Modified has 53.21% LESS overhead
-
+  Baseline: 56.39 ms
+  Modified: 166.11 ms
+  ⚠️  Modified has 194.56% MORE overhead
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Kernel Count Comparison:
   Baseline: 265 unique kernels
   Modified: 265 unique kernels
-
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Kernel Invocation Changes (for common kernels):
   ✓ All common kernels have identical invocation counts
-
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Kernel Family Analysis (by name pattern):
 
   Pattern: 'set_prognostic_edmf_precomputed_quantities'
-    Invocations:   1855 →   1855 (+0.0%)
-    Total time:   535.97 ms →  320.51 ms (-40.2%)
+    Invocations:   1245 →   1245 (+0.0%)
+    Total time:    46.46 ms →   46.18 ms (-0.6%)
 
   Pattern: 'microphysics'
-    Invocations:    540 →    540 (+0.0%)
-    Total time:    25.33 ms →   25.08 ms (-1.0%)
+    Invocations:   2480 →   2480 (+0.0%)
+    Total time:   555.25 ms →  339.93 ms (-38.8%)
 
   Pattern: 'precipitation'
-    Invocations:   2090 →   2090 (+0.0%)
-    Total time:   538.71 ms →  323.09 ms (-40.0%)
+    Invocations:   1580 →   1580 (+0.0%)
+    Total time:    50.58 ms →   50.08 ms (-1.0%)
 
   Pattern: 'tendency'
-    Invocations:   6185 →   6185 (+0.0%)
-    Total time:   435.45 ms →  431.77 ms (-0.8%)
+    Invocations:   6695 →   6695 (+0.0%)
+    Total time:   921.99 ms →  705.00 ms (-23.5%)
 
   Pattern: 'implicit'
     Invocations:  11810 →  11810 (+0.0%)
-    Total time:   811.07 ms →  804.45 ms (-0.8%)
+    Total time:   810.60 ms →  805.04 ms (-0.7%)
 </pre>
 </div>
 </div>

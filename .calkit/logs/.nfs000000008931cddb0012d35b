@@ -1,0 +1,18 @@
+2026-03-01 21:39:48,263 - INFO - Running stage 'nsys-baseline':
+2026-03-01 21:39:48,263 - INFO - > calkit slurm batch --name nsys-baseline --environment clima --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src --dep config/climaatmos_progedmf_1m.yml --dep ClimaAtmos.jl/perf/benchmark_step.jl --out results/nsys/baseline.nsys-rep --out results/nsys/baseline.sqlite -s --gpus=1 -s --time=120 -- scripts/run-nsys.sh --output=results/nsys/baseline julia --project=ClimaAtmos.jl/.buildkite ClimaAtmos.jl/perf/benchmark_step.jl --config_file=config/climaatmos_progedmf_1m.yml
+2026-03-01 22:14:42,105 - INFO - Updating lock file 'dvc.lock'
+2026-03-01 22:14:42,141 - INFO - Running stage 'nsys-mod':
+2026-03-01 22:14:42,141 - INFO - > calkit slurm batch --name nsys-mod --environment clima --dep ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl-mod/src --dep config/climaatmos_progedmf_1m.yml --dep ClimaAtmos.jl-mod/perf/benchmark_step.jl --out results/nsys/mod.nsys-rep --out results/nsys/mod.sqlite -s --gpus=1 -s --time=120 -- scripts/run-nsys.sh --output=results/nsys/mod julia --project=ClimaAtmos.jl-mod/.buildkite ClimaAtmos.jl-mod/perf/benchmark_step.jl --config_file=config/climaatmos_progedmf_1m.yml
+2026-03-01 22:50:04,705 - INFO - Updating lock file 'dvc.lock'
+2026-03-01 22:50:04,739 - INFO - Running stage 'compare-kernels':
+2026-03-01 22:50:04,739 - INFO - > calkit nb execute --environment py --no-check --to html "notebooks/compare-kernels.ipynb"
+2026-03-01 22:50:14,225 - INFO - Updating lock file 'dvc.lock'
+2026-03-01 22:50:14,256 - INFO - Running stage 'amip-baseline':
+2026-03-01 22:50:14,257 - INFO - > calkit slurm batch --name amip-baseline --environment clima --dep config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep ClimaAtmos.jl/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl/src -s --gpus=1 -s --time=120 -- scripts/run-julia-script.sh --project=ClimaAtmos.jl/.buildkite scripts/run_progedmf_1m.jl
+2026-03-01 23:24:58,999 - INFO - Updating lock file 'dvc.lock'
+2026-03-01 23:24:59,030 - INFO - Running stage 'amip-mod':
+2026-03-01 23:24:59,030 - INFO - > calkit slurm batch --name amip-mod --environment clima --dep config/climaatmos_progedmf_1m.yml --dep scripts/run_progedmf_1m.jl --dep ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep ClimaAtmos.jl-mod/src -s --gpus=1 -s --time=120 -- scripts/run-julia-script.sh --project=ClimaAtmos.jl-mod/.buildkite scripts/run_progedmf_1m.jl
+2026-03-02 00:01:20,845 - INFO - Updating lock file 'dvc.lock'
+2026-03-02 00:01:20,880 - INFO - Running stage 'analyze-logs':
+2026-03-02 00:01:20,880 - INFO - > calkit nb execute --environment py --no-check --to html "notebooks/analyze-logs.ipynb"
+2026-03-02 00:01:30,327 - INFO - Updating lock file 'dvc.lock'

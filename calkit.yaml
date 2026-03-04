@@ -157,6 +157,10 @@ notebooks:
     description: Compares the CUDA kernels between the baseline and modified runs
       using the Nsight profiling results to identify any performance differences.
     stage: compare-kernels
+  - path: notebooks/benchmark-localgeom.ipynb
+    title: Benchmark LocalGeometry
+    description: Benchmarks the performance of the original and modified LocalGeometry
+      struct implementations to assess potential speedups.
 
 figures:
   - path: figures/sypd-time-series.png

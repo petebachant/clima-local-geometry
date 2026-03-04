@@ -212,3 +212,6 @@ output
 !.calkit/notebooks/html/notebooks/analyze-logs.html
 !figures/sypd-time-series.png
 .calkit/notebooks/cleaned/notebooks/compare-kernels.ipynb
+
+*.DS_Store
+mod.diff

@@ -122,7 +122,7 @@ end
 struct MinimalGeomWithPadding{FT}
     J::FT
     WJ::FT
-    padding::NTuple{6, Nothing}  # Simulate overhead of nothing fields
+    padding::NTuple{6,Nothing}  # Simulate overhead of nothing fields
 end
 
 # Create test space
@@ -401,8 +401,152 @@ suite["12_multiple_scalar_access"] = @benchmarkable begin
     CUDA.synchronize()
 end
 
+# ========================================
+# SECTION 4: Fixed Expression, Varying Struct (isolate memory effects)
+# ========================================
+println("\nSECTION 4: Fixed Expression with Varying Struct Sizes (isolate memory effects)")
+
+# We apply the EXACT SAME EXPRESSION to different struct types
+# This isolates memory bandwidth effects from compilation effects
+# All structs have a .J field, so @. result_field = scalar_field + struct.J is valid
+
+suite["4_1_scalar_with_2field"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $two_field_geom.J
+    CUDA.synchronize()
+end
+
+suite["4_2_scalar_with_4field"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $four_field_geom.J
+    CUDA.synchronize()
+end
+
+suite["4_3_scalar_with_8field"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $eight_field_geom.J
+    CUDA.synchronize()
+end
+
+suite["4_4_scalar_with_16field"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $sixteen_field_geom.J
+    CUDA.synchronize()
+end
+
+suite["4_5_scalar_with_full_lg"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $local_geom_full.J
+    CUDA.synchronize()
+end
+
+# ========================================
+# SECTION 5: Fixed Struct, Varying Expression Complexity (isolate compilation effects)
+# ========================================
+println("\nSECTION 5: Fixed Struct (LocalGeometry) with Varying Expression Complexity")
+
+# Start with full LocalGeometry, gradually add more terms
+# This isolates broadcast compilation complexity from memory bandwidth
+
+suite["5_1_expr_1term"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $local_geom_full.J
+    CUDA.synchronize()
+end
+
+suite["5_2_expr_2terms"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $local_geom_full.J + $local_geom_full.WJ * 0.1
+    CUDA.synchronize()
+end
+
+suite["5_3_expr_3terms"] = @benchmarkable begin
+    @. $result_field = $scalar_field + $local_geom_full.J + $local_geom_full.WJ * 0.1 + $local_geom_full.invJ * 0.01
+    CUDA.synchronize()
+end
+
+suite["5_4_expr_4terms"] = @benchmarkable begin
+    @. $result_field = $scalar_field * ($local_geom_full.J + $local_geom_full.WJ * 0.1 + $local_geom_full.invJ * 0.01 + $scalar_field * 0.001)
+    CUDA.synchronize()
+end
+
+suite["5_5_expr_6terms"] = @benchmarkable begin
+    @. $result_field = ($scalar_field + $local_geom_full.J) *
+                       ($local_geom_full.WJ + $local_geom_full.invJ) *
+                       (1.0 + $scalar_field * 0.01)
+    CUDA.synchronize()
+end
+
+# ========================================
+# SECTION 6: Stencil-like Operations (chained geometry access)
+# ========================================
+println("\nSECTION 6: Stencil-like Operations (chained LocalGeometry operations)")
+
+# These tests simulate what would happen in real stencil operations
+# where LocalGeometry is accessed multiple times in nested operations
+
+# Create a helper function to test recursive operations
+@inline function apply_lg_twice_inlined(x, lg)
+    return x + lg.J * lg.WJ
+end
+
+@noinline function apply_lg_twice_noinline(x, lg)
+    return x + lg.J * lg.WJ
+end
+
+@inline function apply_lg_three_times_inlined(x, lg)
+    return x + lg.J * lg.WJ * lg.invJ
+end
+
+@noinline function apply_lg_three_times_noinline(x, lg)
+    return x + lg.J * lg.WJ * lg.invJ
+end
+
+# Simple chained access (both inlined)
+suite["6_1_chained_lg_2accesses_inlined"] = @benchmarkable begin
+    @. $result_field = $scalar_field + apply_lg_twice_inlined($scalar_field, $local_geom_full)
+    CUDA.synchronize()
+end
+
+# Chained access with noinline boundary
+suite["6_2_chained_lg_2accesses_noinline"] = @benchmarkable begin
+    @. $result_field = $scalar_field + apply_lg_twice_noinline($scalar_field, $local_geom_full)
+    CUDA.synchronize()
+end
+
+# Three-way chained access (inlined)
+suite["6_3_chained_lg_3accesses_inlined"] = @benchmarkable begin
+    @. $result_field = $scalar_field + apply_lg_three_times_inlined($scalar_field, $local_geom_full)
+    CUDA.synchronize()
+end
+
+# Three-way chained access with noinline boundary
+suite["6_4_chained_lg_3accesses_noinline"] = @benchmarkable begin
+    @. $result_field = $scalar_field + apply_lg_three_times_noinline($scalar_field, $local_geom_full)
+    CUDA.synchronize()
+end
+
+# Simulate the complex recursive pattern from Dennis and Teja's findings
+# Multiple products combined (mimics the project_for_mul issue)
+@inline function complex_lg_computation_inlined(lg::LocalGeometry{FT}) where {FT}
+    # Simulate: diag1 * diag2 * diag3 + diag4 * diag5 * diag6 pattern
+    # Using LG fields instead of actual matrices
+    term1 = lg.J * lg.WJ * lg.invJ
+    term2 = lg.J * lg.WJ * lg.invJ
+    return term1 + term2
+end
+
+@noinline function complex_lg_computation_noinline(lg::LocalGeometry{FT}) where {FT}
+    term1 = lg.J * lg.WJ * lg.invJ
+    term2 = lg.J * lg.WJ * lg.invJ
+    return term1 + term2
+end
+
+suite["6_5_complex_multi_product_inlined"] = @benchmarkable begin
+    @. $result_field = $scalar_field - complex_lg_computation_inlined($local_geom_full)
+    CUDA.synchronize()
+end
+
+suite["6_6_complex_multi_product_noinline"] = @benchmarkable begin
+    @. $result_field = $scalar_field - complex_lg_computation_noinline($local_geom_full)
+    CUDA.synchronize()
+end
+
 # Run benchmarks with tuning
-println("\nRunning benchmarks (this takes ~2-3 minutes)...\n")
+println("\nRunning benchmarks (this takes ~3-5 minutes due to additional sections)...\n")
 results = run(suite, verbose=true, samples=30)
 
 # Print results
@@ -475,6 +619,83 @@ for key in sort(section3_keys)
     @printf("  %-30s %10.2f μs  (%6s%% vs vec_baseline)\n", display_name, time_μs, overhead_str)
 end
 
+println("\n" * repeat("-", 70))
+println("SECTION 4: Fixed Expression, Varying Struct (isolate memory effects)")
+println(repeat("-", 70))
+println("\nExecution Time (μs, lower is better):")
+println("(Same expression @. result_field = scalar_field + struct.J, varying struct size)")
+
+section4_keys = filter(k -> startswith(k, "4_1_") || startswith(k, "4_2_") || startswith(k, "4_3_") || startswith(k, "4_4_") || startswith(k, "4_5_"), collect(keys(results)))
+baseline_4 = minimum(results["4_1_scalar_with_2field"].times) / 1000
+for key in sort(section4_keys)
+    result = results[key]
+    time_μs = minimum(result.times) / 1000
+    overhead = 100 * (time_μs - baseline_4) / baseline_4
+    overhead_str = overhead >= 0 ? @sprintf("+%.1f", overhead) : @sprintf("%.1f", overhead)
+    display_name = replace(key, r"^\d+_" => "")
+    # Extract struct size info
+    struct_info = ""
+    if contains(key, "2field")
+        struct_info = " (2 fields, 16 bytes)"
+    elseif contains(key, "4field")
+        struct_info = " (4 fields, 32 bytes)"
+    elseif contains(key, "8field")
+        struct_info = " (8 fields, 64 bytes)"
+    elseif contains(key, "16field")
+        struct_info = " (16 fields, 128 bytes)"
+    elseif contains(key, "full_lg")
+        struct_info = " (Full LocalGeometry)"
+    end
+    @printf("  %-30s %10.2f μs  (%6s%% vs min)  %s\n", display_name, time_μs, overhead_str, struct_info)
+end
+
+println("\n" * repeat("-", 70))
+println("SECTION 5: Fixed Struct (LocalGeometry), Varying Expression Complexity")
+println(repeat("-", 70))
+println("\nExecution Time (μs, lower is better):")
+println("(Same LocalGeometry field, varying number of terms and operations)")
+
+section5_keys = filter(k -> startswith(k, "5_1_") || startswith(k, "5_2_") || startswith(k, "5_3_") || startswith(k, "5_4_") || startswith(k, "5_5_"), collect(keys(results)))
+baseline_5 = minimum(results["5_1_expr_1term"].times) / 1000
+for key in sort(section5_keys)
+    result = results[key]
+    time_μs = minimum(result.times) / 1000
+    overhead = 100 * (time_μs - baseline_5) / baseline_5
+    overhead_str = overhead >= 0 ? @sprintf("+%.1f", overhead) : @sprintf("%.1f", overhead)
+    display_name = replace(key, r"^\d+_" => "")
+    # Extract complexity info
+    complexity_info = ""
+    if contains(key, "1term")
+        complexity_info = " (1 term)"
+    elseif contains(key, "2terms")
+        complexity_info = " (2 terms)"
+    elseif contains(key, "3terms")
+        complexity_info = " (3 terms)"
+    elseif contains(key, "4terms")
+        complexity_info = " (4 terms, 1 multiply)"
+    elseif contains(key, "6terms")
+        complexity_info = " (6 terms, nested mults)"
+    end
+    @printf("  %-30s %10.2f μs  (%6s%% vs baseline)  %s\n", display_name, time_μs, overhead_str, complexity_info)
+end
+
+println("\n" * repeat("-", 70))
+println("SECTION 6: Stencil-like Operations (chained LocalGeometry access)")
+println(repeat("-", 70))
+println("\nExecution Time (μs, lower is better):")
+println("(Multiple accesses to LocalGeometry fields in single operation)")
+
+section6_keys = filter(k -> startswith(k, "6_"), collect(keys(results)))
+baseline_6 = minimum(results["1_baseline_simple"].times) / 1000
+for key in sort(section6_keys)
+    result = results[key]
+    time_μs = minimum(result.times) / 1000
+    overhead = 100 * (time_μs - baseline_6) / baseline_6
+    overhead_str = overhead >= 0 ? @sprintf("+%.1f", overhead) : @sprintf("%.1f", overhead)
+    display_name = replace(key, r"^\d+_" => "")
+    @printf("  %-30s %10.2f μs  (%6s%% vs scalar baseline)\n", display_name, time_μs, overhead_str)
+end
+
 println("\n" * "="^70)
 println("MEMORY FOOTPRINT COMPARISON")
 println("="^70)
@@ -524,6 +745,40 @@ vector_baseline_μs = minimum(results["10_vector_baseline"].times) / 1000
 lg_overhead_pct = 100 * (full_lg_μs - baseline_μs) / baseline_μs
 projection_overhead_pct = 100 * (projection_μs - vector_baseline_μs) / vector_baseline_μs
 
+# Section 4 analysis: Same expression, varying struct
+section4_times = [
+    minimum(results["4_1_scalar_with_2field"].times) / 1000,
+    minimum(results["4_2_scalar_with_4field"].times) / 1000,
+    minimum(results["4_3_scalar_with_8field"].times) / 1000,
+    minimum(results["4_4_scalar_with_16field"].times) / 1000,
+    minimum(results["4_5_scalar_with_full_lg"].times) / 1000,
+]
+section4_min = minimum(section4_times)
+section4_max = maximum(section4_times)
+section4_memory_variance = 100 * (section4_max - section4_min) / section4_min
+
+# Section 5 analysis: Same struct, varying expression
+section5_times = [
+    minimum(results["5_1_expr_1term"].times) / 1000,
+    minimum(results["5_2_expr_2terms"].times) / 1000,
+    minimum(results["5_3_expr_3terms"].times) / 1000,
+    minimum(results["5_4_expr_4terms"].times) / 1000,
+    minimum(results["5_5_expr_6terms"].times) / 1000,
+]
+section5_min = minimum(section5_times)
+section5_max = maximum(section5_times)
+section5_compilation_variance = 100 * (section5_max - section5_min) / section5_min
+
+# Section 6 analysis: Stencil operations
+section6_times = [
+    minimum(results["6_1_chained_lg_2accesses_inlined"].times) / 1000,
+    minimum(results["6_2_chained_lg_2accesses_noinline"].times) / 1000,
+    minimum(results["6_3_chained_lg_3accesses_inlined"].times) / 1000,
+    minimum(results["6_4_chained_lg_3accesses_noinline"].times) / 1000,
+    minimum(results["6_5_complex_multi_product_inlined"].times) / 1000,
+    minimum(results["6_6_complex_multi_product_noinline"].times) / 1000,
+]
+
 println("\n1. BASIC GEOMETRY ACCESS OVERHEAD:")
 println("   Full LocalGeometry (J only):      $(@sprintf("%.1f", lg_overhead_pct))%")
 println("   Extracted J:                      $(@sprintf("%.1f", 100 * (extracted_μs - baseline_μs) / baseline_μs))%")
@@ -548,6 +803,82 @@ end
 
 println("\n3. PROJECTION OPERATIONS OVERHEAD:")
 println("   Covariant->Contravariant:         $(@sprintf("%.1f", projection_overhead_pct))%")
+
+println("\n4. MEMORY EFFECT ANALYSIS (Section 4: Same expression, varying struct):")
+println("   Memory variance across struct sizes: $(@sprintf("%.1f", section4_memory_variance))%")
+if section4_memory_variance > 10
+    println("   ⚠️  SIGNIFICANT MEMORY EFFECTS: struct size impacts performance")
+    println("      Indicates inefficient memory access patterns or cache effects")
+else
+    println("   ✓ MINIMAL MEMORY EFFECTS: struct size has negligible impact")
+    println("      Good memory access locality")
+end
+
+println("\n5. BROADCAST COMPILATION EFFECT (Section 5: Same struct, varying complexity):")
+println("   Compilation variance across expression complexity: $(@sprintf("%.1f", section5_compilation_variance))%")
+if section5_compilation_variance > 20
+    println("   ⚠️  SIGNIFICANT COMPILATION EFFECTS: expression complexity matters")
+    println("      More complex broadcasts → larger generated kernels")
+    println("      May cause register pressure or reduced occupancy")
+elseif section5_compilation_variance > 5
+    println("   ⚠️  MODERATE COMPILATION EFFECTS: noticeable with complex expressions")
+    println("      Keep broadcast expressions concise when possible")
+else
+    println("   ✓ MINIMAL COMPILATION EFFECTS: ClimaCore broadcasts compile efficiently")
+end
+
+println("\n6. STENCIL OPERATION ANALYSIS (Section 6: Chained operations):")
+inlining_gap_2accesses = minimum(results["6_2_chained_lg_2accesses_noinline"].times) / minimum(results["6_1_chained_lg_2accesses_inlined"].times)
+inlining_gap_3accesses = minimum(results["6_4_chained_lg_3accesses_noinline"].times) / minimum(results["6_3_chained_lg_3accesses_inlined"].times)
+println("   Inlining impact (2 accesses):     $(@sprintf("%.2f", inlining_gap_2accesses))x slower with noinline")
+println("   Inlining impact (3 accesses):     $(@sprintf("%.2f", inlining_gap_3accesses))x slower with noinline")
+if maximum(section6_times) / minimum(section6_times) > 1.5
+    println("   ⚠️  INLINING CRITICAL FOR STENCIL OPS: Large performance gap detected")
+    println("      Ensure LocalGeometry access functions are inlined")
+    println("      Avoid @noinline annotations on geometry-accessing functions")
+else
+    println("   ✓ Stencil operations handle LocalGeometry efficiently")
+end
+
+println("\n" * "="^70)
+println("EFFECT DECOMPOSITION SUMMARY")
+println("="^70)
+
+println("\nThis benchmark isolates four distinct effects:")
+println("\n1. MEMORY BANDWIDTH (Section 4):")
+println("   Impact: $(@sprintf("%.1f", section4_memory_variance))%")
+if section4_memory_variance > 10
+    println("   → SIGNIFICANT: Memory is a limiting factor")
+else
+    println("   → MINIMAL: Computation dominates over memory")
+end
+
+println("\n2. BROADCAST COMPILATION (Section 5):")
+println("   Impact: $(@sprintf("%.1f", section5_compilation_variance))%")
+if section5_compilation_variance > 20
+    println("   → SIGNIFICANT: Compiler struggles with complex expressions")
+else
+    println("   → MINIMAL: ClimaCore handles complex expressions well")
+end
+
+println("\n3. INLINING DECISIONS (Section 6):")
+avg_inlining_impact = (inlining_gap_2accesses + inlining_gap_3accesses) / 2
+println("   Impact: $(@sprintf("%.2f", avg_inlining_impact))x")
+if avg_inlining_impact > 1.3
+    println("   → CRITICAL: Inlining failures cause significant slowdowns")
+else
+    println("   → MANAGEABLE: Inlining works reasonably well")
+end
+
+println("\n4. OVERALL LOCALGEOMETRY OVERHEAD (Section 1 & 2):")
+println("   Direct access impact: $(@sprintf("%.1f", lg_overhead_pct))%")
+if lg_overhead_pct > 20
+    println("   → HIGH: Consider design changes")
+elseif lg_overhead_pct > 5
+    println("   → MODERATE: Worth optimizing if in hot paths")
+else
+    println("   → LOW: No major optimization needed")
+end
 
 println("\n" * "="^70)
 println("RECOMMENDATIONS")

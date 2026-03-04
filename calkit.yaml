@@ -170,3 +170,6 @@ figures:
     title: SYPD time series
     description:
     stage: analyze-logs
+
+showcase:
+  - notebook: notebooks/benchmark-localgeom.ipynb

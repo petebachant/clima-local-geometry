@@ -16,6 +16,9 @@ environments:
   clima:
     kind: slurm
     host: clima.gps.caltech.edu
+    default_options:
+      - --gpus=1
+      - --time=120
   py:
     kind: uv
     path: .calkit/envs/py/pyproject.toml
@@ -119,13 +122,13 @@ pipeline:
         - ClimaAtmos.jl/src
     # Atmos AMIP modified
     amip-mod:
-      kind: sbatch
+      kind: sbatch # Could just be shell-script, and we infer from environment
       environment: clima
       script_path: scripts/run-julia-script.sh
       args:
         - --project=ClimaAtmos.jl-mod/.buildkite
         - scripts/run_progedmf_1m.jl
-      sbatch_options:
+      sbatch_options: # Could just be slurm_options
         - --gpus=1
         - --time=120
       inputs:
@@ -145,6 +148,17 @@ pipeline:
           storage: git
       html_storage: git
       executed_ipynb_storage: git
+    # Need to implement this stage type
+    # - Auto-generate sbatch script or srun command
+    benchmark-notebook:
+      kind: jupyter-notebook
+      notebook_path: notebooks/benchmark-localgeom.ipynb
+      environment: clima:main
+      html_storage: git
+      executed_ipynb_storage: git
+      slurm_options:
+        - --gpus=1
+        - --time=15
 
 notebooks:
   - path: notebooks/analyze-logs.ipynb
@@ -163,7 +177,7 @@ notebooks:
     description:
       Benchmarks the performance of the original and modified LocalGeometry
       struct implementations to assess potential speedups.
-    environment: main
+    stage: benchmark-notebook
 
 figures:
   - path: figures/sypd-time-series.png

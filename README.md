@@ -7,7 +7,7 @@ performance.
 
 - `ClimaCore.jl`: `pb/localgeo`
 - `ClimaAtmos.jl`: `pb/rm-nvtx`
-- `ClimaAtmos.jl-mod`: `pb/localgeo`
+- `ClimaAtmos.jl-mod`: `pb/precip-precomp`
 
 ## Running Julia Jupyter notebooks interactively on `clima` with a GPU
 

@@ -8294,7 +8294,7 @@ a.anchor-link {
 <span class="n">mod_db</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"../results/nsys/mod.sqlite"</span><span class="p">)</span>
 
 <span class="c1"># Kernel name pattern to match (avoid fragile line numbers)</span>
-<span class="n">kernel_pattern</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf_precomputed_quantities_precipitation%"</span>
+<span class="n">kernel_pattern</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">et_microphysics_tendency_cache%"</span>
 
 <span class="c1"># Check if files exist</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">baseline_db</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -8357,7 +8357,7 @@ a.anchor-link {
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(?:_|\s)mod\b"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">list_available_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf%"</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_available_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2">et_microphysics_tendency_cache%"</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    List all kernels matching a pattern in the database.</span>
 
@@ -8487,48 +8487,34 @@ a.anchor-link {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Available kernels in baseline database:
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L532
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L538
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L545
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L551
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L612
-  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L622
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1293
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1342
+  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1346
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1360
 
 Available kernels in modified database:
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L541
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L547
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L554
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L560
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L602
-  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L621
-  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L631
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1293
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1342
+  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1346
+  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1360
 
 Top kernels in baseline (by total time):
-   461.52 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
-     9.74 ms  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L622
-     8.99 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L612
-   540.61 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L532
-   534.27 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L538
-   532.00 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L551
-   526.65 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L545
+   718.95 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323
+    17.55 ms  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1346
+    12.24 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1342
+     5.86 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1360
+     4.61 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1293
 
 Top kernels in modified (by total time):
-   296.47 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L602
-     9.76 ms  [ 460 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L631
-     8.99 ms  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L621
-   541.47 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L541
-   534.98 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L547
-   533.11 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L560
-   527.71 µs  [  25 invocations] set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L554
-Selected baseline kernel: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593 (total=461.52 ms)
-Selected modified kernel: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_mod_src_cache_prognostic_edmf_precomputed_quantities_jl_L631 (total=9.76 ms, score=0.970)
+   360.75 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323
+    17.56 ms  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1346
+    12.27 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1342
+     5.88 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1360
+     4.62 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1293
+Selected baseline kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323 (total=718.95 ms)
+Selected modified kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323 (total=360.75 ms, score=0.978)
 </pre>
 </div>
 </div>
@@ -8567,7 +8553,7 @@ Selected modified kernel: set_prognostic_edmf_precomputed_quantities_precipitati
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ============================================================================================================================================
-KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmos_jl_src_cache_prognostic_edmf_precomputed_quantities_jl_L593
+KERNEL: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323
 ============================================================================================================================================
 
 </pre>
@@ -8604,44 +8590,44 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <tr>
 <th>0</th>
 <td>Invocations</td>
-<td>25</td>
-<td>460</td>
-<td>+1740.00%</td>
+<td>40</td>
+<td>40</td>
+<td>0.00%</td>
 </tr>
 <tr>
 <th>1</th>
 <td>Total Duration</td>
-<td>461.52 ms</td>
-<td>9.76 ms</td>
-<td>-97.88%</td>
+<td>718.95 ms</td>
+<td>360.75 ms</td>
+<td>-49.82%</td>
 </tr>
 <tr>
 <th>2</th>
 <td>Mean Duration</td>
-<td>18.46 ms</td>
-<td>21.22 µs</td>
-<td>-99.89%</td>
+<td>17.97 ms</td>
+<td>9.02 ms</td>
+<td>-49.82%</td>
 </tr>
 <tr>
 <th>3</th>
 <td>Median Duration</td>
-<td>18.39 ms</td>
-<td>20.83 µs</td>
-<td>-99.89%</td>
+<td>17.94 ms</td>
+<td>9.01 ms</td>
+<td>-49.78%</td>
 </tr>
 <tr>
 <th>4</th>
 <td>Min Duration</td>
-<td>18.37 ms</td>
-<td>20.45 µs</td>
-<td>-99.89%</td>
+<td>17.88 ms</td>
+<td>8.99 ms</td>
+<td>-49.74%</td>
 </tr>
 <tr>
 <th>5</th>
 <td>Max Duration</td>
-<td>20.09 ms</td>
-<td>26.46 µs</td>
-<td>-99.87%</td>
+<td>19.67 ms</td>
+<td>9.38 ms</td>
+<td>-52.31%</td>
 </tr>
 <tr>
 <th>6</th>
@@ -8689,8 +8675,8 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <th>12</th>
 <td>Registers Per Thread</td>
 <td>255</td>
-<td>16</td>
-<td>-93.73%</td>
+<td>96</td>
+<td>-62.35%</td>
 </tr>
 <tr>
 <th>13</th>
@@ -8723,9 +8709,9 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <tr>
 <th>17</th>
 <td>Local Memory Total (bytes)</td>
-<td>1,928,724,480</td>
-<td>244,187,136</td>
-<td>-87.34%</td>
+<td>1,769,472,000</td>
+<td>1,564,213,248</td>
+<td>-11.60%</td>
 </tr>
 <tr>
 <th>18</th>
@@ -8744,7 +8730,7 @@ KERNEL: set_prognostic_edmf_precomputed_quantities_precipitation__FILE_ClimaAtmo
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ============================================================================================================================================
-✅ Modified version is 99.89% FASTER (mean duration)
+✅ Modified version is 49.82% FASTER (mean duration)
 ============================================================================================================================================
 </pre>
 </div>

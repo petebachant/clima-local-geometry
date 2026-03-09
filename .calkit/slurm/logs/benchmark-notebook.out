@@ -1,7 +1,7 @@
 Using julia as notebook language
 Registered IJulia kernel 'clima-local-geometry_-main-1.11' at: /home/pbachant/.local/share/jupyter/kernels/clima-local-geometry_-main-1.11
 Executing:   0%|          | 0/37 [00:00<?, ?cell/s]Starting kernel event loops.
-Executing:   3%|▎         | 1/37 [00:01<01:05,  1.82s/cell]┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
+Executing:   3%|▎         | 1/37 [00:01<01:10,  1.95s/cell]┌ Warning: CUDA runtime library `libcublasLt.so.13` was loaded from a system path, `/usr/local/cuda/lib64/libcublasLt.so.13`.
 │ This may cause errors.
 │ 
 │ If you're running under a profiler, this situation is expected. Otherwise,
@@ -30,7 +30,7 @@ Registered IJulia kernel 'clima-local-geometry_-main-1.11' at: /home/pbachant/.l
 │ In any other case, please file an issue.
 └ @ CUDA ~/.julia/packages/CUDA/TPbi4/src/initialization.jl:218
 
-Executing:   5%|▌         | 2/37 [00:13<04:30,  7.73s/cell]Executing:   8%|▊         | 3/37 [00:14<02:42,  4.79s/cell]Executing:  16%|█▌        | 6/37 [00:45<04:16,  8.26s/cell]Executing:  19%|█▉        | 7/37 [00:51<03:57,  7.91s/cell]Executing:  22%|██▏       | 8/37 [00:52<02:54,  6.00s/cell]Executing:  27%|██▋       | 10/37 [01:09<03:13,  7.18s/cell]Executing:  32%|███▏      | 12/37 [01:13<02:08,  5.13s/cell]Executing:  38%|███▊      | 14/37 [01:16<01:30,  3.93s/cell]Executing:  43%|████▎     | 16/37 [01:21<01:12,  3.44s/cell]Executing:  49%|████▊     | 18/37 [01:25<00:56,  3.00s/cell]Executing:  54%|█████▍    | 20/37 [01:31<00:51,  3.03s/cell]Executing:  59%|█████▉    | 22/37 [01:39<00:48,  3.25s/cell]Executing:  65%|██████▍   | 24/37 [01:52<00:55,  4.23s/cell]Executing:  70%|███████   | 26/37 [01:58<00:42,  3.86s/cell]Executing:  78%|███████▊  | 29/37 [01:58<00:18,  2.35s/cell]Executing:  86%|████████▋ | 32/37 [01:58<00:07,  1.51s/cell]┌ Warning: Performing scalar indexing on task Task (runnable, started) @0x00007fbd2aa43080.
+Executing:   5%|▌         | 2/37 [00:13<04:20,  7.44s/cell]Executing:   8%|▊         | 3/37 [00:14<02:37,  4.62s/cell]Executing:  16%|█▌        | 6/37 [00:43<04:05,  7.91s/cell]Executing:  19%|█▉        | 7/37 [00:49<03:48,  7.61s/cell]Executing:  22%|██▏       | 8/37 [00:50<02:47,  5.78s/cell]Executing:  27%|██▋       | 10/37 [01:07<03:09,  7.03s/cell]Executing:  32%|███▏      | 12/37 [01:11<02:05,  5.02s/cell]Executing:  38%|███▊      | 14/37 [01:14<01:28,  3.87s/cell]Executing:  43%|████▎     | 16/37 [01:19<01:11,  3.40s/cell]Executing:  49%|████▊     | 18/37 [01:23<00:56,  2.97s/cell]Executing:  54%|█████▍    | 20/37 [01:29<00:51,  3.01s/cell]Executing:  59%|█████▉    | 22/37 [01:37<00:48,  3.24s/cell]Executing:  65%|██████▍   | 24/37 [01:50<00:55,  4.23s/cell]Executing:  70%|███████   | 26/37 [01:56<00:42,  3.86s/cell]Executing:  78%|███████▊  | 29/37 [01:56<00:18,  2.35s/cell]Executing:  86%|████████▋ | 32/37 [01:56<00:07,  1.51s/cell]┌ Warning: Performing scalar indexing on task Task (runnable, started) @0x00007f1a7dc5b080.
 │ Invocation of getindex resulted in scalar indexing of a GPU array.
 │ This is typically caused by calling an iterating implementation of a method.
 │ Such implementations *do not* execute on the GPU, but very slowly on the CPU,
@@ -40,7 +40,7 @@ Registered IJulia kernel 'clima-local-geometry_-main-1.11' at: /home/pbachant/.l
 │ to enable scalar iteration globally or for the operations in question.
 └ @ GPUArraysCore ~/.julia/packages/GPUArraysCore/aNaXo/src/GPUArraysCore.jl:145
 
-Executing:  97%|█████████▋| 36/37 [01:59<00:01,  1.01s/cell][0mExecuting: 100%|██████████| 37/37 [02:00<00:00,  3.26s/cell]
+Executing:  97%|█████████▋| 36/37 [01:57<00:01,  1.01s/cell][0mExecuting: 100%|██████████| 37/37 [01:58<00:00,  3.20s/cell]
 Exporting html
 [NbConvertApp] Converting notebook .calkit/notebooks/executed/notebooks/benchmark-localgeom.ipynb to html
-[NbConvertApp] Writing 627931 bytes to .calkit/notebooks/html/notebooks/benchmark-localgeom.html
+[NbConvertApp] Writing 628140 bytes to .calkit/notebooks/html/notebooks/benchmark-localgeom.html

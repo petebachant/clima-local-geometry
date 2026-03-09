@@ -169,9 +169,12 @@ stages:
     cmd: calkit slurm batch --name benchmark-notebook --environment 
       clima --dep 
       .calkit/notebooks/cleaned/notebooks/benchmark-localgeom.ipynb 
-      --dep .calkit/envs/main/Manifest.toml -s --gpus=1 -s --time=15 
-      --command -- calkit nb execute --environment main --no-check 
-      --to html "notebooks/benchmark-localgeom.ipynb"
+      --dep .calkit/envs/main/Manifest.toml --out 
+      .calkit/notebooks/executed/notebooks/benchmark-localgeom.ipynb 
+      --out .calkit/notebooks/html/notebooks/benchmark-localgeom.html 
+      -s --gpus=1 -s --time=15 --command -- calkit nb execute 
+      --environment main --no-check --to html 
+      "notebooks/benchmark-localgeom.ipynb"
     deps:
       - .calkit/notebooks/cleaned/notebooks/benchmark-localgeom.ipynb
       - .calkit/envs/main/Manifest.toml

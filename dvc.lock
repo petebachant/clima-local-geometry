@@ -300,9 +300,11 @@ stages:
   benchmark-notebook:
     cmd: calkit slurm batch --name benchmark-notebook --environment clima --dep 
       .calkit/notebooks/cleaned/notebooks/benchmark-localgeom.ipynb --dep 
-      .calkit/envs/main/Manifest.toml -s --gpus=1 -s --time=15 --command -- 
-      calkit nb execute --environment main --no-check --to html 
-      "notebooks/benchmark-localgeom.ipynb"
+      .calkit/envs/main/Manifest.toml --out 
+      .calkit/notebooks/executed/notebooks/benchmark-localgeom.ipynb --out 
+      .calkit/notebooks/html/notebooks/benchmark-localgeom.html -s --gpus=1 -s 
+      --time=15 --command -- calkit nb execute --environment main --no-check 
+      --to html "notebooks/benchmark-localgeom.ipynb"
     deps:
     - path: .calkit/envs/main/Manifest.toml
       hash: md5
@@ -315,9 +317,9 @@ stages:
     outs:
     - path: .calkit/notebooks/executed/notebooks/benchmark-localgeom.ipynb
       hash: md5
-      md5: af8be894dfe67d13618cb06baf5e22ac
-      size: 122305
+      md5: 9806fb86ccdc096cda1b1334efa785d4
+      size: 122386
     - path: .calkit/notebooks/html/notebooks/benchmark-localgeom.html
       hash: md5
-      md5: 99f37d7c91a5f13c3125f73f98eafbff
-      size: 628606
+      md5: 1f13afb8c3a4d67429f5f3ec5c7d7239
+      size: 628815

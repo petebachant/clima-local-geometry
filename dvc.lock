@@ -172,8 +172,8 @@ stages:
       size: 116427
     - path: ClimaAtmos.jl/perf/benchmark_step.jl
       hash: md5
-      md5: e4e56e0353b6c5130c4e3fc03082c211
-      size: 2082
+      md5: 6a24c3a3d5f34c8477da1a50445db97a
+      size: 2148
     - path: ClimaAtmos.jl/src
       hash: md5
       md5: afb05ec52ee72af557c21c8bf741973e.dir
@@ -190,16 +190,16 @@ stages:
     outs:
     - path: .calkit/slurm/logs/nsys-baseline.out
       hash: md5
-      md5: 5fd825ace376741acb237fb0a2523284
-      size: 122256
+      md5: 8b45709e7e7510b84a56524f3f3d1133
+      size: 85488
     - path: results/nsys/baseline.nsys-rep
       hash: md5
-      md5: b82a10eeeefaf3a27a7b0d7b0954f60b
-      size: 23898406
+      md5: cdaefa0476fd6bada6e80945728e736c
+      size: 23917468
     - path: results/nsys/baseline.sqlite
       hash: md5
-      md5: bf23ae87d54c41226d37e49b591a63c5
-      size: 50028544
+      md5: 9ae3ab973db502ae073379d6fc4ff54e
+      size: 50536448
   nsys-mod:
     cmd: calkit slurm batch --name nsys-mod --environment clima --dep 
       ClimaAtmos.jl-mod/.buildkite/Manifest-v1.11.toml --dep 
@@ -217,8 +217,8 @@ stages:
       size: 116427
     - path: ClimaAtmos.jl-mod/perf/benchmark_step.jl
       hash: md5
-      md5: e4e56e0353b6c5130c4e3fc03082c211
-      size: 2082
+      md5: 6a24c3a3d5f34c8477da1a50445db97a
+      size: 2148
     - path: ClimaAtmos.jl-mod/src
       hash: md5
       md5: fe9bd6d39ccde3ed9436b03197c40e7d.dir
@@ -235,16 +235,16 @@ stages:
     outs:
     - path: .calkit/slurm/logs/nsys-mod.out
       hash: md5
-      md5: 7336190d226908cff8c6fe6ffa1a005c
-      size: 85320
+      md5: cd39eccb9187f4fe62bcb36a8f5186db
+      size: 84585
     - path: results/nsys/mod.nsys-rep
       hash: md5
-      md5: 7b7e35c0d5074a56f383665c6fe10e4e
-      size: 23871436
+      md5: 9f51b27d294db22f81c4071e85f7b5a6
+      size: 23886564
     - path: results/nsys/mod.sqlite
       hash: md5
-      md5: 1d9b3646c800897a10839c80a7ac8336
-      size: 49455104
+      md5: 64f51ce69525ef4d2cba04c988158e98
+      size: 49803264
   compare-kernels:
     cmd: calkit nb execute --environment py --no-check --to html 
       "notebooks/compare-kernels.ipynb"
@@ -259,21 +259,21 @@ stages:
       size: 28463
     - path: results/nsys/baseline.sqlite
       hash: md5
-      md5: bf23ae87d54c41226d37e49b591a63c5
-      size: 50028544
+      md5: 9ae3ab973db502ae073379d6fc4ff54e
+      size: 50536448
     - path: results/nsys/mod.sqlite
       hash: md5
-      md5: 1d9b3646c800897a10839c80a7ac8336
-      size: 49455104
+      md5: 64f51ce69525ef4d2cba04c988158e98
+      size: 49803264
     outs:
     - path: .calkit/notebooks/executed/notebooks/compare-kernels.ipynb
       hash: md5
-      md5: ae4e03a19b625b1df8a7a90aa72842b7
-      size: 44578
+      md5: b37bad30b29d601313119a726e1923e7
+      size: 44538
     - path: .calkit/notebooks/html/notebooks/compare-kernels.html
       hash: md5
-      md5: 7b18963cbb06de17723497b5ebe88b93
-      size: 371948
+      md5: 762b946c558c9eb953826afed3e46389
+      size: 372296
   sync-atmos-mod-core:
     cmd: ' bash --noprofile --norc scripts/sync-atmos-mod-core.sh'
     deps:

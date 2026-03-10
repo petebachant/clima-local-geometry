@@ -8294,7 +8294,7 @@ a.anchor-link {
 <span class="n">mod_db</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"../results/nsys/mod.sqlite"</span><span class="p">)</span>
 
 <span class="c1"># Kernel name pattern to match (avoid fragile line numbers)</span>
-<span class="n">kernel_pattern</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">et_microphysics_tendency_cache%"</span>
+<span class="n">kernel_pattern</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">et_prognostic_edmf_precomputed_quantities_precipitation%"</span>
 
 <span class="c1"># Check if files exist</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">baseline_db</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -8336,7 +8336,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6665c790">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3b8fe8c9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8355,33 +8355,6 @@ a.anchor-link {
 <span class="k">def</span><span class="w"> </span><span class="nf">strip_mod_suffix</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Remove a loose mod suffix for matching."""</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(?:_|\s)mod\b"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">list_available_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2">et_microphysics_tendency_cache%"</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    List all kernels matching a pattern in the database.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        db_path: Path to SQLite database</span>
-<span class="sd">        pattern: SQL LIKE pattern for kernel names</span>
-<span class="sd">    """</span>
-    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-
-    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
-<span class="s2">    SELECT DISTINCT s.value as kernelName, COUNT(*) as count</span>
-<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL k</span>
-<span class="s2">    JOIN StringIds s ON k.demangledName = s.id</span>
-<span class="s2">    WHERE s.value LIKE ?</span>
-<span class="s2">    GROUP BY s.value</span>
-<span class="s2">    ORDER BY s.value</span>
-<span class="s2">    """</span>
-
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,))</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">results</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">list_top_kernels</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"%"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
@@ -8446,30 +8419,18 @@ a.anchor-link {
     <span class="k">return</span> <span class="n">baseline_kernel</span><span class="p">,</span> <span class="n">best_kernel</span>
 
 
-<span class="c1"># List available kernels</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Available kernels in baseline database:"</span><span class="p">)</span>
-<span class="n">baseline_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">baseline_kernels</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># Automatically select the hottest kernel from baseline (no hardcoded patterns)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Selecting the hottest kernel from baseline...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Available kernels in modified database:"</span><span class="p">)</span>
-<span class="n">mod_kernels</span> <span class="o">=</span> <span class="n">list_available_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">mod_kernels</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top kernels in baseline (by total time):"</span><span class="p">)</span>
-<span class="n">baseline_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Top 5 kernels in baseline (by total time):"</span><span class="p">)</span>
+<span class="n">baseline_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"%"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">total_ns</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">baseline_top</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span>
-    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top kernels in modified (by total time):"</span><span class="p">)</span>
-<span class="n">mod_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">kernel_pattern</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top 5 kernels in modified (by total time):"</span><span class="p">)</span>
+<span class="n">mod_top</span> <span class="o">=</span> <span class="n">list_top_kernels</span><span class="p">(</span><span class="n">mod_db</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">"%"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">kernel_name</span><span class="p">,</span> <span class="n">total_ns</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">mod_top</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span>
-    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">total_ns</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> invocations] </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="n">baseline_kernel_name</span><span class="p">,</span> <span class="n">mod_kernel_name</span> <span class="o">=</span> <span class="n">select_kernel_name</span><span class="p">(</span>
     <span class="n">baseline_top</span><span class="p">,</span> <span class="n">mod_top</span>
@@ -8486,47 +8447,29 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Available kernels in baseline database:
+<pre>Selecting the hottest kernel from baseline...
+
+Top 5 kernels in baseline (by total time):
+   726.73 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323
+   327.95 ms  [7020 invocations] foreach_FILE_ClimaCore_vVw9t_src_MatrixFields_field_name_set_jl_L81
+   274.11 ms  [ 540 invocations] run_field_matrix_solver__FILE_ClimaCore_vVw9t_src_MatrixFields_field_matrix_solver_jl_L352
+   257.63 ms  [ 990 invocations] run_field_matrix_solver__FILE_ClimaCore_vVw9t_src_MatrixFields_field_matrix_solver_jl_L354
+    88.01 ms  [4185 invocations] regridded_snapshot__FILE_ClimaUtilities_5ClV5_ext_DataHandlingExt_jl_L666
+
+Top 5 kernels in modified (by total time):
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1293
-  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323
-  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1342
-  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1346
-  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1360
-
-Available kernels in modified database:
-  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1293
-  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323
-  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1342
-  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1346
-  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1360
-
-Top kernels in baseline (by total time):
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>   722.72 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323
-    17.51 ms  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1346
-    12.66 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1342
-     5.87 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1360
-     4.62 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1293
-
-Top kernels in modified (by total time):
-   360.35 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323
-    17.54 ms  [ 835 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1346
-    12.65 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1342
-     5.88 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1360
-     4.62 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1293
-Selected baseline kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323 (total=722.72 ms)
-Selected modified kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323 (total=360.35 ms, score=0.978)
+<pre>   360.79 ms  [  40 invocations] set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323
+   325.46 ms  [7020 invocations] foreach_FILE_ClimaCore_vVw9t_src_MatrixFields_field_name_set_jl_L81
+   269.07 ms  [ 540 invocations] run_field_matrix_solver__FILE_ClimaCore_vVw9t_src_MatrixFields_field_matrix_solver_jl_L352
+   249.28 ms  [ 990 invocations] run_field_matrix_solver__FILE_ClimaCore_vVw9t_src_MatrixFields_field_matrix_solver_jl_L354
+    87.14 ms  [4185 invocations] regridded_snapshot__FILE_ClimaUtilities_5ClV5_ext_DataHandlingExt_jl_L666
+Selected baseline kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysics_cache_jl_L1323 (total=726.73 ms)
+Selected modified kernel: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_mod_src_cache_microphysics_cache_jl_L1323 (total=360.79 ms, score=0.978)
 </pre>
 </div>
 </div>
@@ -8609,37 +8552,37 @@ KERNEL: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysi
 <tr>
 <th>1</th>
 <td>Total Duration</td>
-<td>722.72 ms</td>
-<td>360.35 ms</td>
-<td>-50.14%</td>
+<td>726.73 ms</td>
+<td>360.79 ms</td>
+<td>-50.35%</td>
 </tr>
 <tr>
 <th>2</th>
 <td>Mean Duration</td>
-<td>18.07 ms</td>
-<td>9.01 ms</td>
-<td>-50.14%</td>
+<td>18.17 ms</td>
+<td>9.02 ms</td>
+<td>-50.35%</td>
 </tr>
 <tr>
 <th>3</th>
 <td>Median Duration</td>
-<td>18.03 ms</td>
-<td>9.00 ms</td>
-<td>-50.08%</td>
+<td>18.09 ms</td>
+<td>9.01 ms</td>
+<td>-50.17%</td>
 </tr>
 <tr>
 <th>4</th>
 <td>Min Duration</td>
-<td>17.96 ms</td>
-<td>8.96 ms</td>
-<td>-50.12%</td>
+<td>18.02 ms</td>
+<td>8.98 ms</td>
+<td>-50.13%</td>
 </tr>
 <tr>
 <th>5</th>
 <td>Max Duration</td>
-<td>19.66 ms</td>
+<td>19.74 ms</td>
 <td>9.36 ms</td>
-<td>-52.39%</td>
+<td>-52.61%</td>
 </tr>
 <tr>
 <th>6</th>
@@ -8742,14 +8685,14 @@ KERNEL: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysi
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ============================================================================================================================================
-✅ Modified version is 50.14% FASTER (mean duration)
+✅ Modified version is 50.35% FASTER (mean duration)
 ============================================================================================================================================
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=712d23c8">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7608080c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8818,19 +8761,352 @@ KERNEL: set_microphysics_tendency_cache__FILE_ClimaAtmos_jl_src_cache_microphysi
 <tbody>
 <tr>
 <th>0</th>
-<td>0.061</td>
 <td>0.067</td>
-<td>9.836066</td>
+<td>0.07</td>
+<td>4.477612</td>
 </tr>
 <tr>
 <th>1</th>
-<td>0.106</td>
 <td>0.116</td>
-<td>9.433962</td>
+<td>0.12</td>
+<td>3.448276</td>
 </tr>
 </tbody>
 </table>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1c556128">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># --- Total profiling duration analysis ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_total_duration</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get total duration of the profiling session."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">    SELECT MIN(start) as first_event, MAX(end) as last_event</span>
+<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL</span>
+<span class="s2">    """</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># nanoseconds</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="n">baseline_duration</span> <span class="o">=</span> <span class="n">get_total_duration</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">)</span>
+<span class="n">mod_duration</span> <span class="o">=</span> <span class="n">get_total_duration</span><span class="p">(</span><span class="n">mod_db</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">baseline_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Could not determine baseline duration"</span>
+<span class="k">assert</span> <span class="n">mod_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Could not determine modified duration"</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Total Profiling Duration:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Baseline: </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">baseline_duration</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Modified: </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">mod_duration</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">mod_duration</span> <span class="o">&gt;</span> <span class="n">baseline_duration</span><span class="p">:</span>
+    <span class="n">overhead</span> <span class="o">=</span> <span class="p">((</span><span class="n">mod_duration</span> <span class="o">-</span> <span class="n">baseline_duration</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_duration</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ⚠️  Modified run is </span><span class="si">{</span><span class="n">overhead</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% LONGER overall"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">improvement</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">baseline_duration</span> <span class="o">-</span> <span class="n">mod_duration</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_duration</span>
+    <span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✅ Modified run is </span><span class="si">{</span><span class="n">improvement</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% SHORTER overall"</span><span class="p">)</span>
+
+
+<span class="c1"># --- Total GPU kernel time analysis ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_total_gpu_time</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get total GPU time summed across all kernels."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">    SELECT SUM(end - start) as total_gpu_ns</span>
+<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL</span>
+<span class="s2">    """</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+
+
+<span class="n">baseline_gpu_time</span> <span class="o">=</span> <span class="n">get_total_gpu_time</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">)</span>
+<span class="n">mod_gpu_time</span> <span class="o">=</span> <span class="n">get_total_gpu_time</span><span class="p">(</span><span class="n">mod_db</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Total GPU Kernel Time:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Baseline: </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">baseline_gpu_time</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Modified: </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">mod_gpu_time</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">gpu_time_diff</span> <span class="o">=</span> <span class="p">((</span><span class="n">mod_gpu_time</span> <span class="o">-</span> <span class="n">baseline_gpu_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_gpu_time</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">sign</span> <span class="o">=</span> <span class="s2">"+"</span> <span class="k">if</span> <span class="n">gpu_time_diff</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">""</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Change: </span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">gpu_time_diff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+
+<span class="c1"># Calculate "idle" time (wall time - GPU time)</span>
+<span class="n">baseline_idle</span> <span class="o">=</span> <span class="n">baseline_duration</span> <span class="o">-</span> <span class="n">baseline_gpu_time</span>  <span class="c1"># type: ignore</span>
+<span class="n">mod_idle</span> <span class="o">=</span> <span class="n">mod_duration</span> <span class="o">-</span> <span class="n">mod_gpu_time</span>  <span class="c1"># type: ignore</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">CPU/Sync Overhead (Total Duration - GPU Time):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Baseline: </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">baseline_idle</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Modified: </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">mod_idle</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">mod_idle</span> <span class="o">&gt;</span> <span class="n">baseline_idle</span><span class="p">:</span>
+    <span class="n">overhead_increase</span> <span class="o">=</span> <span class="p">((</span><span class="n">mod_idle</span> <span class="o">-</span> <span class="n">baseline_idle</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_idle</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ⚠️  Modified has </span><span class="si">{</span><span class="n">overhead_increase</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% MORE overhead"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">overhead_decrease</span> <span class="o">=</span> <span class="p">((</span><span class="n">baseline_idle</span> <span class="o">-</span> <span class="n">mod_idle</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_idle</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✅ Modified has </span><span class="si">{</span><span class="n">overhead_decrease</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% LESS overhead"</span><span class="p">)</span>
+
+
+<span class="c1"># --- Kernel count and new/missing kernels ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_all_kernel_names</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get all unique kernel names in the database."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">    SELECT DISTINCT s.value</span>
+<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL k</span>
+<span class="s2">    JOIN StringIds s ON k.demangledName = s.id</span>
+<span class="s2">    """</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()}</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="n">baseline_kernel_set</span> <span class="o">=</span> <span class="n">get_all_kernel_names</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">)</span>
+<span class="n">mod_kernel_set</span> <span class="o">=</span> <span class="n">get_all_kernel_names</span><span class="p">(</span><span class="n">mod_db</span><span class="p">)</span>
+
+<span class="c1"># Remove _mod_ from names for comparison</span>
+<span class="n">mod_kernel_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_mod_"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">mod_kernel_set</span><span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Kernel Count Comparison:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Baseline: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">baseline_kernel_set</span><span class="p">)</span><span class="si">}</span><span class="s2"> unique kernels"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Modified: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mod_kernel_set</span><span class="p">)</span><span class="si">}</span><span class="s2"> unique kernels"</span><span class="p">)</span>
+
+<span class="n">new_kernels</span> <span class="o">=</span> <span class="n">mod_kernel_set</span> <span class="o">-</span> <span class="n">baseline_kernel_set</span>
+<span class="n">removed_kernels</span> <span class="o">=</span> <span class="n">baseline_kernel_set</span> <span class="o">-</span> <span class="n">mod_kernel_set</span>
+
+<span class="k">if</span> <span class="n">new_kernels</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">⚠️  </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_kernels</span><span class="p">)</span><span class="si">}</span><span class="s2"> NEW kernels in modified:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">kernel</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new_kernels</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    + </span><span class="si">{</span><span class="n">kernel</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_kernels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    ... and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_kernels</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10</span><span class="si">}</span><span class="s2"> more"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">removed_kernels</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">removed_kernels</span><span class="p">)</span><span class="si">}</span><span class="s2"> kernels REMOVED in modified:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">kernel</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">removed_kernels</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">kernel</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">removed_kernels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    ... and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">removed_kernels</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10</span><span class="si">}</span><span class="s2"> more"</span><span class="p">)</span>
+
+
+<span class="c1"># --- Kernel invocation count changes ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_kernel_invocation_counts</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get invocation counts for all kernels."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">    SELECT s.value, COUNT(*) as count</span>
+<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL k</span>
+<span class="s2">    JOIN StringIds s ON k.demangledName = s.id</span>
+<span class="s2">    GROUP BY s.value</span>
+<span class="s2">    ORDER BY count DESC</span>
+<span class="s2">    """</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()}</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="n">baseline_counts</span> <span class="o">=</span> <span class="n">get_kernel_invocation_counts</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">)</span>
+<span class="n">mod_counts</span> <span class="o">=</span> <span class="n">get_kernel_invocation_counts</span><span class="p">(</span><span class="n">mod_db</span><span class="p">)</span>
+
+<span class="n">common_kernels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">baseline_counts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">mod_counts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Kernel Invocation Changes (for common kernels):"</span><span class="p">)</span>
+<span class="n">significant_changes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">kernel</span> <span class="ow">in</span> <span class="n">common_kernels</span><span class="p">:</span>
+    <span class="n">baseline_count</span> <span class="o">=</span> <span class="n">baseline_counts</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span>
+    <span class="n">mod_count</span> <span class="o">=</span> <span class="n">mod_counts</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">baseline_count</span> <span class="o">!=</span> <span class="n">mod_count</span><span class="p">:</span>
+        <span class="n">pct_change</span> <span class="o">=</span> <span class="p">((</span><span class="n">mod_count</span> <span class="o">-</span> <span class="n">baseline_count</span><span class="p">)</span> <span class="o">/</span> <span class="n">baseline_count</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="n">significant_changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pct_change</span><span class="p">),</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">baseline_count</span><span class="p">,</span> <span class="n">mod_count</span><span class="p">,</span> <span class="n">pct_change</span><span class="p">)</span>
+        <span class="p">)</span>
+<span class="n">significant_changes</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">significant_changes</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top 10 kernels with changed invocation counts:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">kernel</span><span class="p">,</span>
+        <span class="n">baseline_count</span><span class="p">,</span>
+        <span class="n">mod_count</span><span class="p">,</span>
+        <span class="n">pct_change</span><span class="p">,</span>
+    <span class="p">)</span> <span class="ow">in</span> <span class="n">significant_changes</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="s2">"+"</span> <span class="k">if</span> <span class="n">pct_change</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">""</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">pct_change</span><span class="si">:</span><span class="s2">+6.1f</span><span class="si">}</span><span class="s2">%: </span><span class="si">{</span><span class="n">baseline_count</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">mod_count</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">kernel</span><span class="p">[:</span><span class="mi">80</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"  ✓ All common kernels have identical invocation counts"</span><span class="p">)</span>
+
+
+<span class="c1"># --- Kernel family analysis ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aggregate_by_pattern</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">,</span> <span class="n">duration_dict</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Aggregate kernels matching a pattern."""</span>
+    <span class="n">total_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_duration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">kernel_name</span> <span class="ow">in</span> <span class="n">counts_dict</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">kernel_name</span><span class="p">:</span>
+            <span class="n">total_count</span> <span class="o">+=</span> <span class="n">counts_dict</span><span class="p">[</span><span class="n">kernel_name</span><span class="p">]</span>
+            <span class="n">total_duration</span> <span class="o">+=</span> <span class="n">duration_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kernel_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_count</span><span class="p">,</span> <span class="n">total_duration</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_kernel_durations</span><span class="p">(</span><span class="n">db_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get total duration for each kernel."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">    SELECT s.value, SUM(k.end - k.start) as total_ns</span>
+<span class="s2">    FROM CUPTI_ACTIVITY_KIND_KERNEL k</span>
+<span class="s2">    JOIN StringIds s ON k.demangledName = s.id</span>
+<span class="s2">    GROUP BY s.value</span>
+<span class="s2">    """</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()}</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="n">baseline_durations</span> <span class="o">=</span> <span class="n">get_kernel_durations</span><span class="p">(</span><span class="n">baseline_db</span><span class="p">)</span>
+<span class="n">mod_durations</span> <span class="o">=</span> <span class="n">get_kernel_durations</span><span class="p">(</span><span class="n">mod_db</span><span class="p">)</span>
+
+<span class="n">patterns_to_check</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"set_prognostic_edmf_precomputed_quantities"</span><span class="p">,</span>
+    <span class="s2">"microphysics"</span><span class="p">,</span>
+    <span class="s2">"precipitation"</span><span class="p">,</span>
+    <span class="s2">"tendency"</span><span class="p">,</span>
+    <span class="s2">"implicit"</span><span class="p">,</span>
+    <span class="s2">"ldiv"</span><span class="p">,</span>
+    <span class="s2">"Wfact"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Kernel Family Analysis (by name pattern):"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">patterns_to_check</span><span class="p">:</span>
+    <span class="n">baseline_count</span><span class="p">,</span> <span class="n">baseline_duration</span> <span class="o">=</span> <span class="n">aggregate_by_pattern</span><span class="p">(</span>
+        <span class="n">baseline_counts</span><span class="p">,</span> <span class="n">baseline_durations</span><span class="p">,</span> <span class="n">pattern</span>
+    <span class="p">)</span>
+    <span class="n">mod_count</span><span class="p">,</span> <span class="n">mod_duration</span> <span class="o">=</span> <span class="n">aggregate_by_pattern</span><span class="p">(</span>
+        <span class="n">mod_counts</span><span class="p">,</span> <span class="n">mod_durations</span><span class="p">,</span> <span class="n">pattern</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">baseline_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">mod_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">count_change</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">((</span><span class="n">mod_count</span> <span class="o">-</span> <span class="n">baseline_count</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">baseline_count</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+            <span class="k">if</span> <span class="n">baseline_count</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">duration_change</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">((</span><span class="n">mod_duration</span> <span class="o">-</span> <span class="n">baseline_duration</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">baseline_duration</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="o">*</span> <span class="mi">100</span>
+            <span class="k">if</span> <span class="n">baseline_duration</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">  Pattern: '</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"    Invocations: </span><span class="si">{</span><span class="n">baseline_count</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">mod_count</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">count_change</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%)"</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"    Total time:  </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">baseline_duration</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">format_duration</span><span class="p">(</span><span class="n">mod_duration</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">duration_change</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%)"</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+Total Profiling Duration:
+  Baseline: 3.77 s
+  Modified: 3.43 s
+  ✅ Modified run is 9.10% SHORTER overall
+
+Total GPU Kernel Time:
+  Baseline: 3.52 s
+  Modified: 3.13 s
+  Change: -11.23%
+
+CPU/Sync Overhead (Total Duration - GPU Time):
+  Baseline: 248.55 ms
+  Modified: 300.68 ms
+  ⚠️  Modified has 20.97% MORE overhead
+
+Kernel Count Comparison:
+  Baseline: 253 unique kernels
+  Modified: 253 unique kernels
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+Kernel Invocation Changes (for common kernels):
+  ✓ All common kernels have identical invocation counts
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+Kernel Family Analysis (by name pattern):
+
+  Pattern: 'set_prognostic_edmf_precomputed_quantities'
+    Invocations:   2025 →   2025 (+0.0%)
+    Total time:    75.73 ms →   74.85 ms (-1.2%)
+
+  Pattern: 'microphysics'
+    Invocations:   3975 →   3975 (+0.0%)
+    Total time:   872.42 ms →  504.79 ms (-42.1%)
+
+  Pattern: 'precipitation'
+    Invocations:   2500 →   2500 (+0.0%)
+    Total time:    80.85 ms →   79.81 ms (-1.3%)
+
+  Pattern: 'tendency'
+    Invocations:   7375 →   7375 (+0.0%)
+    Total time:      1.20 s →  835.10 ms (-30.7%)
+
+  Pattern: 'implicit'
+    Invocations:  10745 →  10745 (+0.0%)
+    Total time:   729.47 ms →  725.12 ms (-0.6%)
+</pre>
 </div>
 </div>
 </div>

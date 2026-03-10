@@ -8292,13 +8292,7 @@ CUDA Device setup complete. Device: CuDevice</pre>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ======================================================================
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>INLINING VERIFICATION
+INLINING VERIFICATION
 ======================================================================
 
 Sizeof checks (should help predict inlining threshold):
@@ -8473,17 +8467,17 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  baseline simple                               15.85 μs  (  +0.0% vs baseline)
-  full lg jacobian                              16.96 μs  (  +7.0% vs baseline)
+<pre>  baseline simple                               16.14 μs  (  +0.0% vs baseline)
+  full lg jacobian                              17.07 μs  (  +5.8% vs baseline)
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  full lg multiple                              18.72 μs  ( +18.1% vs baseline)
-  extracted j                                   16.73 μs  (  +5.6% vs baseline)
-  simplified lg                                 21.15 μs  ( +33.4% vs baseline)
+<pre>  full lg multiple                              18.77 μs  ( +16.3% vs baseline)
+  extracted j                                   16.52 μs  (  +2.4% vs baseline)
+  simplified lg                                 16.52 μs  (  +2.4% vs baseline)
 </pre>
 </div>
 </div>
@@ -8576,10 +8570,10 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  two field access                              16.61 μs  (  +4.8% vs baseline)
-  four field access                             16.59 μs  (  +4.7% vs baseline)
-  eight field access                            16.79 μs  (  +5.9% vs baseline)
-  sixteen field access                          16.85 μs  (  +6.3% vs baseline)
+<pre>  two field access                              17.11 μs  (  +6.0% vs baseline)
+  four field access                             16.90 μs  (  +4.7% vs baseline)
+  eight field access                            17.34 μs  (  +7.4% vs baseline)
+  sixteen field access                          17.15 μs  (  +6.3% vs baseline)
 </pre>
 </div>
 </div>
@@ -8672,10 +8666,10 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  9b two field with nothing                     16.90 μs  (  +6.6% vs baseline)
-  9c four field partial nothing                 16.54 μs  (  +4.4% vs baseline)
-  9d full geom with optionals                   16.74 μs  (  +5.6% vs baseline)
-  9e minimal with padding                       16.57 μs  (  +4.5% vs baseline)
+<pre>  9b two field with nothing                     16.92 μs  (  +4.8% vs baseline)
+  9c four field partial nothing                 17.15 μs  (  +6.3% vs baseline)
+  9d full geom with optionals                   16.96 μs  (  +5.1% vs baseline)
+  9e minimal with padding                       17.04 μs  (  +5.6% vs baseline)
 </pre>
 </div>
 </div>
@@ -8780,9 +8774,9 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  vector baseline                               17.13 μs  (  +0.0% vs vec_baseline)
-  project full lg                               16.79 μs  (  -2.0% vs vec_baseline)
-  multiple scalar access                        17.76 μs  (  +3.7% vs vec_baseline)
+<pre>  vector baseline                               16.92 μs  (  +0.0% vs vec_baseline)
+  project full lg                               16.91 μs  (  -0.1% vs vec_baseline)
+  multiple scalar access                        17.88 μs  (  +5.7% vs vec_baseline)
 </pre>
 </div>
 </div>
@@ -8895,17 +8889,17 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  1 scalar with 2field      16.67 μs  (  +0.0% vs min)   (2 fields, 16 bytes)
-  2 scalar with 4field      16.62 μs  (  -0.3% vs min)   (4 fields, 32 bytes)
+<pre>  1 scalar with 2field      17.03 μs  (  +0.0% vs min)   (2 fields, 16 bytes)
+  2 scalar with 4field      16.94 μs  (  -0.5% vs min)   (4 fields, 32 bytes)
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  3 scalar with 8field      16.70 μs  (  +0.2% vs min)   (8 fields, 64 bytes)
-  4 scalar with 16field      16.90 μs  (  +1.4% vs min)   (16 fields, 128 bytes)
-  5 scalar with full lg      17.00 μs  (  +2.0% vs min)   (Full LocalGeometry)
+<pre>  3 scalar with 8field      16.91 μs  (  -0.7% vs min)   (8 fields, 64 bytes)
+  4 scalar with 16field      16.83 μs  (  -1.2% vs min)   (16 fields, 128 bytes)
+  5 scalar with full lg      16.92 μs  (  -0.6% vs min)   (Full LocalGeometry)
 </pre>
 </div>
 </div>
@@ -9026,11 +9020,11 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  1 expr 1term              17.01 μs  (  +0.0% vs baseline)   (1 term)
-  2 expr 2terms             18.08 μs  (  +6.3% vs baseline)   (2 terms)
-  3 expr 3terms             18.86 μs  ( +10.9% vs baseline)   (3 terms)
-  4 expr 4terms             19.62 μs  ( +15.3% vs baseline)   (4 terms, 1 multiply)
-  5 expr 6terms             19.75 μs  ( +16.1% vs baseline)   (6 terms, nested mults)
+<pre>  1 expr 1term              17.06 μs  (  +0.0% vs baseline)   (1 term)
+  2 expr 2terms             18.55 μs  (  +8.7% vs baseline)   (2 terms)
+  3 expr 3terms             19.32 μs  ( +13.2% vs baseline)   (3 terms)
+  4 expr 4terms             19.70 μs  ( +15.5% vs baseline)   (4 terms, 1 multiply)
+  5 expr 6terms             20.19 μs  ( +18.3% vs baseline)   (6 terms, nested mults)
 </pre>
 </div>
 </div>
@@ -9142,12 +9136,12 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  1 chained lg 2accesses inlined                17.56 μs  ( +10.8% vs scalar baseline)
-  2 chained lg 2accesses noinline               18.40 μs  ( +16.1% vs scalar baseline)
-  3 chained lg 3accesses inlined                17.59 μs  ( +11.0% vs scalar baseline)
-  4 chained lg 3accesses noinline               19.45 μs  ( +22.7% vs scalar baseline)
-  5 complex multi product inlined               16.58 μs  (  +4.6% vs scalar baseline)
-  6 complex multi product noinline              17.69 μs  ( +11.6% vs scalar baseline)
+<pre>  1 chained lg 2accesses inlined                17.82 μs  ( +10.4% vs scalar baseline)
+  2 chained lg 2accesses noinline               19.13 μs  ( +18.5% vs scalar baseline)
+  3 chained lg 3accesses inlined                17.46 μs  (  +8.2% vs scalar baseline)
+  4 chained lg 3accesses noinline               19.15 μs  ( +18.7% vs scalar baseline)
+  5 complex multi product inlined               17.11 μs  (  +6.0% vs scalar baseline)
+  6 complex multi product noinline              18.11 μs  ( +12.2% vs scalar baseline)
 </pre>
 </div>
 </div>
@@ -9255,6 +9249,8 @@ Execution Time (μs, lower is better):
 <span class="w">    </span><span class="n">CUDA</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
 <span class="k">end</span>
 
+<span class="c">#</span>
+
 <span class="c"># Run Section 7</span>
 <span class="n">println</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Running benchmarks (samples=30)..."</span><span class="p">)</span>
 <span class="n">results_s7</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">run</span><span class="p">(</span><span class="n">section7</span><span class="p">,</span><span class="w"> </span><span class="n">verbose</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">samples</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
@@ -9343,26 +9339,26 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  1 baseline scalar copy                        15.79 μs  (  +0.0% vs baseline)
-  2 single interp f2c                           17.42 μs  ( +10.3% vs baseline)
-  3 single grad f2c                             26.75 μs  ( +69.4% vs baseline)
-  4 single div f2c                              17.54 μs  ( +11.1% vs baseline)
-  5 grad then div                               20.27 μs  ( +28.4% vs baseline)
-  6 div then grad                               28.82 μs  ( +82.5% vs baseline)
-  7 interp chain c2f2c                          17.56 μs  ( +11.2% vs baseline)
-  8 triple chain grad div grad                  28.80 μs  ( +82.4% vs baseline)
+<pre>  1 baseline scalar copy                        16.01 μs  (  +0.0% vs baseline)
+  2 single interp f2c                           17.41 μs  (  +8.8% vs baseline)
+  3 single grad f2c                             26.25 μs  ( +64.0% vs baseline)
+  4 single div f2c                              18.03 μs  ( +12.6% vs baseline)
+  5 grad then div                               20.08 μs  ( +25.4% vs baseline)
+  6 div then grad                               29.17 μs  ( +82.2% vs baseline)
+  7 interp chain c2f2c                          17.84 μs  ( +11.4% vs baseline)
+  8 triple chain grad div grad                  28.94 μs  ( +80.8% vs baseline)
 
 ----------------------------------------------------------------------
 Stencil Chain Analysis:
 ----------------------------------------------------------------------
-  Single interpolation:             17.42 μs  (1.1x baseline)
-  Single gradient:                  26.75 μs  (1.7x baseline)
-  Single divergence:                17.54 μs  (1.1x baseline)
+  Single interpolation:             17.41 μs  (1.1x baseline)
+  Single gradient:                  26.25 μs  (1.6x baseline)
+  Single divergence:                18.03 μs  (1.1x baseline)
 
-  Gradient → Divergence (Laplacian):  20.27 μs  (0.5x sum of single ops)
-  Divergence → Gradient:              28.82 μs  (0.7x sum of single ops)
-  Interpolation chain (C→F→C):        17.56 μs  (0.5x 2× single interp)
-  Triple chain (grad→div→grad):       28.80 μs  (0.4x sum of components)
+  Gradient → Divergence (Laplacian):  20.08 μs  (0.5x sum of single ops)
+  Divergence → Gradient:              29.17 μs  (0.7x sum of single ops)
+  Interpolation chain (C→F→C):        17.84 μs  (0.5x 2× single interp)
+  Triple chain (grad→div→grad):       28.94 μs  (0.4x sum of components)
 
   ✓ EXCELLENT FUSION: Chained operations are well-optimized
     Compiler successfully fuses stencil operations
@@ -9508,19 +9504,19 @@ Execution Time (μs, lower is better):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  7b 1 baseline lg access                       16.25 μs  (  +0.0% vs baseline)
-  7b 2 grad with lg                             27.51 μs  ( +69.3% vs baseline)
-  7b 3 div with lg                              18.53 μs  ( +14.0% vs baseline)
-  7b 4 grad div with lg                         21.00 μs  ( +29.2% vs baseline)
-  7b 5 complex stencil lg                       34.97 μs  (+115.2% vs baseline)
+<pre>  7b 1 baseline lg access                       16.79 μs  (  +0.0% vs baseline)
+  7b 2 grad with lg                             27.95 μs  ( +66.5% vs baseline)
+  7b 3 div with lg                              18.53 μs  ( +10.4% vs baseline)
+  7b 4 grad div with lg                         21.17 μs  ( +26.1% vs baseline)
+  7b 5 complex stencil lg                       34.96 μs  (+108.2% vs baseline)
 
 ----------------------------------------------------------------------
 LocalGeometry Impact in Stencil Operations:
 ----------------------------------------------------------------------
-  LocalGeometry overhead on gradient:   +2.8%
-  LocalGeometry overhead on divergence: +5.6%
-  LocalGeometry overhead on grad∘div:   +3.6%
-  Complex expression time:              34.97 μs (2.2x baseline)
+  LocalGeometry overhead on gradient:   +6.5%
+  LocalGeometry overhead on divergence: +2.8%
+  LocalGeometry overhead on grad∘div:   +5.4%
+  Complex expression time:              34.96 μs (2.1x baseline)
 
   ✓ MINIMAL IMPACT: LocalGeometry adds minimal overhead to stencil ops
     Compiler effectively optimizes combined operations
@@ -9609,14 +9605,14 @@ Total memory footprint:
   TwoFieldGeom:                    0.000 MB (2.0x scalar)
   FourFieldGeom:                   0.000 MB (4.0x scalar)
   EightFieldGeom:                  0.001 MB (8.0x scalar)
+  SixteenFieldGeom:                0.002 MB (16.0x scalar)
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>  SixteenFieldGeom:                0.002 MB (16.0x scalar)
-  Full LocalGeometry:              0.003 MB (21.0x scalar)
+<pre>  Full LocalGeometry:              0.003 MB (21.0x scalar)
   Extracted J:                     0.000 MB (1.0x scalar)
 </pre>
 </div>
@@ -9825,50 +9821,50 @@ ANALYSIS &amp; KEY FINDINGS
 ======================================================================
 
 1. BASIC GEOMETRY ACCESS OVERHEAD:
-   Full LocalGeometry (J only):      7.0%
-   Extracted J:                      5.6%
+   Full LocalGeometry (J only):      5.8%
+   Extracted J:                      2.4%
 
 2. STRUCT SIZE IMPACT (accessing single field):
-   TwoFieldGeom (16 bytes):          4.8%
+   TwoFieldGeom (16 bytes):          6.0%
    FourFieldGeom (32 bytes):         4.7%
-   EightFieldGeom (64 bytes):        5.9%
+   EightFieldGeom (64 bytes):        7.4%
    SixteenFieldGeom (128 bytes):     6.3%
 
    ✓ All struct sizes show similar performance - good inlining
+
+3. PROJECTION OPERATIONS OVERHEAD:
+   Covariant-&gt;Contravariant:         -0.1%
+
+4. MEMORY EFFECT ANALYSIS (Section 4: Same expression, varying struct):
+   Memory variance across struct sizes: 1.2%
+   ✓ MINIMAL MEMORY EFFECTS: struct size has negligible impact
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-3. PROJECTION OPERATIONS OVERHEAD:
-   Covariant-&gt;Contravariant:         -2.0%
-
-4. MEMORY EFFECT ANALYSIS (Section 4: Same expression, varying struct):
-   Memory variance across struct sizes: 2.3%
-   ✓ MINIMAL MEMORY EFFECTS: struct size has negligible impact
-      Good memory access locality
+<pre>      Good memory access locality
 
 5. BROADCAST COMPILATION EFFECT (Section 5: Same struct, varying complexity):
-   Compilation variance across expression complexity: 16.1%
+   Compilation variance across expression complexity: 18.3%
    ⚠️  MODERATE COMPILATION EFFECTS: noticeable with complex expressions
       Keep broadcast expressions concise when possible
 
 6. STENCIL OPERATION ANALYSIS (Section 6: Chained operations):
-   Inlining impact (2 accesses):     1.05x slower with noinline
-   Inlining impact (3 accesses):     1.11x slower with noinline
+   Inlining impact (2 accesses):     1.07x slower with noinline
+   Inlining impact (3 accesses):     1.10x slower with noinline
    ✓ Stencil operations handle LocalGeometry efficiently
 
 7. CHAINED STENCIL OPERATIONS (Section 7: grad/div chains):
-   Gradient-Divergence fusion:       0.46x (ideal: 1.0)
-   Divergence-Gradient fusion:       0.65x
+   Gradient-Divergence fusion:       0.45x (ideal: 1.0)
+   Divergence-Gradient fusion:       0.66x
    Triple chain efficiency:          0.41x
    ✓ EXCELLENT FUSION: Stencil chains compile to efficient kernels
       Broadcast macro successfully fuses operations
 
 8. STENCIL + LOCALGEOMETRY INTERACTION (Section 7B):
-   LocalGeometry overhead on gradient-divergence: +3.6%
+   LocalGeometry overhead on gradient-divergence: +5.4%
    ✓ MINIMAL INTERACTION: LocalGeometry and stencils compose well
 </pre>
 </div>
@@ -9954,19 +9950,19 @@ EFFECT DECOMPOSITION SUMMARY
 This benchmark isolates four distinct effects:
 
 1. MEMORY BANDWIDTH (Section 4):
-   Impact: 2.3%
+   Impact: 1.2%
    → MINIMAL: Computation dominates over memory
 
 2. BROADCAST COMPILATION (Section 5):
-   Impact: 16.1%
+   Impact: 18.3%
    → MINIMAL: ClimaCore handles complex expressions well
 
 3. INLINING DECISIONS (Section 6):
-   Impact: 1.08x
+   Impact: 1.09x
    → MANAGEABLE: Inlining works reasonably well
 
 4. OVERALL LOCALGEOMETRY OVERHEAD (Section 1 &amp; 2):
-   Direct access impact: 7.0%
+   Direct access impact: 5.8%
    → MODERATE: Worth optimizing if in hot paths
 </pre>
 </div>
@@ -10081,8 +10077,8 @@ RECOMMENDATIONS
 ======================================================================
 
 ⚠️  MODERATE OVERHEAD DETECTED:
-   • LocalGeometry overhead: 7.0%
-   • Projection overhead: -2.0%
+   • LocalGeometry overhead: 5.8%
+   • Projection overhead: -0.1%
 
    CONSIDER:
    1. Extract commonly-used components (J, WJ) at kernel entry
@@ -10182,7 +10178,7 @@ LLVM IR INSPECTION - Simple LocalGeometry Field Access
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre><span class="ansi-yellow-intense-fg ansi-bold">┌ </span><span class="ansi-yellow-intense-fg ansi-bold">Warning: </span>Performing scalar indexing on task Task (runnable, started) @0x00007f1a7dc5b080.
+<pre><span class="ansi-yellow-intense-fg ansi-bold">┌ </span><span class="ansi-yellow-intense-fg ansi-bold">Warning: </span>Performing scalar indexing on task Task (runnable, started) @0x00007f6dc3bab3a0.
 <span class="ansi-yellow-intense-fg ansi-bold">│ </span>Invocation of getindex resulted in scalar indexing of a GPU array.
 <span class="ansi-yellow-intense-fg ansi-bold">│ </span>This is typically caused by calling an iterating implementation of a method.
 <span class="ansi-yellow-intense-fg ansi-bold">│ </span>Such implementations *do not* execute on the GPU, but very slowly on the CPU,
@@ -10210,7 +10206,7 @@ LLVM IR (showing field access pattern):
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre><span class="ansi-black-intense-fg">; Function Signature: f_access_j(Float64, Float64)</span>
 <span class="ansi-black-intense-fg">; Function Attrs: noreturn</span>
-<span class="ansi-magenta-intense-fg">define</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-yellow-intense-fg">@julia_f_access_j_68938</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"lg::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-magenta-intense-fg">define</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-yellow-intense-fg">@julia_f_access_j_68946</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"lg::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-red-intense-fg">top:</span>
   %jlcallframe1 = <span class="ansi-cyan-intense-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">2</span> x <span class="ansi-magenta-intense-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gcframe2 = <span class="ansi-cyan-intense-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">3</span> x <span class="ansi-magenta-intense-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">16</span>
@@ -10225,15 +10221,15 @@ LLVM IR (showing field access pattern):
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> %gcframe2, <span class="ansi-magenta-intense-fg">ptr</span> %tls_pgcstack, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %ptls_field = <span class="ansi-cyan-intense-fg ansi-bold">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %tls_pgcstack, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   %ptls_load = <span class="ansi-cyan-intense-fg ansi-bold">load</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %ptls_field, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  <span class="ansi-red-intense-fg">%"box:</span>:Float64" = <span class="ansi-magenta-intense-fg">call</span> <span class="ansi-magenta-intense-fg">noalias</span> <span class="ansi-magenta-intense-fg">nonnull</span> <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-magenta-intense-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@ijl_gc_pool_alloc_instrumented</span><span class="ansi-yellow-fg">(</span><span class="ansi-magenta-intense-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">800</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">139751619582096</span><span class="ansi-yellow-fg">)</span> #7
+  <span class="ansi-red-intense-fg">%"box:</span>:Float64" = <span class="ansi-magenta-intense-fg">call</span> <span class="ansi-magenta-intense-fg">noalias</span> <span class="ansi-magenta-intense-fg">nonnull</span> <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-magenta-intense-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@ijl_gc_pool_alloc_instrumented</span><span class="ansi-yellow-fg">(</span><span class="ansi-magenta-intense-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">800</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140109274941584</span><span class="ansi-yellow-fg">)</span> #7
   <span class="ansi-red-intense-fg">%"box:</span>:Float64.tag_addr" = <span class="ansi-magenta-intense-fg">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">139751619582096</span>, <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64.tag_addr" <span class="ansi-magenta-intense-fg">unordered</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140109274941584</span>, <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64.tag_addr" <span class="ansi-magenta-intense-fg">unordered</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-cyan-fg">double</span> %"lg::Float64", <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_0 = <span class="ansi-cyan-intense-fg ansi-bold">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-magenta-intense-fg">ptr</span> %gc_slot_addr_0, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">16</span>
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-magenta-intense-fg">ptr</span> %jlcallframe1, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %0 = <span class="ansi-cyan-intense-fg ansi-bold">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %jlcallframe1, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">1</span>
-  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@"jl_sym#J#68942.jit"</span>, <span class="ansi-magenta-intense-fg">ptr</span> %0, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@"jl_sym#J#68950.jit"</span>, <span class="ansi-magenta-intense-fg">ptr</span> %0, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %jl_f_getfield_ret = <span class="ansi-cyan-intense-fg ansi-bold">call</span> <span class="ansi-magenta-intense-fg">nonnull</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@jl_f_getfield</span><span class="ansi-yellow-fg">(</span><span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-magenta-intense-fg">null</span>, <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-magenta-intense-fg">nonnull</span> %jlcallframe1, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">2</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-cyan-intense-fg ansi-bold">call</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-yellow-intense-fg">@llvm.trap</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-cyan-intense-fg ansi-bold">unreachable</span>
@@ -10289,7 +10285,7 @@ LLVM IR (showing multiple field access pattern):
 ----------------------------------------------------------------------
 <span class="ansi-black-intense-fg">; Function Signature: f_access_multiple(Float64, Float64)</span>
 <span class="ansi-black-intense-fg">; Function Attrs: noreturn</span>
-<span class="ansi-magenta-intense-fg">define</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-yellow-intense-fg">@julia_f_access_multiple_69022</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"lg::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-magenta-intense-fg">define</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-yellow-intense-fg">@julia_f_access_multiple_69030</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"lg::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-red-intense-fg">top:</span>
   %jlcallframe1 = <span class="ansi-cyan-intense-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">2</span> x <span class="ansi-magenta-intense-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gcframe2 = <span class="ansi-cyan-intense-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">3</span> x <span class="ansi-magenta-intense-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">16</span>
@@ -10304,15 +10300,15 @@ LLVM IR (showing multiple field access pattern):
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> %gcframe2, <span class="ansi-magenta-intense-fg">ptr</span> %tls_pgcstack, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %ptls_field = <span class="ansi-cyan-intense-fg ansi-bold">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %tls_pgcstack, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   %ptls_load = <span class="ansi-cyan-intense-fg ansi-bold">load</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %ptls_field, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  <span class="ansi-red-intense-fg">%"box:</span>:Float64" = <span class="ansi-magenta-intense-fg">call</span> <span class="ansi-magenta-intense-fg">noalias</span> <span class="ansi-magenta-intense-fg">nonnull</span> <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-magenta-intense-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@ijl_gc_pool_alloc_instrumented</span><span class="ansi-yellow-fg">(</span><span class="ansi-magenta-intense-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">800</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">139751619582096</span><span class="ansi-yellow-fg">)</span> #7
+  <span class="ansi-red-intense-fg">%"box:</span>:Float64" = <span class="ansi-magenta-intense-fg">call</span> <span class="ansi-magenta-intense-fg">noalias</span> <span class="ansi-magenta-intense-fg">nonnull</span> <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-magenta-intense-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@ijl_gc_pool_alloc_instrumented</span><span class="ansi-yellow-fg">(</span><span class="ansi-magenta-intense-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">800</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140109274941584</span><span class="ansi-yellow-fg">)</span> #7
   <span class="ansi-red-intense-fg">%"box:</span>:Float64.tag_addr" = <span class="ansi-magenta-intense-fg">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">139751619582096</span>, <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64.tag_addr" <span class="ansi-magenta-intense-fg">unordered</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140109274941584</span>, <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64.tag_addr" <span class="ansi-magenta-intense-fg">unordered</span>, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-cyan-fg">double</span> %"lg::Float64", <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_0 = <span class="ansi-cyan-intense-fg ansi-bold">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-magenta-intense-fg">ptr</span> %gc_slot_addr_0, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">16</span>
   <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> %"box::Float64", <span class="ansi-magenta-intense-fg">ptr</span> %jlcallframe1, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %0 = <span class="ansi-cyan-intense-fg ansi-bold">getelementptr</span> <span class="ansi-magenta-intense-fg">inbounds</span> <span class="ansi-magenta-intense-fg">ptr</span>, <span class="ansi-magenta-intense-fg">ptr</span> %jlcallframe1, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">1</span>
-  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@"jl_sym#J#69026.jit"</span>, <span class="ansi-magenta-intense-fg">ptr</span> %0, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-cyan-intense-fg ansi-bold">store</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@"jl_sym#J#69034.jit"</span>, <span class="ansi-magenta-intense-fg">ptr</span> %0, <span class="ansi-magenta-intense-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %jl_f_getfield_ret = <span class="ansi-cyan-intense-fg ansi-bold">call</span> <span class="ansi-magenta-intense-fg">nonnull</span> <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-yellow-intense-fg">@jl_f_getfield</span><span class="ansi-yellow-fg">(</span><span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-magenta-intense-fg">null</span>, <span class="ansi-magenta-intense-fg">ptr</span> <span class="ansi-magenta-intense-fg">nonnull</span> %jlcallframe1, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">2</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-cyan-intense-fg ansi-bold">call</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-yellow-intense-fg">@llvm.trap</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-cyan-intense-fg ansi-bold">unreachable</span>

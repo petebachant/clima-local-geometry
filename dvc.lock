@@ -133,8 +133,8 @@ stages:
       size: 98212
     - path: .calkit/notebooks/cleaned/notebooks/analyze-logs.ipynb
       hash: md5
-      md5: e49e3f3f48d1bac2c04868ad0dc9946c
-      size: 1631
+      md5: 02757473dab04aa9507bdae9b4fbdf6e
+      size: 2347
     - path: .calkit/slurm/logs/amip-baseline.out
       hash: md5
       md5: b406752e18f6e6ac3863877960f6c97c
@@ -146,12 +146,12 @@ stages:
     outs:
     - path: .calkit/notebooks/executed/notebooks/analyze-logs.ipynb
       hash: md5
-      md5: 5ba77e1d8645031d3ff9f49761dbd18b
-      size: 44833
+      md5: 9f4c18438c8adef34d5092cfa638af10
+      size: 45461
     - path: .calkit/notebooks/html/notebooks/analyze-logs.html
       hash: md5
-      md5: 0ef63075ff1be1f6a6c9163d8b24c121
-      size: 324013
+      md5: d23976d86fb2deb74b7c6f3956a84aeb
+      size: 326851
     - path: figures/sypd-time-series.png
       hash: md5
       md5: ff7d6cd5926eb5c85844ffb7bde86bac
